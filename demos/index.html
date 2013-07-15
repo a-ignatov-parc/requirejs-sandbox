@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title>requrejs-sandbox demo</title>
 		<link rel="stylesheet" type="text/css" href="../static/styles/css/main.css">
-		<script src="../static/js/libs/require.js"></script>
+		<script src="../static/js/libs/require.min.js"></script>
 		<script>
 			requirejs.config({
 				baseUrl: '../static/js/app',
@@ -32,8 +32,13 @@
 
 			requirejs(['sources/requirejs-sandbox'], function(requrejsSandbox) {
 				console.log('requirejs-sandbox api', requrejsSandbox);
+				requrejsSandbox.set('DemoApp', {
+					baseUrl: ''
+				});
 			});
 		</script>
 	</head>
-	<body></body>
+	<body>
+		Page content
+	</body>
 </html>

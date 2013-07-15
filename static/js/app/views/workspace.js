@@ -3,7 +3,7 @@ define(['jquery', 'backbone'], function($, Backbone) {
 		events: {},
 
 		initialize: function() {
-			console.log('workspace view is initialized in', window);
+			console.log('workspace view is initialized in', window, window.document.body);
 		}
 	});
 });
