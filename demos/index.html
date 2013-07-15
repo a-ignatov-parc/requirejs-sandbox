@@ -32,8 +32,39 @@
 
 			requirejs(['sources/requirejs-sandbox'], function(requrejsSandbox) {
 				console.log('requirejs-sandbox api', requrejsSandbox);
+
+				// Инициализируем песочницу и пытаемся загрузить в нее вью `workspace`.
 				requrejsSandbox.set('DemoApp', {
-					baseUrl: ''
+					requireUrl: '../static/js/libs/require.min.js',
+					callback: function(require) {
+						// Конфигурируем require.js загруженный в песочнице.
+						// 
+						// [TODO] Подумать над тем как конфигурировать `require.js` в песочнице. 
+						// Сейчас получается дублирование кода.
+						require.config({
+							baseUrl: '../static/js/app',
+							paths: {
+								'sources': '../../../src',
+								'backbone': '../libs/backbone',
+								'jquery': '../libs/jquery/jquery.min',
+								'underscore': '../libs/underscore.min'
+							},
+							shim: {
+								underscore: {
+									exports: '_'
+								},
+								backbone: {
+									deps: ['underscore', 'jquery'],
+									exports: 'Backbone'
+								}
+							}
+						});
+
+						// Пытаемся загрузить в песочницу вью и инициализировать ее.
+						require(['views/workspace'], function(Workspace) {
+							var workspace = new Workspace;
+						});
+					}
 				});
 			});
 		</script>

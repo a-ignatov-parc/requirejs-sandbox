@@ -1,10 +1,14 @@
+// Пока в зависимостях запрашиваем `underscore`, для быстрой реализации первой версии.
+// 
+// [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
+// методы в код модуля.
 define(['underscore'], function(_) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
 			this.options = _.extend({
-				baseUrl: null,
+				requireUrl: null,
 				useLocationFix: false
 			}, options);
 
@@ -14,8 +18,7 @@ define(['underscore'], function(_) {
 
 			this.createSandbox(function(sandbox) {
 				console.log('Sandbox created!', sandbox, sandbox.document.body);
-
-				this.createLoader();
+				this.createLoader(sandbox);
 			});
 
 			return {
@@ -37,7 +40,7 @@ define(['underscore'], function(_) {
 					this.sandbox = this.iframe.contentWindow;
 
 					// Добавляем пустой элемент `script` в `body` `iframe` для правильной работы загрузчика
-					this.sandbox.document.body.appendChild(document.createElement('script'));
+					this.createScript(this.sandbox);
 
 					if (typeof(callback) === 'function') {
 						callback.call(this, this.sandbox);
@@ -80,8 +83,56 @@ define(['underscore'], function(_) {
 			}
 		},
 
-		createLoader: function() {
-			console.log('Creating loader inside sandbox');
+		createScript: function(window, src, callback) {
+			var script = null,
+				loaded = false;
+
+			if (window && window.document && window.document.body) {
+				// Создаем тег `script`.
+				script = window.document.createElement('script');
+
+				// Если передан путь до файла, то указываем его у тега.
+				if (typeof(src) === 'string' && src) {
+					script.src = src;
+				}
+
+				// Если переданный аргумент `callback` - функция, то реалзиовываем кроссбраузерный 
+				// колбек.
+				if (typeof(callback) === 'function') {
+					script.onload = script.onreadystatechange = function() {
+						if (!loaded && (this.readyState == null || this.readyState === 'loaded' || this.readyState === 'complete')) {
+							loaded = true;
+							script.onload = script.onreadystatechange = null;
+							callback(window);
+						}
+					};
+				}
+
+				// Вставляем тег `script` в DOM.
+				window.document.body.appendChild(script);
+			}
+		},
+
+		createLoader: function(target) {
+			if (this.options.requireUrl) {
+				this.createScript(target, this.options.requireUrl, this.bind(function(window) {
+					console.log('require.js has loaded! Executing module callback');
+
+					if (typeof(this.options.callback) === 'function') {
+						this.options.callback(window.require);
+					}
+				}, this));
+			} else {
+				// Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
+				// модуль.
+				// 
+				// Нужно для юзкейса, когда в странице куда встраивается виджет нет ни `require.js`
+				// ни пользователю не охото заморачиваться с ссылкам, но зато он может собрать 
+				// модуль с встроенным `require.js`.
+				// 
+				// code here...
+			}
+			console.log('Creating loader inside specified target:', target);
 		},
 
 		bind: function(fn, context) {
@@ -95,8 +146,6 @@ define(['underscore'], function(_) {
 			return fn;
 		}
 	};
-
-	console.log('module arguments', arguments);
 
 	return {
 		get: function(name) {
@@ -112,7 +161,9 @@ define(['underscore'], function(_) {
 					console.warn('Sandbox with name: ' + name + ' already exist! Returning existed sandbox.', sandbox);
 					return sandbox;
 				}
-				return createdSandboxes[name] = new Sandbox(name, params);
+				return createdSandboxes[name] = new Sandbox(_.extend({}, params, {
+					name: name
+				}));
 			}
 		},
 		destroy: function(name) {
