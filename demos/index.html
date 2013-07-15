@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>requrejs-sandbox demo</title>
+		<link rel="stylesheet" type="text/css" href="../static/styles/css/main.css">
+		<script src="../static/js/libs/require.js"></script>
+		<script>
+			requirejs.config({
+				baseUrl: '../static/js/app',
+				paths: {
+					'sources': '../../../src',
+					'backbone': '../libs/backbone',
+					'jquery': '../libs/jquery/jquery.min',
+					'underscore': '../libs/underscore.min'
+				},
+				shim: {
+					underscore: {
+						exports: '_'
+					},
+					backbone: {
+						deps: ['underscore', 'jquery'],
+						exports: 'Backbone'
+					}
+				}
+			});
+
+			requirejs(['views/workspace'], function(Workspace) {
+				var workspace = new Workspace;
+			});
+
+			requirejs(['sources/requirejs-sandbox'], function(requrejsSandbox) {
+				console.log('requirejs-sandbox api', requrejsSandbox);
+			});
+		</script>
+	</head>
+	<body></body>
+</html>

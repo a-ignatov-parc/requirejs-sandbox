@@ -1,0 +1,38 @@
+{
+	"name": "requrejs-sandbox",
+	"description": "Module for requre.js to create sandbox enviroment to run dedicated apps",
+	"version": "0.1.0",
+	"author": "Anton Ignatov",
+	"url": "https://github.com/a-ignatov-parc/requirejs-sandbox",
+	"main": "./src/requirejs-sandbox.js",
+	"keywords": [
+		"requirejs",
+		"client",
+		"browser",
+		"sandbox",
+		"app"
+	],
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "https://github.com/a-ignatov-parc/requirejs-sandbox/blob/master/LICENSE"
+		}
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/a-ignatov-parc/requirejs-sandbox.git"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"grunt": ">=0.4",
+		"grunt-contrib-concat": ">=0.1",
+		"grunt-contrib-jshint": ">=0.1",
+		"grunt-contrib-uglify": ">=0.1",
+		"grunt-contrib-watch": ">=0.2",
+		"grunt-contrib-qunit": ">=0.1",
+		"grunt-contrib-stylus": ">=0.5"
+	},
+	"srcPath": "src/",
+	"cssPath": "static/styles/css/",
+	"stylusPath": "static/styles/stylus/"
+}
