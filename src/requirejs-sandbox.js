@@ -15,22 +15,22 @@ define(['underscore'], function(_) {
 			// Создаем свойства класса.
 			this.iframe = null;
 			this.sandbox = null;
+			this.api = {
+				name: this.options.name,
+				require: null,
+				destroy: this.bind(function() {
+					this.sandbox = null;
+					this.iframe.parentNode.removeChild(this.iframe);
+					this.iframe = null;
+				}, this)
+			};
 
 			this.createSandbox(function(sandbox) {
 				console.log('Sandbox created!', sandbox, sandbox.document.body);
 				this.createLoader(sandbox);
 			});
 
-			return {
-				name: this.options.name,
-				iframe: this.iframe,
-				sandbox: this.sandbox,
-				destroy: function() {
-					delete this.sandbox;
-					this.iframe.parentNode.removeChild(this.iframe);
-					delete this.iframe;
-				}
-			};
+			return this.api;
 		};
 
 	Sandbox.prototype = {
@@ -116,8 +116,13 @@ define(['underscore'], function(_) {
 		createLoader: function(target) {
 			if (this.options.requireUrl) {
 				this.createScript(target, this.options.requireUrl, this.bind(function(window) {
+					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
+					this.api.require = window.require;
+
 					console.log('require.js has loaded! Executing module callback');
 
+					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
+					// качестве аргументов ссылку на функцию `require` их песочницы.
 					if (typeof(this.options.callback) === 'function') {
 						this.options.callback(window.require);
 					}
