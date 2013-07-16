@@ -2,13 +2,14 @@
 // 
 // [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
 // методы в код модуля.
-define(['underscore'], function(_) {
+define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
 			this.options = _.extend({
 				requireUrl: null,
+				requireConfig: {},
 				useLocationFix: false
 			}, options);
 
@@ -114,19 +115,29 @@ define(['underscore'], function(_) {
 		},
 
 		createLoader: function(target) {
-			if (this.options.requireUrl) {
-				this.createScript(target, this.options.requireUrl, this.bind(function(window) {
+			var loadHandler = function(window) {
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = window.require;
 
-					console.log('require.js has loaded! Executing module callback');
+					console.log('require.js has loaded! Configuring...');
+
+					// Конфигурируем загрузчик на основе переданных параметров.
+					this.api.require.config(this.options.requireConfig);
+
+					// Создаем плугин для загрузки транзитов.
+					this.createTransitPlugin(window.define);
+
+					console.log('Executing module callback');
 
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
 					if (typeof(this.options.callback) === 'function') {
 						this.options.callback(window.require);
 					}
-				}, this));
+				};
+
+			if (this.options.requireUrl) {
+				this.createScript(target, this.options.requireUrl, this.bind(loadHandler, this));
 			} else {
 				// Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
 				// модуль.
@@ -136,8 +147,40 @@ define(['underscore'], function(_) {
 				// модуль с встроенным `require.js`.
 				// 
 				// code here...
+				// 
+				// А пока ничего не реализовано выкидываем ошибку
+				throw 'Unable to create loader';
 			}
 			console.log('Creating loader inside specified target:', target);
+		},
+
+		createTransitPlugin: function(define) {
+			var sandbox = this.sandbox;
+
+			console.log('Creating plugin for loading transits');
+
+			define('transit', function() {
+				return {
+					load: function (name, req, onload, config) {
+						console.log('Received module load exec for', name);
+
+						// Загружаем модуль и если транзит для этого модуля существует, то делаем 
+						// патч.
+						req([name], function(module) {
+							onload(module);
+
+							// Если транзит для данного модуля существует, то инициализируем его.
+							if (transits[name]) {
+								try {
+									transits[name].enable(window, sandbox, module);
+								} catch(e) {
+									console.error(e);
+								}
+							}
+						});
+					}
+				}
+			});
 		},
 
 		bind: function(fn, context) {
