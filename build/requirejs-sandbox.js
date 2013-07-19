@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.1 (build date: 19/07/2013)
+ * requrejs-sandbox - v0.1.1-8 (build date: 19/07/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Module for requre.js to create sandbox enviroment to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -9,7 +9,7 @@
 // 
 // [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
 // методы в код модуля.
-define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
+define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'underscore'], function(transits, console, _) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -34,7 +34,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 			};
 
 			this.createSandbox(function(sandbox) {
-				console.log('Sandbox created!', sandbox, sandbox.document.body);
+				console.debug('Sandbox created!', sandbox, sandbox.document.body);
 				this.createLoader(sandbox);
 			});
 
@@ -126,7 +126,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = window.require;
 
-					console.log('require.js has loaded! Configuring...');
+					console.debug('require.js has loaded! Configuring...');
 
 					// Конфигурируем загрузчик на основе переданных параметров.
 					this.api.require.config(this.options.requireConfig);
@@ -134,7 +134,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 					// Создаем плугин для загрузки транзитов.
 					this.createTransitPlugin(window.define);
 
-					console.log('Executing module callback');
+					console.debug('Executing module callback');
 
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
@@ -158,18 +158,18 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 				// А пока ничего не реализовано выкидываем ошибку
 				throw 'Unable to create loader';
 			}
-			console.log('Creating loader inside specified target:', target);
+			console.debug('Creating loader inside specified target:', target);
 		},
 
 		createTransitPlugin: function(define) {
 			var sandbox = this.sandbox;
 
-			console.log('Creating plugin for loading transits');
+			console.debug('Creating plugin for loading transits');
 
 			define('transit', function() {
 				return {
 					load: function (name, req, onload) {
-						console.log('Received module load exec for', name);
+						console.debug('Received module load exec for', name);
 
 						// Загружаем модуль и если транзит для этого модуля существует, то делаем 
 						// патч.
@@ -202,6 +202,10 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 		}
 	};
 
+	// Конфигурируем логирование ошибок.
+	console.setLogLevel('debug');
+	console.setNamespace('requirejs-sandbox');
+
 	return {
 		get: function(name) {
 			if (createdSandboxes[name]) {
@@ -231,7 +235,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 	};
 });
 
-define('transits', ['transit.jquery'], function() {
+define('requirejs-sandbox/transits', ['requirejs-sandbox/transit.jquery'], function() {
 	var transits = {};
 
 	// Создаем справочник транзитов
@@ -243,7 +247,7 @@ define('transits', ['transit.jquery'], function() {
 	return transits;
 });
 
-define('transit.jquery', function() {
+define('requirejs-sandbox/transit.jquery', ['requirejs-sandbox/logger'], function(console) {
 	return {
 		name: 'jquery',
 		enable: function(window, sandbox, jQuery) {
@@ -298,4 +302,82 @@ define('transit.jquery', function() {
 			console.warn('This transit can not be disabled');
 		}
 	}
+});
+
+define('requirejs-sandbox/logger', function() {
+	var Logger = function() {
+		var levels = {
+				debug: 1,
+				info: 2,
+				warn: 4,
+				error: 8,
+				off: 100
+			},
+			logLevel = levels.warn,
+			namespace = 'logger',
+			console = {
+				log: function() {},
+				info: function() {},
+				warn: function() {},
+				error: function() {}
+			};
+
+		// для корректной работы в ie9
+		if (Function.prototype.bind && window.console && typeof window.console.log === 'object') {
+			['log', 'info', 'warn', 'error'].forEach(function(method) {
+				console[method] = this.bind(window.console[method], window.console);
+			}, Function.prototype.call);
+		} else if (window.console) {
+			console = window.console;
+		}
+
+		var log = function(data, level) {
+			data = Array.prototype.slice.call(data);
+
+			if (level >= logLevel) {
+				var hdlr = console.log,
+					prefix = '[' + namespace + ']';
+
+				if (level === levels.warn && console.warn) {
+					hdlr = console.warn;
+					prefix += '[warn]';
+				} else if (level === levels.error && console.error) {
+					hdlr = console.error;
+					prefix += '[ERR]';
+				} else if (level === levels.info && console.info) {
+					hdlr = console.info;
+				}
+				data.unshift(prefix);
+				hdlr.apply(console, data);
+			}
+		};
+
+		return {
+			setLogLevel: function(level) {
+				if (!levels[level]) {
+					throw 'unknown log level: ' + level;
+				}
+				logLevel = levels[level];
+			},
+			setNamespace: function(ns) {
+				namespace = ns;
+			},
+			debug: function() {
+				log(arguments, levels.debug);
+			},
+			info: function() {
+				log(arguments, levels.info);
+			},
+			warn: function() {
+				log(arguments, levels.warn);
+			},
+			error: function() {
+				log(arguments, levels.error);
+			},
+			off: function() {
+				logLevel = levels.OFF;
+			}
+		};
+	}
+	return new Logger;
 });

@@ -9,6 +9,9 @@ var fs = require('fs'),
 		' */\n',
 	gruntConfig = {
 		pkg: pkg,
+		bumpup: {
+			file: 'package.json'
+		},
 		watch: {
 			styles: {
 				files: [pkg.stylusPath + 'app.styl', pkg.stylusPath + '**/*.styl'],
@@ -35,12 +38,16 @@ var fs = require('fs'),
 			}
 		},
 		concat: {
-			module: {
-				src: pkg.srcPath + '**/*.js',
+			dev: {
+				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/logger.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js',
 				options: {
 					banner: bannerTemplate
 				}
+			},
+			prod: {
+				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/fake-logger.js'],
+				dest: pkg.buildPath + 'requirejs-sandbox.js'
 			}
 		},
 		uglify: {
@@ -92,8 +99,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
+	grunt.loadNpmTasks('grunt-bumpup');
+
+	// Регистрируем кастомные таски
+	grunt.registerTask('updatepkg', 'Update pkg version after bumpup.', function() {
+		gruntConfig.pkg = grunt.file.readJSON('package.json');
+		grunt.log.writeln('ok!');
+	});
 
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'concat:module', 'uglify:module']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev']);
 };
