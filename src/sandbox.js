@@ -2,7 +2,7 @@
 // 
 // [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
 // методы в код модуля.
-define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
+define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'underscore'], function(transits, console, _) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -27,7 +27,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 			};
 
 			this.createSandbox(function(sandbox) {
-				console.log('Sandbox created!', sandbox, sandbox.document.body);
+				console.debug('Sandbox created!', sandbox, sandbox.document.body);
 				this.createLoader(sandbox);
 			});
 
@@ -119,7 +119,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = window.require;
 
-					console.log('require.js has loaded! Configuring...');
+					console.debug('require.js has loaded! Configuring...');
 
 					// Конфигурируем загрузчик на основе переданных параметров.
 					this.api.require.config(this.options.requireConfig);
@@ -127,7 +127,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 					// Создаем плугин для загрузки транзитов.
 					this.createTransitPlugin(window.define);
 
-					console.log('Executing module callback');
+					console.debug('Executing module callback');
 
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
@@ -151,18 +151,18 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 				// А пока ничего не реализовано выкидываем ошибку
 				throw 'Unable to create loader';
 			}
-			console.log('Creating loader inside specified target:', target);
+			console.debug('Creating loader inside specified target:', target);
 		},
 
 		createTransitPlugin: function(define) {
 			var sandbox = this.sandbox;
 
-			console.log('Creating plugin for loading transits');
+			console.debug('Creating plugin for loading transits');
 
 			define('transit', function() {
 				return {
 					load: function (name, req, onload) {
-						console.log('Received module load exec for', name);
+						console.debug('Received module load exec for', name);
 
 						// Загружаем модуль и если транзит для этого модуля существует, то делаем 
 						// патч.
@@ -194,6 +194,10 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 			return fn;
 		}
 	};
+
+	// Конфигурируем логирование ошибок.
+	console.setLogLevel('debug');
+	console.setNamespace('requirejs-sandbox');
 
 	return {
 		get: function(name) {
