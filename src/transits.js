@@ -1,4 +1,4 @@
-define('transits', ['transit.jquery'], function(jquery) {
+define('transits', ['transit.jquery'], function() {
 	var transits = {};
 
 	// Создаем справочник транзитов
@@ -6,6 +6,6 @@ define('transits', ['transit.jquery'], function(jquery) {
 		if (arguments[i] != null) {
 			transits[arguments[i].name] = arguments[i];
 		}
-	};
+	}
 	return transits;
 });

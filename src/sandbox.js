@@ -36,7 +36,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 
 	Sandbox.prototype = {
 		createSandbox: function(callback) {
-			var onLoadHandler = this.bind(function(event) {
+			var onLoadHandler = this.bind(function() {
 					// Получаем и сохраняем ссылку на объект `window` в созданом `sandbox`
 					this.sandbox = this.iframe.contentWindow;
 
@@ -161,7 +161,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 
 			define('transit', function() {
 				return {
-					load: function (name, req, onload, config) {
+					load: function (name, req, onload) {
 						console.log('Received module load exec for', name);
 
 						// Загружаем модуль и если транзит для этого модуля существует, то делаем 
@@ -179,7 +179,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 							}
 						});
 					}
-				}
+				};
 			});
 		},
 
@@ -189,7 +189,7 @@ define('requirejs-sandbox', ['transits', 'underscore'], function(transits, _) {
 			if (typeof(fn) === 'function') {
 				return function() {
 					return fn.apply(context, arguments);
-				}
+				};
 			}
 			return fn;
 		}
