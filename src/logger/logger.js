@@ -72,6 +72,6 @@ define('requirejs-sandbox/logger', function() {
 				logLevel = levels.OFF;
 			}
 		};
-	}
-	return new Logger;
+	};
+	return new Logger();
 });

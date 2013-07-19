@@ -39,14 +39,14 @@ var fs = require('fs'),
 		},
 		concat: {
 			dev: {
-				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/logger.js'],
+				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/logger.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js',
 				options: {
 					banner: bannerTemplate
 				}
 			},
 			prod: {
-				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/fake-logger.js'],
+				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/fake.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js'
 			}
 		},
@@ -60,7 +60,7 @@ var fs = require('fs'),
 			}
 		},
 		jshint: {
-			lint: pkg.srcPath + '*.js',
+			lint: pkg.srcPath + '**/*.js',
 			options: {
 				indent: 4,
 				boss: true, // Позволяет делать присвоение в условиях `if (a = true) { ... }`

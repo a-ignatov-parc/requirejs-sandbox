@@ -2,12 +2,12 @@
 // 
 // [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
 // методы в код модуля.
-define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'underscore'], function(transits, console, _) {
+define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'requirejs-sandbox/utils'], function(transits, console, utils) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
-			this.options = _.extend({
+			this.options = utils.extend({
 				requireUrl: null,
 				requireConfig: {},
 				useLocationFix: false
@@ -213,7 +213,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					console.warn('Sandbox with name: ' + name + ' already exist! Returning existed sandbox.', sandbox);
 					return sandbox;
 				}
-				return createdSandboxes[name] = new Sandbox(_.extend({}, params, {
+				return createdSandboxes[name] = new Sandbox(utils.extend({}, params, {
 					name: name
 				}));
 			}
