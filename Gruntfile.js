@@ -1,5 +1,12 @@
 var fs = require('fs'),
 	pkg = require('./package.json'),
+	bannerTemplate = '/**\n' +
+		' * <%= pkg.name %> - v<%= pkg.version %> (build date: <%= grunt.template.today("dd/mm/yyyy") %>)\n' +
+		' * <%= pkg.url %>\n' +
+		' * <%= pkg.description %>\n' +
+		' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+		' * Licensed MIT\n' +
+		' */\n',
 	gruntConfig = {
 		pkg: pkg,
 		watch: {
@@ -27,10 +34,29 @@ var fs = require('fs'),
 				}
 			}
 		},
+		concat: {
+			module: {
+				src: pkg.srcPath + '**/*.js',
+				dest: pkg.buildPath + 'requirejs-sandbox.js',
+				options: {
+					banner: bannerTemplate
+				}
+			}
+		},
+		uglify: {
+			module: {
+				src: pkg.buildPath + 'requirejs-sandbox.js',
+				dest: pkg.buildPath + 'requirejs-sandbox.min.js',
+				options: {
+					banner: bannerTemplate
+				}
+			}
+		},
 		jshint: {
 			lint: pkg.srcPath + '*.js',
 			options: {
 				indent: 4,
+				boss: true, // Позволяет делать присвоение в условиях `if (a = true) { ... }`
 				undef: true, // Ругается на необъявленные переменные
 				curly: true, // Обязует ставить { } при работе с if, for и т.д.
 				forin: true, // Обязует использовать hasOwnProperty при работе с for in
@@ -43,8 +69,11 @@ var fs = require('fs'),
 				latedef: true, // Запрещает работать с переменными до того, как они были объявлены
 				camelcase: true, // Все переменные должны быть только в camelCase
 				quotmark: 'single', // Все ковычки должны быть одинарными
+				scripturl: true, // Позволяет в урле использовать конструкции типа `javascript:0`
+				'-W030': false, // Expected an assignment or function call and instead saw an expression
 				globals: {
 					module: true,
+					define: true,
 					require: true,
 					console: true
 				}
@@ -57,8 +86,8 @@ module.exports = function(grunt) {
 	grunt.initConfig(gruntConfig);
 
 	// Подключаем таски
-	// grunt.loadNpmTasks('grunt-contrib-concat');
-	// grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 	// grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -66,5 +95,5 @@ module.exports = function(grunt) {
 
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'concat:module', 'uglify:module']);
 };
