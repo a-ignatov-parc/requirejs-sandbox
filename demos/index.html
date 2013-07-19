@@ -11,8 +11,9 @@
 			requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				console.log('requirejs-sandbox api', requrejsSandbox);
 
-				// Инициализируем песочницу и пытаемся загрузить в нее вью `workspace`.
-				requrejsSandbox.set('DemoApp', {
+				// Инициализируем песочницу для первого приложения и пытаемся загрузить в нее 
+				// вью `workspace`.
+				requrejsSandbox.set('CustomDemoApp', {
 					requireUrl: '../static/js/libs/require.min.js',
 					requireConfig: {
 						baseUrl: '../static/js/app',
@@ -37,6 +38,15 @@
 							var workspace = new Workspace;
 						});
 					}
+				});
+
+				// Инициализируем песочницу для второго приложения.
+				// 
+				// Конфигурированием и загрузкой в данном случае будет заниматься 
+				// файл `/app/main.js`.
+				requrejsSandbox.set('DemoApp', {
+					requireUrl: '../static/js/libs/require.min.js',
+					requireMain: '../static/js/app/main'
 				});
 			});
 		</script>

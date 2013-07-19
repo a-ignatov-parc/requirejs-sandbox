@@ -1,6 +1,8 @@
 /* jshint -W089 */
 define('requirejs-sandbox/utils', function() {
 	var ArrayProto = Array.prototype,
+		ObjProto = Object.prototype,
+		hasOwnProperty = ObjProto.hasOwnProperty,
 		nativeForEach = ArrayProto.forEach,
 		slice = ArrayProto.slice,
 		breaker = {};

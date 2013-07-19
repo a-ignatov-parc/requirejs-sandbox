@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.2-5 (build date: 19/07/2013)
+ * requrejs-sandbox - v0.1.3-9 (build date: 19/07/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Module for requre.js to create sandbox enviroment to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -16,6 +16,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			// инициализации.
 			this.options = utils.extend({
 				requireUrl: null,
+				requireMain: null,
 				requireConfig: {},
 				useLocationFix: false
 			}, options);
@@ -34,7 +35,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			};
 
 			this.createSandbox(function(sandbox) {
-				console.debug('Sandbox created!', sandbox, sandbox.document.body);
+				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
 				this.createLoader(sandbox);
 			});
 
@@ -91,13 +92,27 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			}
 		},
 
-		createScript: function(window, src, callback) {
+		createScript: function(window, src, dataAttributes, callback) {
 			var script = null,
 				loaded = false;
+
+			if (typeof(dataAttributes) === 'function' && callback == null) {
+				callback = dataAttributes;
+				dataAttributes = void(0);
+			}
 
 			if (window && window.document && window.document.body) {
 				// Создаем тег `script`.
 				script = window.document.createElement('script');
+
+				// Если передан массив дата-аттрибутов, то добавляем его в тег.
+				if (typeof(dataAttributes) === 'object') {
+					for (var key in dataAttributes) {
+						if (dataAttributes.hasOwnProperty(key) && dataAttributes[key] != null) {
+							script.setAttribute('data-' + key, dataAttributes[key]);
+						}
+					}
+				}
 
 				// Если передан путь до файла, то указываем его у тега.
 				if (typeof(src) === 'string' && src) {
@@ -144,7 +159,9 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 				};
 
 			if (this.options.requireUrl) {
-				this.createScript(target, this.options.requireUrl, this.bind(loadHandler, this));
+				this.createScript(target, this.options.requireUrl, {
+					main: this.options.requireMain
+				}, this.bind(loadHandler, this));
 			} else {
 				// Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
 				// модуль.
@@ -307,6 +324,8 @@ define('requirejs-sandbox/transit.jquery', ['requirejs-sandbox/logger'], functio
 /* jshint -W089 */
 define('requirejs-sandbox/utils', function() {
 	var ArrayProto = Array.prototype,
+		ObjProto = Object.prototype,
+		hasOwnProperty = ObjProto.hasOwnProperty,
 		nativeForEach = ArrayProto.forEach,
 		slice = ArrayProto.slice,
 		breaker = {};
