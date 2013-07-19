@@ -52,5 +52,5 @@ define('requirejs-sandbox/transit.jquery', ['requirejs-sandbox/logger'], functio
 		disable: function() {
 			console.warn('This transit can not be disabled');
 		}
-	}
+	};
 });

@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.1-8 (build date: 19/07/2013)
+ * requrejs-sandbox - v0.1.2-5 (build date: 19/07/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Module for requre.js to create sandbox enviroment to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -9,12 +9,12 @@
 // 
 // [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
 // методы в код модуля.
-define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'underscore'], function(transits, console, _) {
+define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'requirejs-sandbox/utils'], function(transits, console, utils) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
-			this.options = _.extend({
+			this.options = utils.extend({
 				requireUrl: null,
 				requireConfig: {},
 				useLocationFix: false
@@ -220,7 +220,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					console.warn('Sandbox with name: ' + name + ' already exist! Returning existed sandbox.', sandbox);
 					return sandbox;
 				}
-				return createdSandboxes[name] = new Sandbox(_.extend({}, params, {
+				return createdSandboxes[name] = new Sandbox(utils.extend({}, params, {
 					name: name
 				}));
 			}
@@ -301,7 +301,59 @@ define('requirejs-sandbox/transit.jquery', ['requirejs-sandbox/logger'], functio
 		disable: function() {
 			console.warn('This transit can not be disabled');
 		}
-	}
+	};
+});
+
+/* jshint -W089 */
+define('requirejs-sandbox/utils', function() {
+	var ArrayProto = Array.prototype,
+		nativeForEach = ArrayProto.forEach,
+		slice = ArrayProto.slice,
+		breaker = {};
+
+	return {
+		// Метод `has` позаимствованный из `underscore.js`
+		has: function(obj, key) {
+			return hasOwnProperty.call(obj, key);
+		},
+
+		// Метод `each` позаимствованный из `underscore.js`
+		each: function(obj, iterator, context) {
+			if (obj == null) {
+				return;
+			}
+
+			if (nativeForEach && obj.forEach === nativeForEach) {
+				obj.forEach(iterator, context);
+			} else if (obj.length === +obj.length) {
+				for (var i = 0, l = obj.length; i < l; i++) {
+					if (iterator.call(context, obj[i], i, obj) === breaker) {
+						return;
+					}
+				}
+			} else {
+				for (var key in obj) {
+					if (this.has(obj, key)) {
+						if (iterator.call(context, obj[key], key, obj) === breaker) {
+							return;
+						}
+					}
+				}
+			}
+		},
+
+		// Метод `extend` позаимствованный из `underscore.js`
+		extend: function(obj) {
+			this.each(slice.call(arguments, 1), function(source) {
+				if (source) {
+					for (var prop in source) {
+						obj[prop] = source[prop];
+					}
+				}
+			});
+			return obj;
+		}
+	};
 });
 
 define('requirejs-sandbox/logger', function() {
@@ -378,6 +430,6 @@ define('requirejs-sandbox/logger', function() {
 				logLevel = levels.OFF;
 			}
 		};
-	}
-	return new Logger;
+	};
+	return new Logger();
 });
