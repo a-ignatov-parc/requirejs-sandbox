@@ -1,4 +1,4 @@
-define('transits', ['transit.jquery'], function() {
+define('requirejs-sandbox/transits', ['requirejs-sandbox/transit.jquery'], function() {
 	var transits = {};
 
 	// Создаем справочник транзитов
