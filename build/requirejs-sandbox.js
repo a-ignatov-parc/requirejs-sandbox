@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.4-21 (build date: 21/07/2013)
+ * requrejs-sandbox - v0.1.4-22 (build date: 21/07/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Module for requre.js to create sandbox enviroment to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -17,8 +17,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			this.options = utils.extend({
 				requireUrl: null,
 				requireMain: null,
-				requireConfig: {},
-				useLocationFix: false
+				requireConfig: {}
 			}, options);
 
 			// Создаем свойства класса.

@@ -10,8 +10,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			this.options = utils.extend({
 				requireUrl: null,
 				requireMain: null,
-				requireConfig: {},
-				useLocationFix: false
+				requireConfig: {}
 			}, options);
 
 			// Создаем свойства класса.
