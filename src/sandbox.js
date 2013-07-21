@@ -30,7 +30,6 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
 				this.createLoader(sandbox);
 			});
-
 			return this.api;
 		};
 
@@ -53,7 +52,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 		},
 
 		createFrame: function(src, callback) {
-			var iframe = null,
+			var iframe = document.createElement('iframe'),
 				readyStateHandler = function() {
 					if (document.readyState === 'complete') {
 						console.debug('DOM is ready. Appending iframe');
@@ -69,7 +68,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					}
 				};
 
-			iframe = document.createElement('iframe');
+			// Устанавливаем необходимые атрибуты.
 			iframe.style.display = 'none';
 			iframe.src = src || 'javascript:0';
 			iframe.tabIndex = -1;
@@ -233,7 +232,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 							// Создаем тег `link`.
 							var link = window.document.createElement('link');
 
-							// Выставляем необходимые атрибуты.
+							// Устанавливаем необходимые атрибуты.
 							link.rel = 'stylesheet';
 							link.type = 'text/css';
 							link.href = url;
