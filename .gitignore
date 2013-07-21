@@ -4,7 +4,7 @@
 ._*.*
 
 #Project temp data
-*.css
+static/styles/css/
 
 #grunt.js packages
 node_modules/

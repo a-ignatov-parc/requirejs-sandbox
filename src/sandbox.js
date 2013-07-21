@@ -37,51 +37,64 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 	Sandbox.prototype = {
 		createSandbox: function(callback) {
-			var onLoadHandler = this.bind(function() {
-					// Получаем и сохраняем ссылку на объект `window` в созданом `sandbox`
-					this.sandbox = this.iframe.contentWindow;
+			this.createFrame(null, this.bind(function(iframe) {
+				// Сохраняем ссылку на песочницу.
+				this.iframe = iframe;
 
-					// Добавляем пустой элемент `script` в `body` `iframe` для правильной работы загрузчика
-					this.createScript(this.sandbox);
+				// Получаем и сохраняем ссылку на объект `window` в созданом `sandbox`
+				this.sandbox = this.iframe.contentWindow;
 
-					if (typeof(callback) === 'function') {
-						callback.call(this, this.sandbox);
+				// Добавляем пустой элемент `script` в `body` `iframe` для правильной работы загрузчика
+				this.createScript(this.sandbox);
+
+				if (typeof(callback) === 'function') {
+					callback.call(this, this.sandbox);
+				}
+			}, this));
+		},
+
+		createFrame: function(src, callback) {
+			var iframe = null,
+				readyStateHandler = function() {
+					if (document.readyState === 'complete') {
+						console.debug('DOM is ready. Appending iframe');
+
+						document.body.appendChild(iframe);
+						return true;
 					}
-				}, this);
+					return false;
+				},
+				onLoadHandler = function() {
+					if (typeof(callback) === 'function') {
+						callback(iframe);
+					}
+				};
 
-			this.iframe = document.createElement('iframe');
-			this.iframe.style.display = 'none';
-
-			// Из-за особенностей работы некоторых приложений и браузеров с `window.location` в 
-			// странице `about:blank` создаваемой с помощью урла `javascript:0` может не работать 
-			// какой-то функционал. Для исправления этого функционала добавлен параметр 
-			// `options.useLocationFix`, который исправит работу приложений с адресной строкой, но 
-			// не позволит встраивать приложение в страницу работающую на другом домене из-за 
-			// кроссдоменных ограничений. 
-			// 
-			// В принципе это не страшно, так как давать виджету влиять на урл приложения это не 
-			// лудший вариант.
-			if (this.options.useLocationFix) {
-				this.iframe.src = this.options.hosts.html + 'sandbox.html';
-				console.warn('Using location fix hack for ' + this.appName + '! No crossdomain initialization available');
-			} else {
-				this.iframe.src = 'javascript:0';
-			}
-			this.iframe.tabIndex = -1;
+			iframe = document.createElement('iframe');
+			iframe.style.display = 'none';
+			iframe.src = src || 'javascript:0';
+			iframe.tabIndex = -1;
 
 			// Навешиваем обработчик на событие полной отрисовки _iframe_ и всего его содержимого
-			if (this.iframe.addEventListener) { 
-				this.iframe.addEventListener('load', onLoadHandler, false);
-			} else if (this.iframe.attachEvent) { 
-				this.iframe.attachEvent('onload', onLoadHandler);
-			} else { 
-				this.iframe.onload = onLoadHandler;
+			if (iframe.addEventListener) {
+				iframe.addEventListener('load', onLoadHandler, false);
+			} else if (iframe.attachEvent) {
+				iframe.attachEvent('onload', onLoadHandler);
+			} else {
+				iframe.onload = onLoadHandler;
 			}
 
-			if (document.readyState === 'complete') {
-				document.body.appendChild(this.iframe);
-			} else {
-				throw 'Can\'t determine DOMReady state!';
+			if (!readyStateHandler()) {
+				console.debug('DOM isn\'t ready. Subscribing to "onreadystatechange" event');
+
+				document.onreadystatechange = (function(originalHandler) {
+					return function() {
+						var returnData = originalHandler.apply(this, arguments);
+
+						readyStateHandler.apply(this, arguments);
+						return returnData;
+					};
+				})(document.onreadystatechange);
 			}
 		},
 
@@ -139,8 +152,9 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					// Конфигурируем загрузчик на основе переданных параметров.
 					this.api.require.config(this.options.requireConfig);
 
-					// Создаем плугин для загрузки транзитов.
+					// Создаем плугин для загрузки транзитов и css.
 					this.createTransitPlugin(window.define);
+					this.createCssPlugin(window.define);
 
 					console.debug('Executing module callback');
 
@@ -198,6 +212,47 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					}
 				};
 			});
+		},
+
+		createCssPlugin: function(define) {
+			console.debug('Creating plugin for loading css');
+
+			define('css', this.bind(function() {
+				return {
+					load: this.bind(function(name, req, onload, options) {
+						var url = options.baseUrl + name + '.css';
+
+						console.debug('Received css load exec for', name);
+
+						// Загружаем css в основной документ через iframe чтоб файл закешировался 
+						// и мы могли получить событие `onload`, а затем вставляем файл через 
+						// обычный `link` и вызываем `require.js` хендлер `onload` сообщающий о 
+						// завершении загрузки.
+						this.createFrame(url, function(iframe) {
+							console.debug('frame with css is loaded. Appending link and removing frame');
+
+							// Создаем тег `link`.
+							var link = window.document.createElement('link');
+
+							// Выставляем необходимые атрибуты.
+							link.rel = 'stylesheet';
+							link.type = 'text/css';
+							link.href = url;
+
+							// Вставляем тег `link` в DOM.
+							window.document.body.appendChild(link);
+
+							// Удаляем фрейм, так как он больше не нужен.
+							iframe.parentNode.removeChild(iframe);
+
+							// Вызываем метод `onload` символизирующий окончание загрузки.
+							onload({
+								cssLink: link
+							});
+						});
+					}, this)
+				};
+			}, this));
 		},
 
 		bind: function(fn, context) {
