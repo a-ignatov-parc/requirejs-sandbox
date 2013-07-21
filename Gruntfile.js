@@ -14,13 +14,13 @@ var fs = require('fs'),
 		},
 		watch: {
 			styles: {
-				files: [pkg.stylusPath + 'app.styl', pkg.stylusPath + '**/*.styl'],
+				files: pkg.stylusPath + 'main.styl',
 				tasks: ['stylus:dev']
 			}
 		},
 		stylus: {
 			dev: {
-				src: pkg.stylusPath + 'app.styl',
+				src: pkg.stylusPath + 'main.styl',
 				dest: pkg.cssPath + 'main.css',
 				options: {
 					firebug: true,
@@ -29,10 +29,9 @@ var fs = require('fs'),
 				}
 			},
 			prod: {
-				src: pkg.stylusPath + 'app.styl',
+				src: pkg.stylusPath + 'main.styl',
 				dest: pkg.cssPath + 'main.min.css',
 				options: {
-					includecss: true,
 					urlfunc: 'embedurl'
 				}
 			}
