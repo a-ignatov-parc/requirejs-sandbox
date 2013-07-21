@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.4-23 (build date: 21/07/2013)
+ * requrejs-sandbox - v0.1.4-32 (build date: 21/07/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Module for requre.js to create sandbox enviroment to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -23,13 +23,31 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			// Создаем свойства класса.
 			this.iframe = null;
 			this.sandbox = null;
+
+			// Создаем api объект песочницы.
+			// Список доступных статусов:
+			// 
+			// * `-1` – Песочница не создана.
+			// 
+			// * `0` – Песочница создана с ошибкой. Дальнейшая работа с такой песочницей не 
+			// возможна.
+			// 
+			// * `1` – Песочница создана без ошибок.
 			this.api = {
 				name: this.options.name,
 				require: null,
+				status: -1,
 				destroy: this.bind(function() {
 					this.sandbox = null;
 					this.iframe.parentNode.removeChild(this.iframe);
 					this.iframe = null;
+
+					// Рекурсивно удаляем свойства api песочницы.
+					for (var key in this.api) {
+						if (this.api.hasOwnProperty(key)) {
+							delete this.api[key];
+						}
+					}
 				}, this)
 			};
 
@@ -151,6 +169,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			var loadHandler = function(window) {
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = window.require;
+					this.api.status = 1;
 
 					console.debug('require.js has loaded! Configuring...');
 
@@ -166,7 +185,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
 					if (typeof(this.options.callback) === 'function') {
-						this.options.callback(window.require);
+						this.options.callback.call(this.api, window.require);
 					}
 				};
 
@@ -175,17 +194,22 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					main: this.options.requireMain
 				}, this.bind(loadHandler, this));
 			} else {
-				// Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
+				// [TODO] Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
 				// модуль.
 				// 
 				// Нужно для юзкейса, когда в странице куда встраивается виджет нет ни `require.js`
 				// ни пользователю не охото заморачиваться с ссылкам, но зато он может собрать 
 				// модуль с встроенным `require.js`.
 				// 
-				// code here...
-				// 
-				// А пока ничего не реализовано выкидываем ошибку
-				throw 'Unable to create loader';
+				// А пока ничего не реализовано вызываем колбек без передеча ссылки на require.
+				// Если колбек не объявлен, то выкидываем ошибку.
+				this.api.status = 0;
+
+				if (typeof(this.options.callback) === 'function') {
+					this.options.callback.call(this.api);
+				} else {
+					throw 'Unable to alocate require.js. Creating sandbox failed!';
+				}
 			}
 			console.debug('Creating loader inside specified target:', target);
 		},
@@ -278,15 +302,15 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 	return {
 		get: function(name) {
-			if (createdSandboxes[name]) {
-				return createdSandboxes[name];
-			}
+			return createdSandboxes[name];
 		},
 		set: function(name, params) {
 			var sandbox;
 
 			if (typeof(name) === 'string' && typeof(params) === 'object') {
-				if (sandbox = this.get(name)) {
+				sandbox = this.get(name);
+
+				if (sandbox && sandbox.status) {
 					console.warn('Sandbox with name: ' + name + ' already exist! Returning existed sandbox.', sandbox);
 					return sandbox;
 				}
@@ -300,6 +324,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 			if (sandbox) {
 				sandbox.destroy();
+				delete createdSandboxes[name];
 			}
 		}
 	};
