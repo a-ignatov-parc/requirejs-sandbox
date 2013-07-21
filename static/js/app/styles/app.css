@@ -1,0 +1,9 @@
+.b-workspace {
+	width: 30px;
+	height: 30px;
+	font-size: 12px;
+	line-height: 30px;
+	text-align: center;
+	background: #ccc;
+	margin: 10px;
+}
