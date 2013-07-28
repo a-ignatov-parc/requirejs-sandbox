@@ -1,7 +1,7 @@
 {
 	"name": "requrejs-sandbox",
 	"description": "Module for requre.js to create sandbox enviroment to run dedicated apps",
-	"version": "0.1.4-32",
+	"version": "0.1.4-69",
 	"author": "Anton Ignatov",
 	"url": "https://github.com/a-ignatov-parc/requirejs-sandbox",
 	"main": "./src/requirejs-sandbox.js",

@@ -105,8 +105,11 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 				document.onreadystatechange = (function(originalHandler) {
 					return function() {
-						var returnData = originalHandler.apply(this, arguments);
+						var returnData;
 
+						if (typeof(originalHandler) === 'function') {
+							returnData = originalHandler.apply(this, arguments);
+						}
 						readyStateHandler.apply(this, arguments);
 						return returnData;
 					};
@@ -242,36 +245,46 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			define('css', this.bind(function() {
 				return {
 					load: this.bind(function(name, req, onload, options) {
-						var url = options.baseUrl + name + '.css';
-
 						console.debug('Received css load exec for', name);
 
-						// Загружаем css в основной документ через iframe чтоб файл закешировался 
-						// и мы могли получить событие `onload`, а затем вставляем файл через 
-						// обычный `link` и вызываем `require.js` хендлер `onload` сообщающий о 
-						// завершении загрузки.
-						this.createFrame(url, function(iframe) {
-							console.debug('frame with css is loaded. Appending link and removing frame');
+						var url = options.baseUrl + name + '.css',
+							link = window.document.createElement('link'),
+							loader = window.document.createElement('img');
 
-							// Создаем тег `link`.
-							var link = window.document.createElement('link');
+						// Устанавливаем необходимые атрибуты.
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
 
-							// Устанавливаем необходимые атрибуты.
-							link.rel = 'stylesheet';
-							link.type = 'text/css';
+						// Проверяем поддерживает браузер событие `onload` на теге `link`.
+						// Если поддерживает, то дело в шляпе. Если же нет, то используем хак пытаясь 
+						if ('onload' in link) {
+							link.onload = function() {
+								onload({
+									cssLink: link
+								});
+							};
 							link.href = url;
 
 							// Вставляем тег `link` в DOM.
 							window.document.body.appendChild(link);
+						} else {
+							loader.onerror = function() {
+								// В момент, когда вызовется обработчик ошибки файл уже будет 
+								// загружен и закеширован, поэтому вставяем в линк урл.
+								link.href = url;
 
-							// Удаляем фрейм, так как он больше не нужен.
-							iframe.parentNode.removeChild(iframe);
+								// Вставляем тег `link` в DOM.
+								window.document.body.appendChild(link);
 
-							// Вызываем метод `onload` символизирующий окончание загрузки.
-							onload({
-								cssLink: link
-							});
-						});
+								// Вызываем обработчик загруки модуля.
+								onload({
+									cssLink: link
+								});
+							};
+
+							// Выставляем урл для начала загрузки.
+							loader.src = url;
+						}
 					}, this)
 				};
 			}, this));

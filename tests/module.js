@@ -76,5 +76,23 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 				});
 			}
 		});
+
+		requrejsSandbox.set('AppTest', {
+			requireUrl: '../static/js/libs/require.min.js',
+			requireConfig: {
+				baseUrl: 'module'
+			},
+			callback: function(require) {
+				require(['css!style1', 'css!style2'], function(style1, style2) {
+					test('css loading test', function() {
+						equal(typeof(style1), 'object', 'Returned module object is not object');
+						notEqual(style1.cssLink, null, 'Link to style DOM element was not found');
+						equal(style1.cssLink.getAttribute('href'), 'module/style1.css', 'Link tag has wrong href value');
+						equal(window.getComputedStyle(document.body).position, 'relative', 'Loaded styles was not applied before callback');
+						equal(window.getComputedStyle(document.body).zIndex, 1, 'Loaded styles was not applied before callback');
+					});
+				});
+			}
+		});
 	});
 });
