@@ -8,6 +8,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
 			this.options = utils.extend({
+				debug: false,
 				requireUrl: null,
 				requireMain: null,
 				requireConfig: {}
@@ -166,6 +167,11 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = window.require;
 					this.api.status = 1;
+
+					// В режиме дебага добавляем в апи песочницы ссылку на `window`.
+					if (this.options.debug) {
+						this.api.sandbox = window;
+					}
 
 					console.debug('require.js has loaded! Configuring...');
 

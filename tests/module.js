@@ -78,18 +78,32 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 		});
 
 		requrejsSandbox.set('AppTest', {
+			debug: true,
 			requireUrl: '../static/js/libs/require.min.js',
 			requireConfig: {
 				baseUrl: 'module'
 			},
 			callback: function(require) {
-				require(['css!style1', 'css!style2'], function(style1, style2) {
+				var sandboxApi = this;
+
+				require(['css!style1', 'css!style2', 'view'], function(style1, style2, AppView) {
 					test('css loading test', function() {
 						equal(typeof(style1), 'object', 'Returned module object is not object');
 						notEqual(style1.cssLink, null, 'Link to style DOM element was not found');
 						equal(style1.cssLink.getAttribute('href'), 'module/style1.css', 'Link tag has wrong href value');
 						equal(window.getComputedStyle(document.body).position, 'relative', 'Loaded styles was not applied before callback');
 						equal(window.getComputedStyle(document.body).zIndex, 1, 'Loaded styles was not applied before callback');
+					});
+
+					test('loading and executing code in sandbox', function() {
+						var instance = new AppView;
+
+						equal(typeof(AppView), 'function', 'Loaded app has not returned constructor');
+						equal(typeof(instance), 'object', 'App has wrong instance');
+						equal(instance.localVar, 'variable', 'App attr has wrong value');
+						equal(instance.globalVar, null, 'App has attr when it should be global variable');
+						equal(window.globalVar, null, 'App global variable scoped to main window object');
+						equal(sandboxApi.sandbox.globalVar, 'variable', 'App global variable has not scoped to sandbox window object');
 					});
 				});
 			}
