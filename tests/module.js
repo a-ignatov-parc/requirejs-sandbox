@@ -103,7 +103,28 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 						equal(instance.localVar, 'variable', 'App attr has wrong value');
 						equal(instance.globalVar, null, 'App has attr when it should be global variable');
 						equal(window.globalVar, null, 'App global variable scoped to main window object');
-						equal(sandboxApi.sandbox.globalVar, 'variable', 'App global variable has not scoped to sandbox window object');
+						equal(sandboxApi.sandboxManager.sandbox.globalVar, 'variable', 'App global variable has not scoped to sandbox window object');
+					});
+
+					test('resoving url to file by it\'s name', function() {
+						var options = {
+								baseUrl: 'app/static/js',
+								paths: {
+									'css': '../../styles/css',
+									'backbone': '../libs/backbone',
+									'jquery': '../libs/jquery/jquery.min'
+								}
+							};
+
+						equal(typeof(sandboxApi.sandboxManager), 'object', 'Can not find link to sandbox manager');
+						equal(typeof(sandboxApi.sandboxManager.nameToUrl), 'function', 'Can not find nameToUrl method in sandbox manager');
+						equal(sandboxApi.sandboxManager.nameToUrl('main', options), 'app/static/js/main', 'Wrong url resoving');
+						equal(sandboxApi.sandboxManager.nameToUrl('view/main', options), 'app/static/js/view/main', 'Wrong url resoving');
+						equal(sandboxApi.sandboxManager.nameToUrl('styles/main', options), 'app/static/js/styles/main', 'Wrong url resoving');
+						equal(sandboxApi.sandboxManager.nameToUrl('css/main', options), 'app/styles/css/main', 'Wrong url resoving');
+						equal(sandboxApi.sandboxManager.nameToUrl('jquery', options), 'app/static/libs/jquery/jquery.min', 'Wrong url resoving');
+						equal(sandboxApi.sandboxManager.nameToUrl('backbone', options), 'app/static/libs/backbone', 'Wrong url resoving');
+						equal(sandboxApi.sandboxManager.nameToUrl('backbone/backbone.min', options), 'app/static/libs/backbone/backbone.min', 'Wrong url resoving');
 					});
 				});
 			}

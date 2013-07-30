@@ -168,9 +168,9 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					this.api.require = window.require;
 					this.api.status = 1;
 
-					// В режиме дебага добавляем в апи песочницы ссылку на `window`.
+					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
 					if (this.options.debug) {
-						this.api.sandbox = window;
+						this.api.sandboxManager = this;
 					}
 
 					console.debug('require.js has loaded! Configuring...');
@@ -269,7 +269,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 						} else {
 							baseUrlArr.push(pathArr[i]);
 						}
-					};
+					}
 					break;
 				}
 			}

@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.4-88 (build date: 30/07/2013)
+ * requrejs-sandbox - v0.1.4-93 (build date: 31/07/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Module for requre.js to create sandbox enviroment to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -175,9 +175,9 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					this.api.require = window.require;
 					this.api.status = 1;
 
-					// В режиме дебага добавляем в апи песочницы ссылку на `window`.
+					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
 					if (this.options.debug) {
-						this.api.sandbox = window;
+						this.api.sandboxManager = this;
 					}
 
 					console.debug('require.js has loaded! Configuring...');
@@ -276,7 +276,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 						} else {
 							baseUrlArr.push(pathArr[i]);
 						}
-					};
+					}
 					break;
 				}
 			}
