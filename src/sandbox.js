@@ -245,6 +245,41 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			});
 		},
 
+		// Метод, который преобразует имя модуля в путь с учетом колекции `path` из конфига 
+		// `require.js`.
+		nameToUrl: function(name, options) {
+			options || (options = this.options.requireConfig);
+
+			var paths = options.paths,
+				baseUrlArr = options.baseUrl.split('/'),
+				pathArr;
+
+			if (!baseUrlArr[baseUrlArr.length - 1]) {
+				baseUrlArr.pop();
+			}
+
+			for (var path in paths) {
+				if (paths.hasOwnProperty(path) && !name.indexOf(path)) {
+					name = name.replace(path, '').substr(1);
+					pathArr = paths[path].split('/');
+
+					for (var i = 0, length = pathArr.length; i < length; i++) {
+						if (pathArr[i] == '..') {
+							baseUrlArr.pop();
+						} else {
+							baseUrlArr.push(pathArr[i]);
+						}
+					};
+					break;
+				}
+			}
+
+			if (name) {
+				baseUrlArr.push(name);
+			}
+			return baseUrlArr.join('/');
+		},
+
 		createCssPlugin: function(define) {
 			console.debug('Creating plugin for loading css');
 
@@ -253,7 +288,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					load: this.bind(function(name, req, onload, options) {
 						console.debug('Received css load exec for', name);
 
-						var url = options.baseUrl + name + '.css',
+						var url = this.nameToUrl(name, options) + '.css',
 							link = window.document.createElement('link'),
 							loader = window.document.createElement('img');
 
