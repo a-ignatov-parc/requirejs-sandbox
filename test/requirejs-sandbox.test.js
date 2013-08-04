@@ -101,7 +101,7 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 			debug: true,
 			requireUrl: '../static/js/libs/require.min.js',
 			requireConfig: {
-				baseUrl: 'module',
+				baseUrl: 'app',
 				paths: {
 					'configTest': 'submodule',
 					'jquery': '../../static/js/libs/jquery/jquery.min'
@@ -137,7 +137,7 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 					test('css loading test', function() {
 						equal(typeof(style1), 'object', 'Returned module object is not object');
 						notEqual(style1.cssLink, null, 'Link to style DOM element was not found');
-						equal(style1.cssLink.getAttribute('href'), pathName + 'module/style1.css', 'Link tag has wrong href value');
+						equal(style1.cssLink.getAttribute('href'), pathName + 'app/style1.css', 'Link tag has wrong href value');
 						equal(window.getComputedStyle(document.body).position, 'relative', 'Loaded styles was not applied before callback');
 						equal(window.getComputedStyle(document.body).zIndex, 1, 'Loaded styles was not applied before callback');
 					});
@@ -165,7 +165,7 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 		requrejsSandbox.set('TransitsTest', {
 			requireUrl: '../static/js/libs/require.min.js',
 			requireConfig: {
-				baseUrl: 'module',
+				baseUrl: 'app',
 				paths: {
 					'jquery': '../../static/js/libs/jquery/jquery.min'
 				}
@@ -205,7 +205,7 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 			debug: true,
 			requireUrl: '../static/js/libs/require.min.js',
 			requireConfig: {
-				baseUrl: 'module',
+				baseUrl: 'app',
 				paths: {
 					'jquery': '../../static/js/libs/jquery/jquery.min',
 					'mootools': 'libs/mootools.min'

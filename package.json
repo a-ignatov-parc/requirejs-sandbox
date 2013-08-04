@@ -1,15 +1,20 @@
 {
 	"name": "requrejs-sandbox",
-	"description": "Module for requre.js to create sandbox enviroment to run dedicated apps",
-	"version": "0.1.4-105",
-	"author": "Anton Ignatov",
+	"description": "Sandbox manager for requre.js to run dedicated apps",
+	"version": "0.1.4-106",
+	"author": {
+		"name": "Anton Ignatov",
+		"web": "https://github.com/a-ignatov-parc"
+	},
 	"url": "https://github.com/a-ignatov-parc/requirejs-sandbox",
+	"bugs": "https://github.com/a-ignatov-parc/requirejs-sandbox/issues",
 	"main": "./src/requirejs-sandbox.js",
 	"keywords": [
 		"requirejs",
 		"client",
 		"browser",
 		"sandbox",
+		"manager",
 		"app"
 	],
 	"licenses": [
@@ -22,8 +27,13 @@
 		"type": "git",
 		"url": "https://github.com/a-ignatov-parc/requirejs-sandbox.git"
 	},
+	"scripts": {
+		"test": "node test/node-index.js",
+		"build": "grunt compile"
+	},
 	"dependencies": {},
 	"devDependencies": {
+		"qunit": "0.5.x",
 		"grunt": "0.4.x",
 		"grunt-contrib-concat": "0.3.x",
 		"grunt-contrib-jshint": "0.6.x",
@@ -34,7 +44,7 @@
 		"grunt-bumpup": "0.2.x"
 	},
 	"srcPath": "src/",
-	"testPath": "tests/",
+	"testPath": "test/",
 	"buildPath": "build/",
 	"cssPath": "static/styles/css/",
 	"stylusPath": "static/styles/stylus/"
