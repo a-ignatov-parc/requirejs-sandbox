@@ -112,6 +112,7 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
+	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify:module', 'concat:dev', 'qunit']);
 	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev']);
-	grunt.registerTask('compile', ['jshint', 'qunit', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev', 'qunit']);
 };

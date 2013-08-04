@@ -28,7 +28,7 @@
 		"url": "https://github.com/a-ignatov-parc/requirejs-sandbox.git"
 	},
 	"scripts": {
-		"test": "grunt tests --verbose",
+		"test": "grunt travis --verbose",
 		"build": "grunt compile"
 	},
 	"dependencies": {},
