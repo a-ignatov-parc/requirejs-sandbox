@@ -58,6 +58,9 @@ var fs = require('fs'),
 				}
 			}
 		},
+		qunit: {
+			files: [pkg.testPath + '**/*.html']
+		},
 		jshint: {
 			lint: pkg.srcPath + '**/*.js',
 			options: {
@@ -94,7 +97,7 @@ module.exports = function(grunt) {
 	// Подключаем таски
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	// grunt.loadNpmTasks('grunt-contrib-qunit');
+	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
@@ -108,5 +111,7 @@ module.exports = function(grunt) {
 
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev']);
+	grunt.registerTask('tests', 'qunit');
+	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev']);
+	grunt.registerTask('compile', ['jshint', 'qunit', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev']);
 };

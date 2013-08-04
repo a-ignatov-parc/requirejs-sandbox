@@ -8,6 +8,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
 			this.options = utils.extend({
+				debug: false,
 				requireUrl: null,
 				requireMain: null,
 				requireConfig: {}
@@ -16,13 +17,32 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			// Создаем свойства класса.
 			this.iframe = null;
 			this.sandbox = null;
+
+			// Создаем api объект песочницы.
+			// Список доступных статусов:
+			// 
+			// * `-1` – Песочница не создана.
+			// 
+			// * `0` – Песочница создана с ошибкой. Дальнейшая работа с такой песочницей не 
+			// возможна.
+			// 
+			// * `1` – Песочница создана без ошибок.
 			this.api = {
 				name: this.options.name,
 				require: null,
+				define: null,
+				status: -1,
 				destroy: this.bind(function() {
 					this.sandbox = null;
 					this.iframe.parentNode.removeChild(this.iframe);
 					this.iframe = null;
+
+					// Рекурсивно удаляем свойства api песочницы.
+					for (var key in this.api) {
+						if (this.api.hasOwnProperty(key)) {
+							delete this.api[key];
+						}
+					}
 				}, this)
 			};
 
@@ -30,7 +50,6 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
 				this.createLoader(sandbox);
 			});
-
 			return this.api;
 		};
 
@@ -53,7 +72,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 		},
 
 		createFrame: function(src, callback) {
-			var iframe = null,
+			var iframe = document.createElement('iframe'),
 				readyStateHandler = function() {
 					if (document.readyState === 'complete') {
 						console.debug('DOM is ready. Appending iframe');
@@ -69,7 +88,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					}
 				};
 
-			iframe = document.createElement('iframe');
+			// Устанавливаем необходимые атрибуты.
 			iframe.style.display = 'none';
 			iframe.src = src || 'javascript:0';
 			iframe.tabIndex = -1;
@@ -88,8 +107,11 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 				document.onreadystatechange = (function(originalHandler) {
 					return function() {
-						var returnData = originalHandler.apply(this, arguments);
+						var returnData;
 
+						if (typeof(originalHandler) === 'function') {
+							returnData = originalHandler.apply(this, arguments);
+						}
 						readyStateHandler.apply(this, arguments);
 						return returnData;
 					};
@@ -145,6 +167,13 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			var loadHandler = function(window) {
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = window.require;
+					this.api.define = window.define;
+					this.api.status = 1;
+
+					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
+					if (this.options.debug) {
+						this.api.sandboxManager = this;
+					}
 
 					console.debug('require.js has loaded! Configuring...');
 
@@ -160,7 +189,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
 					if (typeof(this.options.callback) === 'function') {
-						this.options.callback(window.require);
+						this.options.callback.call(this.api, window.require, window.define);
 					}
 				};
 
@@ -169,17 +198,22 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					main: this.options.requireMain
 				}, this.bind(loadHandler, this));
 			} else {
-				// Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
+				// [TODO] Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
 				// модуль.
 				// 
 				// Нужно для юзкейса, когда в странице куда встраивается виджет нет ни `require.js`
 				// ни пользователю не охото заморачиваться с ссылкам, но зато он может собрать 
 				// модуль с встроенным `require.js`.
 				// 
-				// code here...
-				// 
-				// А пока ничего не реализовано выкидываем ошибку
-				throw 'Unable to create loader';
+				// А пока ничего не реализовано вызываем колбек без передеча ссылки на require.
+				// Если колбек не объявлен, то выкидываем ошибку.
+				this.api.status = 0;
+
+				if (typeof(this.options.callback) === 'function') {
+					this.options.callback.call(this.api);
+				} else {
+					throw 'Unable to alocate require.js. Creating sandbox failed!';
+				}
 			}
 			console.debug('Creating loader inside specified target:', target);
 		},
@@ -197,8 +231,6 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 						// Загружаем модуль и если транзит для этого модуля существует, то делаем 
 						// патч.
 						req([name], function(module) {
-							onload(module);
-
 							// Если транзит для данного модуля существует, то инициализируем его.
 							if (transits[name]) {
 								try {
@@ -207,10 +239,50 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 									console.error(e);
 								}
 							}
+
+							// После инициализации транзита, если он был найден, вызываем 
+							// обработчик `require.js` `onload`, который обозначает завершение 
+							// работ плугина.
+							onload(module);
 						});
 					}
 				};
 			});
+		},
+
+		// Метод, который преобразует имя модуля в путь с учетом колекции `path` из конфига 
+		// `require.js`.
+		nameToUrl: function(name, options) {
+			options || (options = this.options.requireConfig);
+
+			var paths = options.paths,
+				baseUrlArr = options.baseUrl.split('/'),
+				pathArr;
+
+			if (!baseUrlArr[baseUrlArr.length - 1]) {
+				baseUrlArr.pop();
+			}
+
+			for (var path in paths) {
+				if (paths.hasOwnProperty(path) && !name.indexOf(path)) {
+					name = name.replace(path, '').substr(1);
+					pathArr = paths[path].split('/');
+
+					for (var i = 0, length = pathArr.length; i < length; i++) {
+						if (pathArr[i] == '..') {
+							baseUrlArr.pop();
+						} else {
+							baseUrlArr.push(pathArr[i]);
+						}
+					}
+					break;
+				}
+			}
+
+			if (name) {
+				baseUrlArr.push(name);
+			}
+			return baseUrlArr.join('/');
 		},
 
 		createCssPlugin: function(define) {
@@ -219,36 +291,46 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			define('css', this.bind(function() {
 				return {
 					load: this.bind(function(name, req, onload, options) {
-						var url = options.baseUrl + name + '.css';
-
 						console.debug('Received css load exec for', name);
 
-						// Загружаем css в основной документ через iframe чтоб файл закешировался 
-						// и мы могли получить событие `onload`, а затем вставляем файл через 
-						// обычный `link` и вызываем `require.js` хендлер `onload` сообщающий о 
-						// завершении загрузки.
-						this.createFrame(url, function(iframe) {
-							console.debug('frame with css is loaded. Appending link and removing frame');
+						var url = this.nameToUrl(name, options) + '.css',
+							link = window.document.createElement('link'),
+							loader = window.document.createElement('img');
 
-							// Создаем тег `link`.
-							var link = window.document.createElement('link');
+						// Устанавливаем необходимые атрибуты.
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
 
-							// Выставляем необходимые атрибуты.
-							link.rel = 'stylesheet';
-							link.type = 'text/css';
+						// Проверяем поддерживает браузер событие `onload` на теге `link`.
+						// Если поддерживает, то дело в шляпе. Если же нет, то используем хак пытаясь 
+						if ('onload' in link) {
+							link.onload = function() {
+								onload({
+									cssLink: link
+								});
+							};
 							link.href = url;
 
 							// Вставляем тег `link` в DOM.
 							window.document.body.appendChild(link);
+						} else {
+							loader.onerror = function() {
+								// В момент, когда вызовется обработчик ошибки файл уже будет 
+								// загружен и закеширован, поэтому вставяем в линк урл.
+								link.href = url;
 
-							// Удаляем фрейм, так как он больше не нужен.
-							iframe.parentNode.removeChild(iframe);
+								// Вставляем тег `link` в DOM.
+								window.document.body.appendChild(link);
 
-							// Вызываем метод `onload` символизирующий окончание загрузки.
-							onload({
-								cssLink: link
-							});
-						});
+								// Вызываем обработчик загруки модуля.
+								onload({
+									cssLink: link
+								});
+							};
+
+							// Выставляем урл для начала загрузки.
+							loader.src = url;
+						}
 					}, this)
 				};
 			}, this));
@@ -272,15 +354,15 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 	return {
 		get: function(name) {
-			if (createdSandboxes[name]) {
-				return createdSandboxes[name];
-			}
+			return createdSandboxes[name];
 		},
 		set: function(name, params) {
 			var sandbox;
 
 			if (typeof(name) === 'string' && typeof(params) === 'object') {
-				if (sandbox = this.get(name)) {
+				sandbox = this.get(name);
+
+				if (sandbox && sandbox.status) {
 					console.warn('Sandbox with name: ' + name + ' already exist! Returning existed sandbox.', sandbox);
 					return sandbox;
 				}
@@ -294,6 +376,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 			if (sandbox) {
 				sandbox.destroy();
+				delete createdSandboxes[name];
 			}
 		}
 	};
