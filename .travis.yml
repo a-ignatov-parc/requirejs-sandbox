@@ -1,4 +1,4 @@
-script: phantomjs testrunner.js
+script: phantomjs test/phantomjs-index.js
 branches:
   only:
     - master
