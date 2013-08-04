@@ -30,6 +30,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			this.api = {
 				name: this.options.name,
 				require: null,
+				define: null,
 				status: -1,
 				destroy: this.bind(function() {
 					this.sandbox = null;
@@ -166,6 +167,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			var loadHandler = function(window) {
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = window.require;
+					this.api.define = window.define;
 					this.api.status = 1;
 
 					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
@@ -187,7 +189,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
 					if (typeof(this.options.callback) === 'function') {
-						this.options.callback.call(this.api, window.require);
+						this.options.callback.call(this.api, window.require, window.define);
 					}
 				};
 
@@ -229,8 +231,6 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 						// Загружаем модуль и если транзит для этого модуля существует, то делаем 
 						// патч.
 						req([name], function(module) {
-							onload(module);
-
 							// Если транзит для данного модуля существует, то инициализируем его.
 							if (transits[name]) {
 								try {
@@ -239,6 +239,11 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 									console.error(e);
 								}
 							}
+
+							// После инициализации транзита, если он был найден, вызываем 
+							// обработчик `require.js` `onload`, который обозначает завершение 
+							// работ плугина.
+							onload(module);
 						});
 					}
 				};

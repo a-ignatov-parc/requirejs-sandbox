@@ -20,11 +20,12 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 			});
 
 			equal(typeof(sandbox), 'object', 'sandbox api has not been returned');
-			equal(Object.keys(sandbox).length, 4, 'sandbox api has wrong methods count');
+			equal(Object.keys(sandbox).length, 5, 'sandbox api has wrong methods count');
 			equal(sandbox.name, 'Test', 'sandbox has wrong name');
 			equal(typeof(sandbox.status), 'number', 'status property is not number');
 			strictEqual(sandbox.status, -1, 'sandbox has wrong status');
-			equal(sandbox.require, null, 'require.js function is defined before loaded');
+			equal(sandbox.require, null, '"require" function is defined before loaded');
+			equal(sandbox.define, null, '"define" function is defined before loaded');
 			equal(typeof(sandbox.destroy), 'function', 'destroy method is undefined');
 
 			var anotherSandbox = requrejsSandbox.set('Test', {});
@@ -35,15 +36,27 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 
 		var callbackTestSandbox = requrejsSandbox.set('CallbackTest', {
 			requireUrl: '../static/js/libs/require.min.js',
-			callback: function(require) {
+			callback: function(require, define) {
 				var self = this,
+					args = arguments,
 					context = callbackTestSandbox;
 
 				test('testing created sandbox', function() {
 					var sandbox;
 
 					equal(self, context, 'callback has wrong context');
-					equal(typeof(require), 'function', 'sandbox require.js is undefined');
+					equal(typeof(require), 'function', 'sandbox require.js "require" function is undefined');
+					equal(typeof(define), 'function', 'sandbox require.js "define" function is undefined');
+					equal(require, context.require, 'sandbox api "require" method is not equal to arguments "require" function');
+					equal(define, context.define, 'sandbox api "define" method is not equal to arguments "define" function');
+					equal(args.length, 2, 'sandbox callback function\'s arguments has wrong count');
+
+					equal(self.name, 'CallbackTest', 'sandbox has wrong name');
+					equal(typeof(self.status), 'number', 'status property is not number');
+					strictEqual(self.status, 1, 'sandbox has wrong status');
+					equal(typeof(self.require), 'function', '"require" method is not defined');
+					equal(typeof(self.define), 'function', '"define" method is not defined');
+					equal(typeof(self.destroy), 'function', 'destroy method is undefined');
 
 					self.destroy();
 					sandbox = requrejsSandbox.get(self.name);
@@ -56,14 +69,15 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 		});
 
 		var wrongTestSandbox = requrejsSandbox.set('WrongTest', {
-			callback: function(require) {
+			callback: function(require, define) {
 				var self = this;
 
 				test('creating sandbox without specifying requireUrl', function() {
 					var sandbox;
 
 					equal(self, wrongTestSandbox, 'callback has wrong context');
-					equal(typeof(require), 'undefined', 'require.js can\'t be created without specifying requireUrl');
+					equal(typeof(require), 'undefined', 'require.js function "require" can\'t be created without specifying requireUrl');
+					equal(typeof(define), 'undefined', 'require.js function "define" can\'t be created without specifying requireUrl');
 					equal(typeof(self), 'object', 'WrongTest can\'t be found');
 					strictEqual(self.status, 0, 'WrongTest has wrong status');
 
@@ -81,7 +95,11 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 			debug: true,
 			requireUrl: '../static/js/libs/require.min.js',
 			requireConfig: {
-				baseUrl: 'module'
+				baseUrl: 'module',
+				paths: {
+					'configTest': 'submodule',
+					'jquery': '../../static/js/libs/jquery/jquery.min'
+				}
 			},
 			callback: function(require) {
 				var sandboxApi = this;
@@ -107,7 +125,7 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 					equal(sandboxApi.sandboxManager.nameToUrl('backbone/backbone.min', options), 'app/static/libs/backbone/backbone.min', 'Wrong url resoving');
 				});
 
-				require(['css!style1', 'css!style2', 'view'], function(style1, style2, AppView) {
+				require(['css!style1', 'css!style2', 'view', 'configTest/view', 'jquery'], function(style1, style2, AppView, subView, $) {
 					test('css loading test', function() {
 						equal(typeof(style1), 'object', 'Returned module object is not object');
 						notEqual(style1.cssLink, null, 'Link to style DOM element was not found');
@@ -125,6 +143,76 @@ asyncTest('loading requirejs-sandbox module', 1, function() {
 						equal(instance.globalVar, null, 'App has attr when it should be global variable');
 						equal(window.globalVar, null, 'App global variable scoped to main window object');
 						equal(sandboxApi.sandboxManager.sandbox.globalVar, 'variable', 'App global variable has not scoped to sandbox window object');
+					});
+
+					test('configuring sandbox require with requireConfig', function() {
+						equal(typeof(subView), 'object', 'Returned module\'s object from sub folder is not object');
+						equal(subView.var, 1, 'Returned module\'s object from sub folder has wrong content');
+						equal(typeof($), 'function', 'Returned jQuery instance is not function');
+					});
+				});
+			}
+		});
+
+		requrejsSandbox.set('TransitsTest', {
+			requireUrl: '../static/js/libs/require.min.js',
+			requireConfig: {
+				baseUrl: 'module',
+				paths: {
+					'jquery': '../../static/js/libs/jquery/jquery.min'
+				}
+			},
+			callback: function(require) {
+				var qunitEl = document.getElementById('qunit');
+
+				require(['jquery'], function($) {
+					test('testing jQuery without transits', function() {
+						equal(typeof($), 'function', 'Returned jQuery instance is not function');
+						equal($('#qunit').length, 0, 'jQuery has wrong searching scope. There is no element with id "qunit" in sandbox');
+					});
+				});
+
+				require(['transit!jquery'], function($) {
+					test('testing jQuery with transits', function() {
+						equal(typeof($), 'function', 'Returned jQuery instance is not function');
+						equal($('#qunit').length, 1, 'jQuery has wrong searching scope. There is element with id "qunit" in main page');
+						equal($('#qunit')[0], qunitEl, '"qunitEl" should be equal to jQuery result');
+						equal($('#qunit').is(':visible'), true, 'jQuery transit has wrong "getComputedStyle" in sandbox. Element with id "qunit" is visible in main page');
+
+						$('#qunit').addClass('transit-test');
+
+						equal($('#qunit')[0].className, qunitEl.className, '"qunitEl" className should be equal to jQuery\'s result className');
+						equal($('#qunit').hasClass('transit-test'), true, 'jQuery transit has wrong "getComputedStyle" in sandbox. Element with id "qunit" has className "transit-test" in main page');
+
+						$('#qunit').removeClass('transit-test');
+
+						equal($('#qunit').hasClass('transit-test'), false, 'jQuery transit has wrong "getComputedStyle" in sandbox. Element with id "qunit" has no className "transit-test" in main page');
+						equal(typeof(window.$), 'undefined', 'There should be no jQuery methods in mainpage "window" object');
+					});
+				});
+			}
+		});
+
+		requrejsSandbox.set('MootoolsTest', {
+			debug: true,
+			requireUrl: '../static/js/libs/require.min.js',
+			requireConfig: {
+				baseUrl: 'module',
+				paths: {
+					'jquery': '../../static/js/libs/jquery/jquery.min',
+					'mootools': 'libs/mootools.min'
+				},
+				shim: {
+					mootools: {
+						exports: '$$'
+					}
+				}
+			},
+			callback: function(require) {
+				require(['mootools', 'transit!jquery'], function(moo, $) {
+					test('mootools tests', function() {
+						equal(moo('#qunit').length, 0, 'Mootools has wrong searching scope. There is no element with id "qunit" in sandbox');
+						equal(typeof(window.$$), 'undefined', 'There should be no mootols methods in mainpage "window" object');
 					});
 				});
 			}
