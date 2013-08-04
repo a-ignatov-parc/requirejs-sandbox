@@ -6,7 +6,7 @@ qunit.run({
 		path: pkg.main,
 		namespace: pkg.name
 	},
-	tests: ['mylib.test.js'].map(function (v) {
-		return './test/' + v;
+	tests: ['requirejs-sandbox.test.js'].map(function (testFile) {
+		return './' + pkg.testPath + testFile;
 	})
 });
