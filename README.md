@@ -1,4 +1,15 @@
-requirejs-sandbox
-=================
+# Description
 
-Require.js powered with Marrow
+[require.js](http://requirejs.org/) powered with multiple app sandbox.
+
+# Demos
+
+Soon…
+
+# Use cases
+
+Soon…
+
+# Options
+
+Soon…
