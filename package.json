@@ -28,12 +28,12 @@
 		"url": "https://github.com/a-ignatov-parc/requirejs-sandbox.git"
 	},
 	"scripts": {
-		"test": "node test/node-index.js",
+		"test": "phantomjs test/phantomjs-index.js",
 		"build": "grunt compile"
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"qunit": "0.5.x",
+		"phantomjs": "*"
 		"grunt": "0.4.x",
 		"grunt-contrib-concat": "0.3.x",
 		"grunt-contrib-jshint": "0.6.x",
