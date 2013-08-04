@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>requrejs-sandbox demo</title>
+		<link rel="stylesheet" type="text/css" href="../../static/styles/css/main.css">
+		<script src="../../static/js/libs/require.min.js"></script>
+		<script src="../../build/requirejs-sandbox.min.js"></script>
+		<script>
+			requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
+				var jQueryCollection = ['1.6.4', '1.7.2', '1.8.3', '1.9.1', '2.0.2'],
+					count = jQueryCollection.length,
+					renderBlock = function(name, $) {
+						if ($) {
+							$('<li class="b-jquery-block b-jquery-block--jquery' + version + '">Rendered from: <span class="b-code">' + name + '</span> <br/>jQuery version: <span class="b-code">' + $.fn.jquery + '</span></li>').appendTo('.b-jquery');
+						} else {
+							var el = document.createElement('li'),
+								$ = {
+									fn: {}
+								};
+
+							el.className = 'b-jquery-block';
+							el.innerHTML = 'Rendered from: <span class="b-code">' + name + '</span> <br/>jQuery version: <span class="b-code">' + $.fn.jquery + '</span>';
+							document.getElementById('container').appendChild(el);
+						}
+
+						if (!--count) {
+							renderBlock('window', window.$ || window.jQuery);
+						}
+					};
+
+				for (var i = 0, length = jQueryCollection.length; i < length; i++) {
+					var version = jQueryCollection[i];
+
+					requrejsSandbox.set('sandbox' + version, {
+						requireUrl: '../../static/js/libs/require.min.js',
+						requireConfig: {
+							baseUrl: 'app',
+							paths: {
+								'jquery': 'libs/jquery-' + version + '.min'
+							},
+							shim: {
+								jquery: {
+									exports: '$'
+								}
+							}
+						},
+						callback: function(require) {
+							var sandbox = this;
+
+							require(['transit!jquery'], function($) {
+								renderBlock(sandbox.name, $);
+							});
+						}
+					});
+				};
+			});
+		</script>
+	</head>
+	<body>
+		<div class="b-content">
+			<ul id="container" class="b-jquery"></ul>
+		</div>
+	</body>
+</html>

@@ -1,10 +1,11 @@
 // Конфигурируем require
 require.config({
-	baseUrl: '../static/js/app',
+	baseUrl: 'app',
 	paths: {
-		'backbone': '../libs/backbone',
-		'jquery': '../libs/jquery/jquery.min',
-		'underscore': '../libs/underscore.min'
+		'css': '../../../static/styles/css',
+		'backbone': '../../../static/js/libs/backbone',
+		'jquery': '../../../static/js/libs/jquery/jquery.min',
+		'underscore': '../../../static/js/libs/underscore.min'
 	},
 	shim: {
 		underscore: {
