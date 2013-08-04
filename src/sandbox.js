@@ -256,8 +256,12 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			options || (options = this.options.requireConfig);
 
 			var paths = options.paths,
+				pathNameArr = location.pathname.split('/'),
 				baseUrlArr = options.baseUrl.split('/'),
 				pathArr;
+
+			pathNameArr.pop();
+			baseUrlArr = pathNameArr.concat(baseUrlArr);
 
 			if (!baseUrlArr[baseUrlArr.length - 1]) {
 				baseUrlArr.pop();
