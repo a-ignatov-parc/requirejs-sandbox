@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.4-106 (build date: 04/08/2013)
+ * requrejs-sandbox - v0.1.4-109 (build date: 04/08/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for requre.js to run dedicated apps
  * Copyright (c) 2013 [object Object]
@@ -311,37 +311,23 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 						// Устанавливаем необходимые атрибуты.
 						link.rel = 'stylesheet';
 						link.type = 'text/css';
+						link.href = url;
 
-						// Проверяем поддерживает браузер событие `onload` на теге `link`.
-						// Если поддерживает, то дело в шляпе. Если же нет, то используем хак пытаясь 
-						if ('onload' in link) {
-							link.onload = function() {
-								onload({
-									cssLink: link
-								});
-							};
-							link.href = url;
+						// Вставляем тег со стилями в тег `head`
+						document.getElementsByTagName('head')[0].appendChild(link);
 
-							// Вставляем тег `link` в DOM.
-							window.document.body.appendChild(link);
-						} else {
-							loader.onerror = function() {
-								// В момент, когда вызовется обработчик ошибки файл уже будет 
-								// загружен и закеширован, поэтому вставяем в линк урл.
-								link.href = url;
+						// Навешиваем событие на ошибку загрузки, так как изображаение выдаст это
+						// событие, когда загрузит указанный файл, что нам и нужно для определения 
+						// загрузились ли стили или нет.
+						loader.onerror = function() {
+							// Вызываем обработчик загруки модуля.
+							onload({
+								cssLink: link
+							});
+						};
 
-								// Вставляем тег `link` в DOM.
-								window.document.body.appendChild(link);
-
-								// Вызываем обработчик загруки модуля.
-								onload({
-									cssLink: link
-								});
-							};
-
-							// Выставляем урл для начала загрузки.
-							loader.src = url;
-						}
+						// Выставляем урл для начала загрузки.
+						loader.src = url;
 					}, this)
 				};
 			}, this));
