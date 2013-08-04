@@ -2,6 +2,10 @@
 
 [require.js](http://requirejs.org/) powered with multiple app sandbox.
 
+---
+
+[![Build Status](https://travis-ci.org/a-ignatov-parc/requirejs-sandbox.png?branch=master)](https://travis-ci.org/a-ignatov-parc/requirejs-sandbox)
+
 # Demos
 
 Список демо-экспериментов возможностей менеджера песочниц для `require.js`:
