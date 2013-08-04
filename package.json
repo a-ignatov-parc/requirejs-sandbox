@@ -44,7 +44,7 @@
 		"grunt-bumpup": "0.2.x"
 	},
 	"srcPath": "src/",
-	"testPath": "test/",
+	"testPath": "tests/",
 	"buildPath": "build/",
 	"cssPath": "static/styles/css/",
 	"stylusPath": "static/styles/stylus/"
