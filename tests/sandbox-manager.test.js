@@ -101,6 +101,18 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				equal(sandboxApi.sandboxManager.nameToUrl('backbone', options), pathName + 'app/static/libs/backbone', 'Wrong url resoving');
 				equal(sandboxApi.sandboxManager.nameToUrl('backbone/backbone.min', options), pathName + 'app/static/libs/backbone/backbone.min', 'Wrong url resoving');
 				equal(sandboxApi.sandboxManager.nameToUrl('underscore', options), pathName + 'libs/underscore', 'Wrong url resoving');
+
+				var options = {
+						baseUrl: '/static/app/',
+						paths: {
+							'css': '../styles/css',
+							'backbone': 'http://site.com/lib/backbone',
+						}
+					};
+
+				equal(sandboxApi.sandboxManager.nameToUrl('main', options), '/static/app/main', 'Wrong url resoving');
+				equal(sandboxApi.sandboxManager.nameToUrl('css/main', options), '/static/styles/css/main', 'Wrong url resoving');
+				equal(sandboxApi.sandboxManager.nameToUrl('backbone', options), 'http://site.com/lib/backbone', 'Wrong url resoving');
 			});
 		}
 	});
