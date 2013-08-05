@@ -4,6 +4,7 @@
 // методы в код модуля.
 define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'requirejs-sandbox/utils'], function(transits, console, utils) {
 	var createdSandboxes = {},
+		urlRegex = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/,
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
@@ -261,7 +262,10 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 				pathArr;
 
 			pathNameArr.pop();
-			baseUrlArr = pathNameArr.concat(baseUrlArr);
+
+			if (baseUrlArr[0] !== '') {
+				baseUrlArr = pathNameArr.concat(baseUrlArr);
+			}
 
 			if (!baseUrlArr[baseUrlArr.length - 1]) {
 				baseUrlArr.pop();
@@ -270,13 +274,18 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			for (var path in paths) {
 				if (paths.hasOwnProperty(path) && !name.indexOf(path)) {
 					name = name.replace(path, '').substr(1);
-					pathArr = paths[path].split('/');
 
-					for (var i = 0, length = pathArr.length; i < length; i++) {
-						if (pathArr[i] == '..') {
-							baseUrlArr.pop();
-						} else {
-							baseUrlArr.push(pathArr[i]);
+					if (urlRegex.test(paths[path])) {
+						baseUrlArr = [paths[path]];
+					} else {
+						pathArr = paths[path].split('/');
+
+						for (var i = 0, length = pathArr.length; i < length; i++) {
+							if (pathArr[i] == '..') {
+								baseUrlArr.pop();
+							} else {
+								baseUrlArr.push(pathArr[i]);
+							}
 						}
 					}
 					break;
