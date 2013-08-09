@@ -139,4 +139,26 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 			});
 		}
 	});
+
+	requrejsSandbox.set('DebugDataAttributeTest', {
+		debug: true,
+		requireMain: 'app/main',
+		requireUrl: '../static/js/libs/require.min.js',
+		callback: function(require, define) {
+			var sandboxApi = this,
+				scripts = sandboxApi.sandboxManager.sandbox.document.getElementsByTagName('script');
+
+			test('Creating sandbox with specifying requireMain', function() {
+				equal(scripts.length, 2, 'sandbox has different script tag count');
+				equal(scripts[1].getAttribute('data-main'), sandboxApi.sandboxManager.options.requireMain, 'require.js script tag has different data-main attribute');
+				stop();
+
+				setTimeout(function() {
+					equal(scripts.length, 3, 'sandbox has different script tag count');
+					equal(scripts[2].getAttribute('src'), sandboxApi.sandboxManager.options.requireMain + '.js', 'sandbox has different script tag count');
+					start();
+				}, 1000);
+			});
+		}
+	});
 });
