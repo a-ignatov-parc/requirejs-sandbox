@@ -60,10 +60,11 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 				// Сохраняем ссылку на песочницу.
 				this.iframe = iframe;
 
-				// Получаем и сохраняем ссылку на объект `window` в созданом `sandbox`
+				// Получаем и сохраняем ссылку на объект `window` в созданом `sandbox`.
 				this.sandbox = this.iframe.contentWindow;
 
-				// Добавляем пустой элемент `script` в `body` `iframe` для правильной работы загрузчика
+				// Добавляем пустой элемент `script` в `head` `iframe` для правильной работы 
+				// загрузчика.
 				this.createScript(this.sandbox);
 
 				if (typeof(callback) === 'function') {
@@ -160,7 +161,7 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 				}
 
 				// Вставляем тег `script` в DOM.
-				window.document.body.appendChild(script);
+				window.document.getElementsByTagName('head')[0].appendChild(script);
 			}
 		},
 
