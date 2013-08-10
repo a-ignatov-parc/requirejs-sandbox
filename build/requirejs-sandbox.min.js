@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.5-17 (build date: 10/08/2013)
+ * requrejs-sandbox - v0.1.5-18 (build date: 10/08/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for requre.js to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov

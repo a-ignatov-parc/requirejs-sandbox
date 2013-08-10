@@ -1,4 +1,4 @@
-define('requirejs-sandbox/plugins/transit', function(transits) {
+define('requirejs-sandbox/plugins/transit', function() {
 	return {
 		create: function(define) {
 			define('transit', function() {
