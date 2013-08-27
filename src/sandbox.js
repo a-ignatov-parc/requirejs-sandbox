@@ -1,12 +1,9 @@
-// Пока в зависимостях запрашиваем `underscore`, для быстрой реализации первой версии.
-// 
-// [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
-// методы в код модуля.
 define('requirejs-sandbox', [
-	'requirejs-sandbox/transits',
 	'requirejs-sandbox/logger',
-	'requirejs-sandbox/utils'
-], function(transits, console, utils) {
+	'requirejs-sandbox/utils',
+	'requirejs-sandbox/plugins/css',
+	'requirejs-sandbox/plugins/transit'
+], function(console, utils, cssPlugin, transitPlugin) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -37,7 +34,7 @@ define('requirejs-sandbox', [
 				require: null,
 				define: null,
 				status: -1,
-				destroy: this.bind(function() {
+				destroy: utils.bind(function() {
 					this.sandbox = null;
 					this.iframe.parentNode.removeChild(this.iframe);
 					this.iframe = null;
@@ -69,7 +66,7 @@ define('requirejs-sandbox', [
 
 	Sandbox.prototype = {
 		createSandbox: function(callback) {
-			this.createFrame(null, this.bind(function(iframe) {
+			this.createFrame(null, utils.bind(function(iframe) {
 				// Сохраняем ссылку на песочницу.
 				this.iframe = iframe;
 
@@ -196,8 +193,8 @@ define('requirejs-sandbox', [
 					this.api.require.config(this.options.requireConfig);
 
 					// Создаем плугин для загрузки транзитов и css.
-					this.createTransitPlugin(window.define);
-					this.createCssPlugin(window.define);
+					cssPlugin.create(window.define);
+					transitPlugin.create(window.define, this.sandbox);
 
 					console.debug('Executing module callback');
 
@@ -211,7 +208,7 @@ define('requirejs-sandbox', [
 			if (this.options.requireUrl) {
 				this.createScript(target, this.options.requireUrl, {
 					main: this.options.requireMain
-				}, this.bind(loadHandler, this));
+				}, utils.bind(loadHandler, this));
 			} else {
 				// [TODO] Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
 				// модуль.
@@ -231,86 +228,6 @@ define('requirejs-sandbox', [
 				}
 			}
 			console.debug('Creating loader inside specified target:', target);
-		},
-
-		createTransitPlugin: function(define) {
-			var sandbox = this.sandbox;
-
-			console.debug('Creating plugin for loading transits');
-
-			define('transit', function() {
-				return {
-					load: function (name, req, onload) {
-						console.debug('Received module load exec for', name);
-
-						// Загружаем модуль и если транзит для этого модуля существует, то делаем 
-						// патч.
-						req([name], function(module) {
-							// Если транзит для данного модуля существует, то инициализируем его.
-							if (transits[name]) {
-								try {
-									transits[name].enable(window, sandbox, module);
-								} catch(e) {
-									console.error(e);
-								}
-							}
-
-							// После инициализации транзита, если он был найден, вызываем 
-							// обработчик `require.js` `onload`, который обозначает завершение 
-							// работ плугина.
-							onload(module);
-						});
-					}
-				};
-			});
-		},
-
-		createCssPlugin: function(define) {
-			console.debug('Creating plugin for loading css');
-
-			define('css', this.bind(function() {
-				return {
-					load: this.bind(function(name, req, onload) {
-						console.debug('Received css load exec for', name);
-
-						var url = req.toUrl(name + '.css'),
-							link = window.document.createElement('link'),
-							loader = window.document.createElement('img');
-
-						// Устанавливаем необходимые атрибуты.
-						link.rel = 'stylesheet';
-						link.type = 'text/css';
-						link.href = url;
-
-						// Вставляем тег со стилями в тег `head`
-						document.getElementsByTagName('head')[0].appendChild(link);
-
-						// Навешиваем событие на ошибку загрузки, так как изображаение выдаст это
-						// событие, когда загрузит указанный файл, что нам и нужно для определения 
-						// загрузились ли стили или нет.
-						loader.onerror = function() {
-							// Вызываем обработчик загруки модуля.
-							onload({
-								cssLink: link
-							});
-						};
-
-						// Выставляем урл для начала загрузки.
-						loader.src = url;
-					}, this)
-				};
-			}, this));
-		},
-
-		bind: function(fn, context) {
-			context || (context = window);
-
-			if (typeof(fn) === 'function') {
-				return function() {
-					return fn.apply(context, arguments);
-				};
-			}
-			return fn;
 		}
 	};
 

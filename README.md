@@ -1,6 +1,6 @@
 # Description
 
-[require.js](http://requirejs.org/) powered with multiple app sandbox.
+Менеджер песочниц для [require.js](http://requirejs.org/) позволяющий запускать множественное количество приложений без пересечения их контекстов выполнения.
 
 ---
 

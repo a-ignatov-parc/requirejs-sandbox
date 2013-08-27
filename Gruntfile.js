@@ -38,21 +38,32 @@ var fs = require('fs'),
 		},
 		concat: {
 			dev: {
-				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/logger.js'],
+				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/logger.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js',
 				options: {
 					banner: bannerTemplate
 				}
 			},
 			prod: {
-				src: [pkg.srcPath + '*.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/fake.js'],
+				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/fake.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js'
+			},
+			runtime: {
+				src: [pkg.srcPath + 'helpers/utils.js', pkg.srcPath + 'plugins/sandbox/css.js', pkg.srcPath + 'plugins/standalone/*.js', pkg.srcPath + 'runtime.js'],
+				dest: pkg.buildPath + 'requirejs-sandbox-runtime.js'
 			}
 		},
 		uglify: {
-			module: {
+			manager: {
 				src: pkg.buildPath + 'requirejs-sandbox.js',
 				dest: pkg.buildPath + 'requirejs-sandbox.min.js',
+				options: {
+					banner: bannerTemplate
+				}
+			},
+			runtime: {
+				src: pkg.buildPath + 'requirejs-sandbox-runtime.js',
+				dest: pkg.buildPath + 'requirejs-sandbox-runtime.min.js',
 				options: {
 					banner: bannerTemplate
 				}
@@ -112,7 +123,7 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
-	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify:module', 'concat:dev', 'qunit']);
-	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev']);
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:module', 'concat:dev', 'qunit']);
+	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify:manager', 'concat:dev', 'qunit']);
+	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:manager', 'concat:dev', 'concat:runtime', 'uglify:runtime']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:manager', 'concat:dev', 'concat:runtime', 'uglify:runtime', 'qunit']);
 };
