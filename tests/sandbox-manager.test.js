@@ -1,10 +1,4 @@
 requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
-	var pathNameArr = location.pathname.split('/'),
-		pathName;
-
-	pathNameArr[pathNameArr.length - 1] = '';
-	pathName = pathNameArr.join('/');
-
 	QUnit.start();
 
 	test('Check requirejs-sandbox api', function() {
@@ -72,43 +66,6 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		}
 	});
 
-	requirejs(['requirejs-sandbox/plugins/css'], function(cssPlugin) {
-		test('Resoving url to file by it\'s name', function() {
-			var options = {
-					baseUrl: 'app/static/js',
-					paths: {
-						'css': '../../styles/css',
-						'backbone': '../libs/backbone',
-						'jquery': '../libs/jquery/jquery.min',
-						'underscore': '../../../libs/underscore',
-					}
-				};
-
-			equal(typeof(cssPlugin), 'object', 'Css plugin was not loaded');
-			equal(typeof(cssPlugin.nameToUrl), 'function', 'Can not find nameToUrl method in cssPlugin');
-			equal(cssPlugin.nameToUrl('main', options), pathName + 'app/static/js/main', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('view/main', options), pathName + 'app/static/js/view/main', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('styles/main', options), pathName + 'app/static/js/styles/main', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('css/main', options), pathName + 'app/styles/css/main', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('jquery', options), pathName + 'app/static/libs/jquery/jquery.min', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('backbone', options), pathName + 'app/static/libs/backbone', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('backbone/backbone.min', options), pathName + 'app/static/libs/backbone/backbone.min', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('underscore', options), pathName + 'libs/underscore', 'Wrong url resoving');
-
-			var options = {
-					baseUrl: '/static/app/',
-					paths: {
-						'css': '../styles/css',
-						'backbone': 'http://site.com/lib/backbone',
-					}
-				};
-
-			equal(cssPlugin.nameToUrl('main', options), '/static/app/main', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('css/main', options), '/static/styles/css/main', 'Wrong url resoving');
-			equal(cssPlugin.nameToUrl('backbone', options), 'http://site.com/lib/backbone', 'Wrong url resoving');
-		});
-	});
-
 	var wrongTestSandbox = requrejsSandbox.set('WrongTest', {
 		callback: function(require, define) {
 			var sandboxApi = this;
@@ -150,6 +107,33 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 					equal(scripts[2].getAttribute('src'), sandboxApi.sandboxManager.options.requireMain + '.js', 'sandbox has different script tag count');
 					start();
 				}, 1000);
+			});
+		}
+	});
+
+	var exports = {
+			export1: 'abc',
+			export2: 123,
+			export3: function() {
+				return true;
+			},
+			export4: null
+		};
+
+	requrejsSandbox.set('ExportsTest', {
+		debug: true,
+		requireUrl: '../static/js/libs/require.min.js',
+		sandboxExport: exports,
+		callback: function() {
+			var sandboxApi = this;
+
+			test('Checking exported variables', function() {
+				for (var key in exports) {
+					if (exports.hasOwnProperty(key)) {
+						notEqual(typeof(sandboxApi.sandboxManager.sandbox[key]), 'undefined', 'Exported variable should not be undefined');
+						equal(exports[key], sandboxApi.sandboxManager.sandbox[key], 'Exported value has wrong value');
+					}
+				}
 			});
 		}
 	});

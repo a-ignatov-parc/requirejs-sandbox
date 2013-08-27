@@ -12,7 +12,8 @@ define('requirejs-sandbox', [
 				debug: false,
 				requireUrl: null,
 				requireMain: null,
-				requireConfig: {}
+				requireConfig: {},
+				sandboxExport: {}
 			}, options);
 
 			// Создаем свойства класса.
@@ -49,6 +50,15 @@ define('requirejs-sandbox', [
 
 			this.createSandbox(function(sandbox) {
 				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
+
+				// Прокидываем экспорты в песочницу.
+				for (var key in this.options.sandboxExport) {
+					if (this.options.sandboxExport.hasOwnProperty(key)) {
+						sandbox[key] = this.options.sandboxExport[key];
+					}
+				}
+
+				// Создаем загрузчик в песочнице.
 				this.createLoader(sandbox);
 			});
 			return this.api;
