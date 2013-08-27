@@ -1,10 +1,4 @@
 requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
-	var pathNameArr = location.pathname.split('/'),
-		pathName;
-
-	pathNameArr[pathNameArr.length - 1] = '';
-	pathName = pathNameArr.join('/');
-
 	requrejsSandbox.set('AppTest', {
 		debug: true,
 		requireUrl: '../static/js/libs/require.min.js',
@@ -24,7 +18,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				test('Css loading test', function() {
 					equal(typeof(style1), 'object', 'Returned module object is not object');
 					notEqual(style1.cssLink, null, 'Link to style DOM element was not found');
-					equal(style1.cssLink.getAttribute('href'), pathName + 'app/style1.css', 'Link tag has wrong href value');
+					equal(style1.cssLink.getAttribute('href'), 'app/style1.css', 'Link tag has wrong href value');
 					equal(window.getComputedStyle(document.body).position, 'relative', 'Loaded styles was not applied before callback');
 					equal(window.getComputedStyle(document.body).zIndex, 1, 'Loaded styles was not applied before callback');
 				});

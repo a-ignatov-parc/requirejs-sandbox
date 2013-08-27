@@ -2,9 +2,12 @@
 // 
 // [TODO] После устаканивания api избавиться от `underscore` реализовав/перенеся используемые 
 // методы в код модуля.
-define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/logger', 'requirejs-sandbox/utils'], function(transits, console, utils) {
+define('requirejs-sandbox', [
+	'requirejs-sandbox/transits',
+	'requirejs-sandbox/logger',
+	'requirejs-sandbox/utils'
+], function(transits, console, utils) {
 	var createdSandboxes = {},
-		urlRegex = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/,
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
@@ -262,62 +265,15 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 			});
 		},
 
-		// Метод, который преобразует имя модуля в путь с учетом колекции `path` из конфига 
-		// `require.js`.
-		nameToUrl: function(name, options) {
-			options || (options = this.options.requireConfig);
-
-			var paths = options.paths,
-				pathNameArr = location.pathname.split('/'),
-				baseUrlArr = options.baseUrl.split('/'),
-				pathArr;
-
-			pathNameArr.pop();
-
-			if (baseUrlArr[0] !== '') {
-				baseUrlArr = pathNameArr.concat(baseUrlArr);
-			}
-
-			if (!baseUrlArr[baseUrlArr.length - 1]) {
-				baseUrlArr.pop();
-			}
-
-			for (var path in paths) {
-				if (paths.hasOwnProperty(path) && !name.indexOf(path)) {
-					name = name.replace(path, '').substr(1);
-
-					if (urlRegex.test(paths[path])) {
-						baseUrlArr = [paths[path]];
-					} else {
-						pathArr = paths[path].split('/');
-
-						for (var i = 0, length = pathArr.length; i < length; i++) {
-							if (pathArr[i] == '..') {
-								baseUrlArr.pop();
-							} else {
-								baseUrlArr.push(pathArr[i]);
-							}
-						}
-					}
-					break;
-				}
-			}
-
-			if (name) {
-				baseUrlArr.push(name);
-			}
-			return baseUrlArr.join('/');
-		},
-
 		createCssPlugin: function(define) {
 			console.debug('Creating plugin for loading css');
 
 			define('css', this.bind(function() {
 				return {
-					load: this.bind(function(name, req, onload, options) {
+					load: this.bind(function(name, req, onload) {
 						console.debug('Received css load exec for', name);
 
-						var url = this.nameToUrl(name, options) + '.css',
+						var url = req.toUrl(name + '.css'),
 							link = window.document.createElement('link'),
 							loader = window.document.createElement('img');
 
