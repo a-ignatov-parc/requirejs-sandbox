@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.5-20 (build date: 27/08/2013)
+ * requrejs-sandbox - v0.1.5-22 (build date: 27/08/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for requre.js to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -66,7 +66,7 @@ define('requirejs-sandbox', [
 				}
 
 				// Добавляем публичное api в песочницу.
-				sandbox.sandboxApi = utils.extend({}, this.api, {
+				this.sandbox.sandboxApi = utils.extend({}, this.api, {
 					parentWindow: window
 				});
 
@@ -190,9 +190,9 @@ define('requirejs-sandbox', [
 		createLoader: function(target) {
 			var loadHandler = function(window) {
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
-					this.api.require = window.require;
-					this.api.define = window.define;
-					this.api.status = 1;
+					this.api.require = this.sandbox.sandboxApi.require = window.require;
+					this.api.define = this.sandbox.sandboxApi.define = window.define;
+					this.api.status = this.sandbox.sandboxApi.status = 1;
 
 					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
 					if (this.options.debug) {
@@ -231,7 +231,7 @@ define('requirejs-sandbox', [
 				// 
 				// А пока ничего не реализовано вызываем колбек без передеча ссылки на require.
 				// Если колбек не объявлен, то выкидываем ошибку.
-				this.api.status = 0;
+				this.api.status = this.sandbox.sandboxApi.status = 0;
 
 				if (typeof(this.options.callback) === 'function') {
 					this.options.callback.call(this.api);

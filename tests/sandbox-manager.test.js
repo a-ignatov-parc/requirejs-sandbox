@@ -135,6 +135,16 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 					}
 				}
 			});
+
+			test('Checking sandbox public api', function() {
+				equal(typeof(sandboxApi.sandboxManager.sandbox.sandboxApi), 'object', 'Sandbox public api should be available');
+				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.name, sandboxApi.name, 'Sandbox public api has wrong value');
+				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.status, sandboxApi.status, 'Sandbox public api has wrong value');
+				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.require, sandboxApi.require, 'Sandbox public api has wrong value');
+				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.define, sandboxApi.define, 'Sandbox public api has wrong value');
+				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.destroy, sandboxApi.destroy, 'Sandbox public api has wrong value');
+				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.parentWindow, window, 'Sandbox public api has wrong link to parent window object');
+			});
 		}
 	});
 });
