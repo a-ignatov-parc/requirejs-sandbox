@@ -58,6 +58,11 @@ define('requirejs-sandbox', [
 					}
 				}
 
+				// Добавляем публичное api в песочницу.
+				sandbox.sandboxApi = utils.extend({}, this.api, {
+					parentWindow: window
+				});
+
 				// Создаем загрузчик в песочнице.
 				this.createLoader(sandbox);
 			});
