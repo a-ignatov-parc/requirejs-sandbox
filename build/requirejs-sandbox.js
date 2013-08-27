@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.4-119 (build date: 09/08/2013)
+ * requrejs-sandbox - v0.1.4-121 (build date: 27/08/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for requre.js to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -19,7 +19,8 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 				debug: false,
 				requireUrl: null,
 				requireMain: null,
-				requireConfig: {}
+				requireConfig: {},
+				sandboxExport: {}
 			}, options);
 
 			// Создаем свойства класса.
@@ -56,6 +57,15 @@ define('requirejs-sandbox', ['requirejs-sandbox/transits', 'requirejs-sandbox/lo
 
 			this.createSandbox(function(sandbox) {
 				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
+
+				// Прокидываем экспорты в песочницу.
+				for (var key in this.options.sandboxExport) {
+					if (this.options.sandboxExport.hasOwnProperty(key)) {
+						sandbox[key] = this.options.sandboxExport[key];
+					}
+				}
+
+				// Создаем загрузчик в песочнице.
 				this.createLoader(sandbox);
 			});
 			return this.api;

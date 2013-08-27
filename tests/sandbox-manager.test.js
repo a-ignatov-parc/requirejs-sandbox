@@ -161,4 +161,31 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 			});
 		}
 	});
+
+	var exports = {
+			export1: 'abc',
+			export2: 123,
+			export3: function() {
+				return true;
+			},
+			export4: null
+		};
+
+	requrejsSandbox.set('ExportsTest', {
+		debug: true,
+		requireUrl: '../static/js/libs/require.min.js',
+		sandboxExport: exports,
+		callback: function() {
+			var sandboxApi = this;
+
+			test('Checking exported variables', function() {
+				for (var key in exports) {
+					if (exports.hasOwnProperty(key)) {
+						notEqual(typeof(sandboxApi.sandboxManager.sandbox[key]), 'undefined', 'Exported variable should not be undefined');
+						equal(exports[key], sandboxApi.sandboxManager.sandbox[key], 'Exported value has wrong value');
+					}
+				}
+			});
+		}
+	});
 });
