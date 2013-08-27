@@ -1,4 +1,6 @@
-define('requirejs-sandbox/transit.jquery', ['requirejs-sandbox/logger'], function(console) {
+define('requirejs-sandbox/transit.jquery', [
+	'requirejs-sandbox/logger'
+], function(console) {
 	return {
 		name: 'jquery',
 		enable: function(window, sandbox, jQuery) {

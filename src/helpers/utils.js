@@ -48,6 +48,17 @@ define('requirejs-sandbox/utils', function() {
 				}
 			});
 			return obj;
+		},
+
+		bind: function(fn, context) {
+			context || (context = window);
+
+			if (typeof(fn) === 'function') {
+				return function() {
+					return fn.apply(context, arguments);
+				};
+			}
+			return fn;
 		}
 	};
 });
