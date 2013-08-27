@@ -1,10 +1,4 @@
 requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
-	var pathNameArr = location.pathname.split('/'),
-		pathName;
-
-	pathNameArr[pathNameArr.length - 1] = '';
-	pathName = pathNameArr.join('/');
-
 	QUnit.start();
 
 	test('Check requirejs-sandbox api', function() {
@@ -68,51 +62,6 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				equal(typeof(sandbox), 'undefined', 'requirejs-sandbox returned deleted sandbox');
 				equal(Object.keys(sandboxApi).length, 0, 'sandbox api has wrong methods count');
 				equal(Object.keys(context).length, 0, 'sandbox api has wrong methods count');
-			});
-		}
-	});
-
-	requrejsSandbox.set('DebugCallbackTest', {
-		debug: true,
-		requireUrl: '../static/js/libs/require.min.js',
-		callback: function(require, define) {
-			var sandboxApi = this,
-				args = arguments,
-				context = callbackTestSandbox;
-
-			test('Resoving url to file by it\'s name', function() {
-				var options = {
-						baseUrl: 'app/static/js',
-						paths: {
-							'css': '../../styles/css',
-							'backbone': '../libs/backbone',
-							'jquery': '../libs/jquery/jquery.min',
-							'underscore': '../../../libs/underscore',
-						}
-					};
-
-				equal(typeof(sandboxApi.sandboxManager), 'object', 'Can not find link to sandbox manager');
-				equal(typeof(sandboxApi.sandboxManager.nameToUrl), 'function', 'Can not find nameToUrl method in sandbox manager');
-				equal(sandboxApi.sandboxManager.nameToUrl('main', options), pathName + 'app/static/js/main', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('view/main', options), pathName + 'app/static/js/view/main', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('styles/main', options), pathName + 'app/static/js/styles/main', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('css/main', options), pathName + 'app/styles/css/main', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('jquery', options), pathName + 'app/static/libs/jquery/jquery.min', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('backbone', options), pathName + 'app/static/libs/backbone', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('backbone/backbone.min', options), pathName + 'app/static/libs/backbone/backbone.min', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('underscore', options), pathName + 'libs/underscore', 'Wrong url resoving');
-
-				var options = {
-						baseUrl: '/static/app/',
-						paths: {
-							'css': '../styles/css',
-							'backbone': 'http://site.com/lib/backbone',
-						}
-					};
-
-				equal(sandboxApi.sandboxManager.nameToUrl('main', options), '/static/app/main', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('css/main', options), '/static/styles/css/main', 'Wrong url resoving');
-				equal(sandboxApi.sandboxManager.nameToUrl('backbone', options), 'http://site.com/lib/backbone', 'Wrong url resoving');
 			});
 		}
 	});
