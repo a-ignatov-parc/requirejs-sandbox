@@ -72,6 +72,13 @@ var fs = require('fs'),
 		qunit: {
 			files: [pkg.testPath + '**/*.html']
 		},
+		unrequire: {
+			src: pkg.buildPath + 'requirejs-sandbox.js',
+			dest: pkg.buildPath + 'requirejs-sandbox-noamd.js',
+			options: {
+				exportModule: 'requirejs-sandbox'
+			}
+		},
 		jshint: {
 			lint: pkg.srcPath + '**/*.js',
 			options: {
@@ -114,11 +121,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-bumpup');
 
-	// Регистрируем кастомные таски
-	grunt.registerTask('updatepkg', 'Update pkg version after bumpup.', function() {
-		gruntConfig.pkg = grunt.file.readJSON('package.json');
-		grunt.log.writeln('ok!');
-	});
+	// Загружаем кастомные таски
+	grunt.loadTasks('tasks');
 
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
