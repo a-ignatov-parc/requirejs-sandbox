@@ -73,10 +73,11 @@ var fs = require('fs'),
 			files: [pkg.testPath + '**/*.html']
 		},
 		unrequire: {
-			src: pkg.buildPath + 'requirejs-sandbox.js',
-			dest: pkg.buildPath + 'requirejs-sandbox-noamd.js',
+			src: 'experiments/require_example.js',
+			dest: 'experiments/unrequire_build.js',
 			options: {
-				exportModule: 'requirejs-sandbox'
+				exportModule: 'name',
+				exportModuleName: 'NameConstructor'
 			}
 		},
 		jshint: {
