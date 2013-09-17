@@ -72,6 +72,22 @@ var fs = require('fs'),
 		qunit: {
 			files: [pkg.testPath + '**/*.html']
 		},
+		requirejs: {
+			compile: {
+				options: {
+					optimize: 'none',
+					almond: true,
+					baseUrl: pkg.srcPath,
+					out: pkg.buildPath + 'requirejs-sandbox.almond.js',
+					include: ['../build/requirejs-sandbox'],
+					wrap: {
+						startFile: 'wrap/wrap.start',
+						endFile: 'wrap/wrap.end'
+					},
+					banner: bannerTemplate
+				}
+			}
+		},
 		jshint: {
 			lint: pkg.srcPath + '**/*.js',
 			options: {
@@ -113,12 +129,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-bumpup');
+	grunt.loadNpmTasks('grunt-requirejs');
 
-	// Регистрируем кастомные таски
-	grunt.registerTask('updatepkg', 'Update pkg version after bumpup.', function() {
-		gruntConfig.pkg = grunt.file.readJSON('package.json');
-		grunt.log.writeln('ok!');
-	});
+	// Загружаем кастомные таски
+	grunt.loadTasks('tasks');
 
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
