@@ -7,12 +7,12 @@
 		<script src="../../static/js/libs/require.min.js"></script>
 		<script src="../../build/requirejs-sandbox.js"></script>
 		<script>
-			requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
-				console.log('requirejs-sandbox api', requrejsSandbox);
+			requirejs(['requirejs-sandbox'], function(requirejsSandbox) {
+				console.log('requirejs-sandbox api', requirejsSandbox);
 
 				// Инициализируем песочницу для первого приложения и пытаемся загрузить в нее 
 				// вью `workspace`.
-				requrejsSandbox.set('CustomDemoApp', {
+				requirejsSandbox.set('CustomDemoApp', {
 					requireUrl: '../../static/js/libs/require.min.js',
 					requireConfig: {
 						baseUrl: 'app',
@@ -44,7 +44,7 @@
 				// 
 				// Конфигурированием и загрузкой в данном случае будет заниматься 
 				// файл `/app/main.js`.
-				requrejsSandbox.set('DemoApp', {
+				requirejsSandbox.set('DemoApp', {
 					requireUrl: '../../static/js/libs/require.min.js',
 					requireMain: 'app/main'
 				});

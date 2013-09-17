@@ -1,0 +1,9 @@
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD.
+        define('requirejs-sandbox', factory);
+    } else {
+        // Browser globals
+        root.requirejsSandbox = factory;
+    }
+}(this, function() {

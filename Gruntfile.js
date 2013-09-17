@@ -72,12 +72,20 @@ var fs = require('fs'),
 		qunit: {
 			files: [pkg.testPath + '**/*.html']
 		},
-		unrequire: {
-			src: 'experiments/require_example.js',
-			dest: 'experiments/unrequire_build.js',
-			options: {
-				exportModule: 'name',
-				exportModuleName: 'NameConstructor'
+		requirejs: {
+			compile: {
+				options: {
+					optimize: 'none',
+					almond: true,
+					baseUrl: pkg.srcPath,
+					out: pkg.buildPath + 'requirejs-sandbox.almond.js',
+					include: ['../build/requirejs-sandbox'],
+					wrap: {
+						startFile: 'wrap/wrap.start',
+						endFile: 'wrap/wrap.end'
+					},
+					banner: bannerTemplate
+				}
 			}
 		},
 		jshint: {
@@ -121,6 +129,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-bumpup');
+	grunt.loadNpmTasks('grunt-requirejs');
 
 	// Загружаем кастомные таски
 	grunt.loadTasks('tasks');

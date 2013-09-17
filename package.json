@@ -34,7 +34,6 @@
 	"dependencies": {},
 	"devDependencies": {
 		"grunt": "0.4.x",
-		"burrito": "0.2.x",
 		"grunt-cli": "0.1.x",
 		"grunt-contrib-concat": "0.3.x",
 		"grunt-contrib-jshint": "0.6.x",
@@ -42,7 +41,8 @@
 		"grunt-contrib-watch": "0.5.x",
 		"grunt-contrib-qunit": "0.2.x",
 		"grunt-contrib-stylus": "0.7.x",
-		"grunt-bumpup": "0.2.x"
+		"grunt-bumpup": "0.2.x",
+		"grunt-requirejs": "0.4.x"
 	},
 	"srcPath": "src/",
 	"testPath": "tests/",
