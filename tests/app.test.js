@@ -36,7 +36,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 
 				test('Configuring sandbox require with requireConfig', function() {
 					equal(typeof(subView), 'object', 'Returned module\'s object from sub folder is not object');
-					equal(subView.var, 1, 'Returned module\'s object from sub folder has wrong content');
+					equal(subView['var'], 1, 'Returned module\'s object from sub folder has wrong content');
 					equal(typeof($), 'function', 'Returned jQuery instance is not function');
 				});
 			});
