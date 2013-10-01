@@ -1,7 +1,7 @@
 {
 	"name": "requrejs-sandbox",
 	"description": "Sandbox manager for requre.js to run dedicated apps",
-	"version": "0.1.5-22",
+	"version": "0.1.5-49",
 	"author": {
 		"name": "Anton Ignatov",
 		"web": "https://github.com/a-ignatov-parc"

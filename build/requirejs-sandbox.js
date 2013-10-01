@@ -1,5 +1,5 @@
 /**
- * requrejs-sandbox - v0.1.5-22 (build date: 27/08/2013)
+ * requrejs-sandbox - v0.1.5-49 (build date: 01/10/2013)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for requre.js to run dedicated apps
  * Copyright (c) 2013 Anton Ignatov
@@ -437,8 +437,9 @@ define('requirejs-sandbox/utils', function() {
 });
 
 define('requirejs-sandbox/plugins/css', [
-	'requirejs-sandbox/utils'
-], function(utils) {
+	'requirejs-sandbox/utils',
+	'requirejs-sandbox/logger'
+], function(utils, console) {
 	return {
 		create: function(define) {
 			console.debug('Creating plugin for loading css');
@@ -450,28 +451,75 @@ define('requirejs-sandbox/plugins/css', [
 
 						var url = req.toUrl(name + '.css'),
 							link = window.document.createElement('link'),
-							loader = window.document.createElement('img');
+							hasStyleSheet = 'sheet' in link,
+							loadHandler = function() {
+								// Вызываем колбек о завершении загрузки.
+								if (!cssHasLoaded) {
+									onload({
+										cssLink: link
+									});
+									cssTimeout && clearTimeout(cssTimeout);
+									cssHasLoaded = true;
+								}
+							},
+							count = 0,
+							cssHasLoaded = false,
+							cssTimeout,
+							loader;
 
 						// Устанавливаем необходимые атрибуты.
 						link.rel = 'stylesheet';
 						link.type = 'text/css';
 						link.href = url;
 
+						// Добавляем обработчики события `onload`
+						// 
+						// Браузеры: Chromium 22+, Firefox 20+, IE10+
+						link.onload = link.onreadystatechange = loadHandler;
+
+						// Если браузер поддерживает свойство `sheet` у элемента link, то 
+						// запускаем рантайм ожидания загрузки.
+						// 
+						// Браузеры: Chromium 5+
+						if (hasStyleSheet) {
+							(function() {
+								// Если css еще не загружен, то пытаемся получить доступ к сетке стилей. 
+								// Если попытка проваливается, то ждем 20мс и пробуем сново.
+								try {
+									link.sheet.cssRules;
+								} catch (e) {
+									if (count++ < 1000) {
+										cssTimeout = setTimeout(arguments.callee, 20);
+									} else {
+										console.error('Load failed in FF for', name);
+									}
+									return;
+								}
+
+								if (link.sheet.cssRules && link.sheet.cssRules.length === 0) {
+									console.error('Load failed in Webkit for', name);
+								} else {
+									loadHandler();
+								}
+							})();
+						}
+
 						// Вставляем тег со стилями в тег `head`
 						document.getElementsByTagName('head')[0].appendChild(link);
 
-						// Навешиваем событие на ошибку загрузки, так как изображаение выдаст это
-						// событие, когда загрузит указанный файл, что нам и нужно для определения 
-						// загрузились ли стили или нет.
-						loader.onerror = function() {
-							// Вызываем обработчик загруки модуля.
-							onload({
-								cssLink: link
-							});
-						};
+						// Если же браузер не поддерживает свойство `sheet`, то пытаемся загрузить через хак с элементов `img`
+						// 
+						// Браузеры: Opera 12
+						if (!hasStyleSheet) {
+							loader = window.document.createElement('img');
+							loader.onerror = function() {
+								// Вызываем обработчик загруки модуля.
+								loadHandler();
+							};
 
-						// Выставляем урл для начала загрузки.
-						loader.src = url;
+							// Выставляем урл для начала загрузки.
+							loader.src = url;
+						}
 					}, this)
 				};
 			}, this));
@@ -480,8 +528,9 @@ define('requirejs-sandbox/plugins/css', [
 });
 
 define('requirejs-sandbox/plugins/transit', [
-	'requirejs-sandbox/transits'
-], function(transits) {
+	'requirejs-sandbox/transits',
+	'requirejs-sandbox/logger'
+], function(transits, console) {
 	return {
 		create: function(define, sandbox) {
 			console.debug('Creating plugin for loading transits');

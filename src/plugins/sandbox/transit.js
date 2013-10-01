@@ -1,6 +1,7 @@
 define('requirejs-sandbox/plugins/transit', [
-	'requirejs-sandbox/transits'
-], function(transits) {
+	'requirejs-sandbox/transits',
+	'requirejs-sandbox/logger'
+], function(transits, console) {
 	return {
 		create: function(define, sandbox) {
 			console.debug('Creating plugin for loading transits');
