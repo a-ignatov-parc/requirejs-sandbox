@@ -1,5 +1,5 @@
 define(function() {
 	return {
-		var: 1
+		someVar: 1
 	}
 });
