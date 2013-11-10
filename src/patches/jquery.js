@@ -1,12 +1,19 @@
-define('requirejs-sandbox/transit.jquery', [
+define('requirejs-sandbox/patches/jquery', [
 	'requirejs-sandbox/logger'
 ], function(console) {
 	return {
+		// Имя модуля используемое в require.js.
 		name: 'jquery',
+
+		// Имя по которому необходимо искать библиотеку в песочнице, в случае не срабатывания 
+		// резолва по require.shim.exportsFn().
+		shimName: 'jQuery',
+
+		// Метод инициализации патча.
 		enable: function(window, sandbox, jQuery) {
 			// Проверка на существование `jQuery`
 			if (typeof(jQuery) !== 'function') {
-				console.error('This transit require jQuery to be defined!');
+				console.error('This patch require jQuery to be defined!');
 				return;
 			}
 
@@ -64,6 +71,8 @@ define('requirejs-sandbox/transit.jquery', [
 				return proto.__patchedInit;
 			})(jQuery.fn.init, jQuery.fn);
 		},
+
+		// Метод отката патча.
 		disable: function(window, sandbox, jQuery) {
 			if (jQuery.fn.__originalInit) {
 				console.debug('Restoring original jQuery instance');

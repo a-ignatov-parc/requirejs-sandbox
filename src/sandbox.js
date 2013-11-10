@@ -1,9 +1,9 @@
 define('requirejs-sandbox', [
 	'requirejs-sandbox/logger',
 	'requirejs-sandbox/utils',
-	'requirejs-sandbox/plugins/css',
-	'requirejs-sandbox/plugins/transit'
-], function(console, utils, cssPlugin, transitPlugin) {
+	'requirejs-sandbox/patches',
+	'requirejs-sandbox/plugins/css'
+], function(console, utils, patches, cssPlugin) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -13,7 +13,8 @@ define('requirejs-sandbox', [
 				requireUrl: null,
 				requireMain: null,
 				requireConfig: {},
-				sandboxExport: {}
+				sandboxExport: {},
+				patch: []
 			}, options);
 
 			// Создаем свойства класса.
@@ -181,10 +182,12 @@ define('requirejs-sandbox', [
 		},
 
 		createLoader: function(target) {
-			var loadHandler = function(window) {
+			var loadHandler = function(sandbox) {
+					var pathList = this.options.patch;
+
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
-					this.api.require = this.sandbox.sandboxApi.require = window.require;
-					this.api.define = this.sandbox.sandboxApi.define = window.define;
+					this.api.require = this.sandbox.sandboxApi.require = sandbox.require;
+					this.api.define = this.sandbox.sandboxApi.define = sandbox.define;
 					this.api.status = this.sandbox.sandboxApi.status = 1;
 
 					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
@@ -192,21 +195,62 @@ define('requirejs-sandbox', [
 						this.api.sandboxManager = this;
 					}
 
-					console.debug('require.js has loaded! Configuring...');
+					console.debug('require.js has loaded! Patching "load" method...');
+
+					// Переопределяем загрузчик чтоб можно было легко применять патчи.
+					this.api.require.load = (function(load) {
+						return function(context) {
+							if (!context.completeLoad.isOverided) {
+								context.completeLoad = (function(completeLoad) {
+									return function(moduleName) {
+										// Проверяем имя модуля и делаем его патч если необходимо.
+										for (var i = 0, length = pathList.length; i < length; i++) {
+											if (pathList[i] == moduleName) {
+												var patch = patches[moduleName];
+
+												console.debug('Found patch for loaded module: "' + moduleName + '"! Applying...');
+
+												// Если патч для данного модуля существует, то инициализируем его.
+												if (patch) {
+													try {
+														patch.enable(window, sandbox, this.registry.jquery.shim ? this.registry.jquery.shim.exportsFn() : sandbox[patch.shimName]);
+														console.debug('Patch for module "' + moduleName + '" applied correctly');
+													} catch(e) {
+														console.debug('Patch for module "' + moduleName + '" did not applied correctly! Look into debug info for more details');
+														console.error(moduleName, e);
+													}
+												}
+											}
+											break;
+										}
+										return completeLoad.apply(this, arguments);
+									};
+								})(context.completeLoad);
+
+								// Высталяем флаг о том что мы переопределили хендлер и делать это 
+								// повторно не нужно.
+								context.completeLoad.isOverided = true;
+							}
+
+							// Запускаем загрузку модулей.
+							load.apply(this, arguments);
+						};
+					})(this.api.require.load);
+
+					console.debug('require.js "load" method has been patched! Configuring...');
 
 					// Конфигурируем загрузчик на основе переданных параметров.
 					this.api.require.config(this.options.requireConfig);
 
-					// Создаем плугин для загрузки транзитов и css.
-					cssPlugin.create(window.define);
-					transitPlugin.create(window.define, this.sandbox);
+					// Создаем плугин для загрузки css.
+					cssPlugin.create(this.api.define);
 
 					console.debug('Executing module callback');
 
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
 					if (typeof(this.options.callback) === 'function') {
-						this.options.callback.call(this.api, window.require, window.define);
+						this.options.callback.call(this.api, this.api.require, this.api.define);
 					}
 				};
 
