@@ -7,10 +7,11 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				'jquery': '../../static/js/libs/jquery/jquery.min'
 			}
 		},
+		patch: ['jquery'],
 		callback: function(require) {
 			var qunitEl = document.getElementById('qunit');
 
-			require(['transit!jquery'], function($) {
+			require(['jquery'], function($) {
 				QUnit.start();
 
 				test('Testing jQuery with transits', function() {

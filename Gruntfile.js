@@ -38,14 +38,14 @@ var fs = require('fs'),
 		},
 		concat: {
 			dev: {
-				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/logger.js'],
+				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/logger.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js',
 				options: {
 					banner: bannerTemplate
 				}
 			},
 			prod: {
-				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'transits/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/fake.js'],
+				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/fake.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js'
 			},
 			runtime: {

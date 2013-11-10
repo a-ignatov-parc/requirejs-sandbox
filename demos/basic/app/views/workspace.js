@@ -1,4 +1,4 @@
-define(['transit!jquery', 'backbone', 'css!styles/app'], function($, Backbone, appStyles) {
+define(['jquery', 'backbone', 'css!styles/app'], function($, Backbone, appStyles) {
 	return Backbone.View.extend({
 		events: {},
 

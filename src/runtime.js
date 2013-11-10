@@ -1,8 +1,6 @@
 require([
-	'requirejs-sandbox/plugins/css',
-	'requirejs-sandbox/plugins/transit'
-], function(cssPlugin, transitPlugin) {
+	'requirejs-sandbox/plugins/css'
+], function(cssPlugin) {
 	cssPlugin.create(window.define);
-	transitPlugin.create(window.define);
 	return true;
 });
