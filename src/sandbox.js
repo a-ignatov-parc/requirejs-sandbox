@@ -1,9 +1,8 @@
 define('requirejs-sandbox', [
 	'requirejs-sandbox/logger',
 	'requirejs-sandbox/utils',
-	'requirejs-sandbox/patches',
-	'requirejs-sandbox/plugins/css'
-], function(console, utils, patches, cssPlugin) {
+	'requirejs-sandbox/patches'
+], function(console, utils, patches) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -14,7 +13,8 @@ define('requirejs-sandbox', [
 				requireMain: null,
 				requireConfig: {},
 				sandboxExport: {},
-				patch: []
+				patch: [],
+				plugins: []
 			}, options);
 
 			// Создаем свойства класса.
@@ -242,8 +242,24 @@ define('requirejs-sandbox', [
 					// Конфигурируем загрузчик на основе переданных параметров.
 					this.api.require.config(this.options.requireConfig);
 
-					// Создаем плугин для загрузки css.
-					cssPlugin.create(this.api.define);
+					// Создаем список плугинов, что указаны в конфиге
+					for (var i = 0, length = this.options.plugins.length; i < length; i++) {
+						var pluginName = this.options.plugins[i];
+
+						// Инициализируем плугин, который будет ссылаться на плугин в основном 
+						// документе, но при этом будет досутпен в песочнице.
+						this.api.define(pluginName, function() {
+							console.debug(123, arguments);
+
+							return {
+								load: function(name, req, onload) {
+									require([pluginName + '!' + name], function(result) {
+										onload(result);
+									});
+								}
+							}
+						});
+					};
 
 					console.debug('Executing module callback');
 
