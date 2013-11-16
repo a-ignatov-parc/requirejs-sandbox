@@ -1,7 +1,7 @@
 {
 	"name": "requrejs-sandbox",
 	"description": "Sandbox manager for requre.js to run dedicated apps",
-	"version": "0.1.7-8",
+	"version": "0.1.7-13",
 	"author": {
 		"name": "Anton Ignatov",
 		"web": "https://github.com/a-ignatov-parc"
@@ -46,6 +46,7 @@
 	"srcPath": "src/",
 	"testPath": "tests/",
 	"buildPath": "build/",
+	"pluginPath": "plugins/",
 	"cssPath": "static/styles/css/",
 	"stylusPath": "static/styles/stylus/"
 }

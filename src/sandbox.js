@@ -244,22 +244,27 @@ define('requirejs-sandbox', [
 
 					// Создаем список плугинов, что указаны в конфиге
 					for (var i = 0, length = this.options.plugins.length; i < length; i++) {
-						var pluginName = this.options.plugins[i];
+						var pluginObj = this.options.plugins[i],
+							pluginName = '' + pluginObj.name,
+							skipThisPlugin = false;
 
-						// Инициализируем плугин, который будет ссылаться на плугин в основном 
-						// документе, но при этом будет досутпен в песочнице.
-						this.api.define(pluginName, function() {
-							console.debug(123, arguments);
+						if (!pluginName) {
+							console.error('Registered plugin has no name');
+							skipThisPlugin = true;
+						}
 
-							return {
-								load: function(name, req, onload) {
-									require([pluginName + '!' + name], function(result) {
-										onload(result);
-									});
-								}
-							}
-						});
-					};
+						if (typeof(pluginObj.handler) !== 'function') {
+							console.error('Registered plugin handler is not a function');
+							skipThisPlugin = true;
+						}
+
+						console.debug('Successfuly registered plugin with name: ' + pluginName);
+
+						// Регистрируем плугин.
+						if (!skipThisPlugin) {
+							this.api.define(pluginName, pluginObj.handler);
+						}
+					}
 
 					console.debug('Executing module callback');
 

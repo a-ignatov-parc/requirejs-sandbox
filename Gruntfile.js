@@ -62,7 +62,7 @@ var fs = require('fs'),
 			files: [pkg.testPath + '**/*.html']
 		},
 		jshint: {
-			lint: pkg.srcPath + '**/*.js',
+			lint: [pkg.srcPath + '**/*.js', pkg.pluginPath + '**/*.js'],
 			options: {
 				indent: 4,
 				boss: true, // Позволяет делать присвоение в условиях `if (a = true) { ... }`
