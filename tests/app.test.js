@@ -1,7 +1,8 @@
-requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
+requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requirejsCss) {
 	requrejsSandbox.set('AppTest', {
 		debug: true,
 		requireUrl: '../static/js/libs/require.min.js',
+		plugins: [requirejsCss],
 		requireConfig: {
 			baseUrl: 'app',
 			paths: {
