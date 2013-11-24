@@ -1,4 +1,4 @@
-var fs = require('fs'),
+var fileSystem = require('fs'),
 	pkg = require('./package.json'),
 	bannerTemplate = '/**\n' +
 		' * <%= pkg.name %> - v<%= pkg.version %> (build date: <%= grunt.template.today("dd/mm/yyyy") %>)\n' +
@@ -38,19 +38,15 @@ var fs = require('fs'),
 		},
 		concat: {
 			dev: {
-				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/logger.js'],
+				src: [pkg.srcPath + '*.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/logger.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js',
 				options: {
 					banner: bannerTemplate
 				}
 			},
 			prod: {
-				src: [pkg.srcPath + '*.js', '!' + pkg.srcPath + 'runtime.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'plugins/sandbox/*.js', pkg.srcPath + 'logger/fake.js'],
+				src: [pkg.srcPath + '*.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/fake.js'],
 				dest: pkg.buildPath + 'requirejs-sandbox.js'
-			},
-			runtime: {
-				src: [pkg.srcPath + 'helpers/utils.js', pkg.srcPath + 'plugins/sandbox/css.js', pkg.srcPath + 'plugins/standalone/*.js', pkg.srcPath + 'runtime.js'],
-				dest: pkg.buildPath + 'requirejs-sandbox-runtime.js'
 			}
 		},
 		uglify: {
@@ -61,19 +57,15 @@ var fs = require('fs'),
 					banner: bannerTemplate
 				}
 			},
-			runtime: {
-				src: pkg.buildPath + 'requirejs-sandbox-runtime.js',
-				dest: pkg.buildPath + 'requirejs-sandbox-runtime.min.js',
-				options: {
-					banner: bannerTemplate
-				}
+			plugins: {
+				files : {}
 			}
 		},
 		qunit: {
 			files: [pkg.testPath + '**/*.html']
 		},
 		jshint: {
-			lint: pkg.srcPath + '**/*.js',
+			lint: [pkg.srcPath + '**/*.js', pkg.pluginPath + '**/*.js'],
 			options: {
 				indent: 4,
 				boss: true, // Позволяет делать присвоение в условиях `if (a = true) { ... }`
@@ -101,6 +93,20 @@ var fs = require('fs'),
 		}
 	};
 
+// Создаем список плугинов для их минификации.
+fileSystem
+	.readdirSync(pkg.pluginPath)
+	.forEach(function(file) {
+	var path = pkg.pluginPath + file,
+		rawFileName = file.split('.'),
+		fileExtension = rawFileName.pop(),
+		fileName = rawFileName.join('');
+
+	if (file.indexOf('._') !== 0 && !fileSystem.statSync(path).isDirectory()) {
+		gruntConfig.uglify.plugins.files[pkg.buildPath + 'plugins/' + fileName + '.min.' + fileExtension] = path;
+	}
+});
+
 module.exports = function(grunt) {
 	// Инициализируем конфиг
 	grunt.initConfig(gruntConfig);
@@ -123,7 +129,7 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
-	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify:manager', 'concat:dev', 'qunit']);
-	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:manager', 'concat:dev', 'concat:runtime', 'uglify:runtime']);
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:manager', 'concat:dev', 'concat:runtime', 'uglify:runtime', 'qunit']);
+	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify', 'concat:dev', 'qunit']);
+	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify', 'concat:dev']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify', 'concat:dev', 'qunit']);
 };

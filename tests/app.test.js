@@ -2,6 +2,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	requrejsSandbox.set('AppTest', {
 		debug: true,
 		requireUrl: '../static/js/libs/require.min.js',
+		patch: ['jquery'],
 		requireConfig: {
 			baseUrl: 'app',
 			paths: {
@@ -12,16 +13,8 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		callback: function(require) {
 			var sandboxApi = this;
 
-			require(['css!style1', 'css!style2', 'view', 'configTest/view', 'jquery'], function(style1, style2, AppView, subView, $) {
+			require(['view', 'configTest/view', 'jquery'], function(AppView, subView, $) {
 				QUnit.start();
-
-				test('Css loading test', function() {
-					equal(typeof(style1), 'object', 'Returned module object is not object');
-					notEqual(style1.cssLink, null, 'Link to style DOM element was not found');
-					equal(style1.cssLink.getAttribute('href'), 'app/style1.css', 'Link tag has wrong href value');
-					equal(window.getComputedStyle(document.body).position, 'relative', 'Loaded styles was not applied before callback');
-					equal(window.getComputedStyle(document.body).zIndex, 1, 'Loaded styles was not applied before callback');
-				});
 
 				test('Loading and executing code in sandbox', function() {
 					var instance = new AppView;

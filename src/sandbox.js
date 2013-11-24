@@ -1,9 +1,8 @@
 define('requirejs-sandbox', [
 	'requirejs-sandbox/logger',
 	'requirejs-sandbox/utils',
-	'requirejs-sandbox/patches',
-	'requirejs-sandbox/plugins/css'
-], function(console, utils, patches, cssPlugin) {
+	'requirejs-sandbox/patches'
+], function(console, utils, patches) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -14,7 +13,8 @@ define('requirejs-sandbox', [
 				requireMain: null,
 				requireConfig: {},
 				sandboxExport: {},
-				patch: []
+				patch: [],
+				plugins: []
 			}, options);
 
 			// Создаем свойства класса.
@@ -242,8 +242,29 @@ define('requirejs-sandbox', [
 					// Конфигурируем загрузчик на основе переданных параметров.
 					this.api.require.config(this.options.requireConfig);
 
-					// Создаем плугин для загрузки css.
-					cssPlugin.create(this.api.define);
+					// Создаем список плугинов, что указаны в конфиге
+					for (var i = 0, length = this.options.plugins.length; i < length; i++) {
+						var pluginObj = this.options.plugins[i],
+							pluginName = '' + pluginObj.name,
+							skipThisPlugin = false;
+
+						if (!pluginName) {
+							console.error('Registered plugin has no name');
+							skipThisPlugin = true;
+						}
+
+						if (typeof(pluginObj.handler) !== 'function') {
+							console.error('Registered plugin handler is not a function');
+							skipThisPlugin = true;
+						}
+
+						console.debug('Successfuly registered plugin with name: ' + pluginName);
+
+						// Регистрируем плугин.
+						if (!skipThisPlugin) {
+							this.api.define(pluginName, pluginObj.handler);
+						}
+					}
 
 					console.debug('Executing module callback');
 
