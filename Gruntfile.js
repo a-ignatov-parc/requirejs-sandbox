@@ -1,4 +1,4 @@
-var fs = require('fs'),
+var fileSystem = require('fs'),
 	pkg = require('./package.json'),
 	bannerTemplate = '/**\n' +
 		' * <%= pkg.name %> - v<%= pkg.version %> (build date: <%= grunt.template.today("dd/mm/yyyy") %>)\n' +
@@ -56,6 +56,9 @@ var fs = require('fs'),
 				options: {
 					banner: bannerTemplate
 				}
+			},
+			plugins: {
+				files : {}
 			}
 		},
 		qunit: {
@@ -90,6 +93,20 @@ var fs = require('fs'),
 		}
 	};
 
+// Создаем список плугинов для их минификации.
+fileSystem
+	.readdirSync(pkg.pluginPath)
+	.forEach(function(file) {
+	var path = pkg.pluginPath + file,
+		rawFileName = file.split('.'),
+		fileExtension = rawFileName.pop(),
+		fileName = rawFileName.join('');
+
+	if (file.indexOf('._') !== 0 && !fileSystem.statSync(path).isDirectory()) {
+		gruntConfig.uglify.plugins.files[pkg.buildPath + 'plugins/' + fileName + '.min.' + fileExtension] = path;
+	}
+});
+
 module.exports = function(grunt) {
 	// Инициализируем конфиг
 	grunt.initConfig(gruntConfig);
@@ -112,7 +129,7 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
-	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify:manager', 'concat:dev', 'qunit']);
-	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:manager', 'concat:dev']);
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify:manager', 'concat:dev', 'qunit']);
+	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify', 'concat:dev', 'qunit']);
+	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify', 'concat:dev']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify', 'concat:dev', 'qunit']);
 };
