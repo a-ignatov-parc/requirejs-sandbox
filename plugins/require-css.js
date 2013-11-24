@@ -81,11 +81,14 @@ define('requirejs-css', function() {
 			};
 		};
 
-	// Регистрируем основной плагин.
-	define('css', pluginHandler);
-
 	return {
 		name: 'css',
 		handler: pluginHandler
 	};
+});
+
+
+// Регистрируем основной плагин.
+require(['requirejs-css'], function(requirejsCss) {
+	define(requirejsCss.name, requirejsCss.handler);
 });
