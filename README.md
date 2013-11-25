@@ -27,7 +27,7 @@ Demo experiments list of requirejs-sandbox features:
 
 Manager is implemented as amd module and can be easily used with [require.js](http://requirejs.org/)
 
-```
+```javascript
 require(['requirejs-sandbox'], function(requrejsSandbox) {
     // code here
 });
@@ -63,114 +63,130 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 	
 		> Link to require.js to be used in sandbox. You should use link to require.js same as in parent page. If you have correctly configured cache than file won't be loaded twice.
 		
-			requrejsSandbox.set('TestApp', {
-				requireUrl: '/static/js/libs/require.min.js'
-			});		
+		```javascript
+		requrejsSandbox.set('TestApp', {
+			requireUrl: '/static/js/libs/require.min.js'
+		});
+		```
 						
 	* **requireMain** *Type: String*
 	
 		> If you have require start script you should point link to it in this parameter.
 		
-			requrejsSandbox.set('TestApp', {
-				requireUrl: '/static/js/libs/require.min.js',
-				requireMain: 'app/main'
-			});		
+		```javascript
+		requrejsSandbox.set('TestApp', {
+			requireUrl: '/static/js/libs/require.min.js',
+			requireMain: 'app/main'
+		});
+		```
 			
 	* **requireConfig** *Type: Object*
 	
 		> If you don't use start script to configure require.js in sandbox you can do this setting config in this parameter.
 		
-			requrejsSandbox.set('TestApp', {
-				requireUrl: '/static/js/libs/require.min.js',
-				requireConfig: {
-					baseUrl: 'app',
-					paths: {
-						'backbone': '/static/js/libs/backbone',
-						'jquery': '/static/js/libs/jquery/jquery.min',
-						'underscore': '/static/js/libs/underscore.min'
+		```javascript
+		requrejsSandbox.set('TestApp', {
+			requireUrl: '/static/js/libs/require.min.js',
+			requireConfig: {
+				baseUrl: 'app',
+				paths: {
+					'backbone': '/static/js/libs/backbone',
+					'jquery': '/static/js/libs/jquery/jquery.min',
+					'underscore': '/static/js/libs/underscore.min'
+				},
+				shim: {
+					underscore: {
+						exports: '_'
 					},
-					shim: {
-						underscore: {
-							exports: '_'
-						},
-						backbone: {
-							deps: ['underscore', 'jquery'],
-							exports: 'Backbone'
-						}
+					backbone: {
+						deps: ['underscore', 'jquery'],
+						exports: 'Backbone'
 					}
 				}
-			});
+			}
+		});
+		```
 			
 	* **sandboxLinks** *Type: Object*
 	
 		> If you need to link varialbles from main page to sandbox you can specify them in this parameter. Defined key will be available in sandbox as `window.key`.
 		
-			requrejsSandbox.set('TestApp', {
-				requireUrl: '/static/js/libs/require.min.js',
-				requireConfig: {
-					baseUrl: 'app'
-				},
-				sandboxLinks: {
-					myObject: {
-						a: 1
-					}
+		```javascript
+		requrejsSandbox.set('TestApp', {
+			requireUrl: '/static/js/libs/require.min.js',
+			requireConfig: {
+				baseUrl: 'app'
+			},
+			sandboxLinks: {
+				myObject: {
+					a: 1
 				}
-			});
+			}
+		});
+		```
 			
 		After specifying links in `sandboxLinks` you can access them in sandbox like:
 		
-			alert(window.myObject.a);
+		```javascript
+		alert(window.myObject.a);
+		```
 			
 		or
 		
-			requrejsSandbox.set('TestApp', {
-				debug: true, // Enabling extended callback api to be able access sandboxManager object
-				requireUrl: '/static/js/libs/require.min.js',
-				requireConfig: {
-					baseUrl: 'app'
-				},
-				sandboxLinks: {
-					myObject: {
-						a: 1
-					}
-				},
-				callback: function(require) {
-					alert(this.sandboxManager.sandbox.myObject.a);
+		```javascript
+		requrejsSandbox.set('TestApp', {
+			debug: true, // Enabling extended callback api to be able access sandboxManager object
+			requireUrl: '/static/js/libs/require.min.js',
+			requireConfig: {
+				baseUrl: 'app'
+			},
+			sandboxLinks: {
+				myObject: {
+					a: 1
 				}
-			});
+			},
+			callback: function(require) {
+				alert(this.sandboxManager.sandbox.myObject.a);
+			}
+		});
+		```
 			
 	* **patch** *Type: Array of strings*
 	
 		> List of patches' names to be applied to sandbox environment. Patches are required to configure libs in sandbox work transperently with main page objects (`window`, `document` objects etc.).
 		
-			requrejsSandbox.set('TestApp', {
-				requireUrl: '/static/js/libs/require.min.js',
-				requireMain: 'app/main',
-				patch: ['jquery']
-			});
+		```javascript
+		requrejsSandbox.set('TestApp', {
+			requireUrl: '/static/js/libs/require.min.js',
+			requireMain: 'app/main',
+			patch: ['jquery']
+		});
+		```
 			
 	* **plugins** *Type: Array of objects*
 	
 		> You can specify plugins that will be available in sandbox requirejs object. Setted objects will be passed through `define` function and create plugins with specified `name` and `handler`
 
-			var plugin = {
-				name: 'css',
-				handler: function() {
-					return {
-						load: function(name, req, onload) {
-							onload({
-								// module content
-							});
-						}
+		```javascript
+		var plugin = {
+			name: 'css',
+			handler: function() {
+				return {
+					load: function(name, req, onload) {
+						onload({
+							// module content
+						});
 					}
 				}
-			};
-			
-			requrejsSandbox.set('TestApp', {
-				requireUrl: '/static/js/libs/require.min.js',
-				requireMain: 'app/main',
-				plugins: [plugin]
-			});
+			}
+		};
+		
+		requrejsSandbox.set('TestApp', {
+			requireUrl: '/static/js/libs/require.min.js',
+			requireMain: 'app/main',
+			plugins: [plugin]
+		});
+		```
 
 ---
 
