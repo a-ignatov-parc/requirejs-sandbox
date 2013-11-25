@@ -123,7 +123,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	requrejsSandbox.set('ExportsTest', {
 		debug: true,
 		requireUrl: '../static/js/libs/require.min.js',
-		sandboxExport: exports,
+		sandboxLinks: exports,
 		callback: function() {
 			var sandboxApi = this;
 

@@ -12,7 +12,7 @@ define('requirejs-sandbox', [
 				requireUrl: null,
 				requireMain: null,
 				requireConfig: {},
-				sandboxExport: {},
+				sandboxLinks: {},
 				patch: [],
 				plugins: []
 			}, options);
@@ -53,9 +53,9 @@ define('requirejs-sandbox', [
 				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
 
 				// Прокидываем экспорты в песочницу.
-				for (var key in this.options.sandboxExport) {
-					if (this.options.sandboxExport.hasOwnProperty(key)) {
-						sandbox[key] = this.options.sandboxExport[key];
+				for (var key in this.options.sandboxLinks) {
+					if (this.options.sandboxLinks.hasOwnProperty(key)) {
+						sandbox[key] = this.options.sandboxLinks[key];
 					}
 				}
 
