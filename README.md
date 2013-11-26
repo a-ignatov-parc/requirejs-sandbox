@@ -167,14 +167,16 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 	
 		> You can specify plugins that will be available in sandbox requirejs object. Setted objects will be passed through `define` function and create plugins with specified `name` and `handler`
 
-		```javascript
+		```javascript		
 		var plugin = {
-			name: 'css',
+			name: 'plugin_name',
 			handler: function() {
 				return {
 					load: function(name, req, onload) {
 						onload({
-							// module content
+							myObject: {
+								a: 1
+							}
 						});
 					}
 				}
@@ -184,10 +186,39 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 		requrejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js',
 			requireMain: 'app/main',
-			plugins: [plugin]
+			plugins: [plugin],
+			callback: function(require) {
+				require(['plugin_name!module'], function(moduleData) {
+					alert(moduleData.myObject.a);
+				});
+			}
 		});
 		```
+	
+	* **callback** *Type: Function*
+	
+		> You can specify callback handler for sandbox creating process. When sandbox will be created it will execute passed function with 2 arguments: `sandbox.require` and `sandbox.define` functions. 
+		
+		`this` will be an api object that contains next fields:
+		
+		* **name** – Name given to sandbox instance on its creation;
 
+		* **require** – Link to require function inside sandbox;
+
+		* **define** – Link to define function inside sandbox;
+
+		* **status** – Sandbox status
+		
+			> Can be set to:
+
+			> 1. `-1` – Sandbox is not created;
+			> 1. `0` – Sandbox is created without error and functioning normally;
+			> 1. `>1` – Sandbox is broken and not able to work any more. Integer values > 0 can be interpreted as error code.
+		
+		* **destroy** – Method to destroy sandbox instance;
+		
+		* **sandboxManager** (extended debug api) – Link to manager instance of created sandbox.
+		
 ---
 
 Create and returns sandbox with specified name and params.
