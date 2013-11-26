@@ -1,6 +1,6 @@
 # Description
 
-Sandbox manager for [require.js](http://requirejs.org/) that allows to multiple apps without theirs execution scope intersection. Can be helpfull when you need to run your app with other apps and you don't want to change your app codebase. Just setup and run.
+Sandbox manager for [require.js](http://requirejs.org/) that allows to run multiple apps without their's execution scope intersections. Can be helpful when you need to run your app with other apps and you don't want to change your app codebase. Just setup and run.
 
 ---
 
@@ -8,20 +8,19 @@ Sandbox manager for [require.js](http://requirejs.org/) that allows to multiple 
 
 # Use cases
 
-`require-sandbox` can be used to:
+`require-sandbox` can be used for:
 
-1. Avoid conflicts with page's libs and scripts by running widgets in sandboxed enviroment with full access to parent page;
+1. Avoid conflicts with page's libs and scripts by running widgets in sandboxed environment with full access to parent page;
 1. Create widgets that can be used as standalone applications or injected in user's pages without any changes in codebase;
 1. Run simultaneous widgets using different lib versions. No problems to run widgets written with [jQuery](http://jquery.com/) `1.4.x` and `2.0.x` together;
 	
 	> For example see demo #2
+
 1. Run simultaneous widgets with different conflicting libs as dependencies. You can easily run widgets written with [jQuery](http://jquery.com/) and [MooTools](http://mootools.net/) on one page without worring to have conflicts;
 
 # Demos
 
-Demo experiments list of requirejs-sandbox features:
-
-1. [Basic demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/basic/) – loading app through config manager, css loading and working transits;
+1. [Basic demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/basic/) – loading app through config manager, css loading and working with patches;
 1. [Multiple sandboxes demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/multiple-jquery/) – loading multiple [jQuery](http://jquery.com/) versions in different sandboxes with code execution without intercepting main page scope;
 
 # API
@@ -110,7 +109,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 			
 	* **sandboxLinks** *Type: Object*
 	
-		> If you need to link varialbles from main page to sandbox you can specify them in this parameter. Defined key will be available in sandbox as `window.key`.
+		> If you need to link variables from main page to sandbox you can specify them as hash object with links. Defined key will be available in sandbox as `window.key`.
 		
 		```javascript
 		requrejsSandbox.set('TestApp', {
@@ -154,7 +153,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 			
 	* **patch** *Type: Array of strings*
 	
-		> List of patches' names to be applied to sandbox environment. Patches are required to configure libs in sandbox work transperently with main page objects (`window`, `document` objects etc.).
+		> List of patches' names to be applied to sandbox environment. Patches are required to configure libs in sandbox work transparently with main page objects (`window`, `document` objects etc.).
 		
 		```javascript
 		requrejsSandbox.set('TestApp', {
@@ -166,7 +165,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 			
 	* **plugins** *Type: Array of objects*
 	
-		> You can specify plugins that will be available in sandbox requirejs object. Setted objects will be passed through `define` function and create plugins with specified `name` and `handler`
+		> You can specify plugins that will be available in sandbox requirejs object. Listed objects will be passed through `define` function and create plugins with specified `name` and `handler`
 
 		```javascript		
 		var plugin = {
