@@ -13,6 +13,7 @@ Sandbox manager for [require.js](http://requirejs.org/) that allows to multiple 
 1. Avoid conflicts with page's libs and scripts by running widgets in sandboxed enviroment with full access to parent page;
 1. Create widgets that can be used as standalone applications or injected in user's pages without any changes in codebase;
 1. Run simultaneous widgets using different lib versions. No problems to run widgets written with [jQuery](http://jquery.com/) `1.4.x` and `2.0.x` together;
+	
 	> For example see demo #2
 1. Run simultaneous widgets with different conflicting libs as dependencies. You can easily run widgets written with [jQuery](http://jquery.com/) and [MooTools](http://mootools.net/) on one page without worring to have conflicts;
 
