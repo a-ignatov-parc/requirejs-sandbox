@@ -1,6 +1,6 @@
 # Description
 
-Sandbox manager for [require.js](http://requirejs.org/) that allows to run multiple apps without their's execution scope intersections. Can be helpful when you need to run your app with other apps and you don't want to change your app codebase. Just setup and run.
+Sandbox manager for [require.js](http://requirejs.org/) that allows to run multiple apps without execution scope intersections. Can be helpful when you need to run your app with other apps and you don't want to change your app's codebase. Just setup and run.
 
 ---
 
@@ -12,11 +12,11 @@ Sandbox manager for [require.js](http://requirejs.org/) that allows to run multi
 
 1. Avoid conflicts with page's libs and scripts by running widgets in sandboxed environment with full access to parent page;
 1. Create widgets that can be used as standalone applications or injected in user's pages without any changes in codebase;
-1. Run simultaneous widgets using different lib versions. No problems to run widgets written with [jQuery](http://jquery.com/) `1.4.x` and `2.0.x` together;
+1. Run widgets simultaneous using different lib versions. No problems to run widgets written with [jQuery](http://jquery.com/) `1.4.x` and `2.0.x` together;
 	
 	> For example see demo #2
 
-1. Run simultaneous widgets with different conflicting libs as dependencies. You can easily run widgets written with [jQuery](http://jquery.com/) and [MooTools](http://mootools.net/) on one page without worring to have conflicts;
+1. Run widgets simultaneous with different conflicting libs as dependencies. You can easily run widgets written with [jQuery](http://jquery.com/) and [MooTools](http://mootools.net/) on one page without worring to have conflicts;
 
 # Demos
 
