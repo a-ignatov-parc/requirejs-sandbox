@@ -1,6 +1,6 @@
 # Description
 
-Sandbox manager for [require.js](http://requirejs.org/) that allows to run multiple apps without execution scope intersections. Can be helpful when you need to run your app with other apps and you don't want to change your app's codebase. Just setup and run.
+Sandbox manager for [require.js](http://requirejs.org/) allows user to run multiple apps without scope intersection issues. Sandbox can be helpful when running your app with other apps and you don't want to change your app's codebase. You can just setup and run.
 
 ---
 
@@ -10,13 +10,13 @@ Sandbox manager for [require.js](http://requirejs.org/) that allows to run multi
 
 `require-sandbox` can be used for:
 
-1. Avoid conflicts with page's libs and scripts by running widgets in sandboxed environment with full access to parent page;
-1. Create widgets that can be used as standalone applications or injected in user's pages without any changes in codebase;
-1. Run widgets simultaneous using different lib versions. No problems to run widgets written with [jQuery](http://jquery.com/) `1.4.x` and `2.0.x` together;
-	
+1. Avoiding conflicts with page's libs and scripts by running widgets in a sandboxed environment with full access to the parent page.
+1. Creating widgets that can be used as standalone applications or injected in the user's pages without any changes in the codebase.
+1. Running widgets simultaneously using different lib versions. there are no problems while running widgets written with [jQuery](http://jquery.com/) `1.4.x` and `2.0.x` together.
+
 	> For example see demo #2
 
-1. Run widgets simultaneous with different conflicting libs as dependencies. You can easily run widgets written with [jQuery](http://jquery.com/) and [MooTools](http://mootools.net/) on one page without worring to have conflicts;
+1. Running widgets simultaneously with different conflicting libs as dependencies. You can easily run widgets written with [jQuery](http://jquery.com/) and [MooTools](http://mootools.net/) on one page without worrying about incompatibilities.
 
 # Demos
 
@@ -25,7 +25,7 @@ Sandbox manager for [require.js](http://requirejs.org/) that allows to run multi
 
 # API
 
-Manager is implemented as amd module and can be easily used with [require.js](http://requirejs.org/)
+Manager is implemented as an AMD module and can be easily used with [require.js](http://requirejs.org/)
 
 ```javascript
 require(['requirejs-sandbox'], function(requrejsSandbox) {
@@ -33,7 +33,7 @@ require(['requirejs-sandbox'], function(requrejsSandbox) {
 });
 ```
 
-Module has public api:
+The module has a public api:
 
 ###.get( name )
 
@@ -43,7 +43,7 @@ Module has public api:
 
 ---
 
-Returns sandbox instance with requested name if it was created. Otherwise returns `undefined`
+Returns sandbox instance with the requested name if it was created. Otherwise returns `undefined`
 
 ###.set( name, params )
 
@@ -57,11 +57,11 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 	
 	* **debug** *Type: Boolean* (default: `false`)
 		
-		> Enables debug mode that provide extended api for callback arguments.
+		> Enables the debug mode that provides extended api for callback arguments.
 	
 	* **requireUrl** *Type: String*
 	
-		> Link to require.js to be used in sandbox. You should use link to require.js same as in parent page. If you have correctly configured cache than file won't be loaded twice.
+		> Link to require.js to be used in sandbox. You should use link to require.js the same as in the parent page. If you have correctly configured the cache, than the file won't be loaded twice.
 		
 		```javascript
 		requrejsSandbox.set('TestApp', {
@@ -71,7 +71,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 						
 	* **requireMain** *Type: String*
 	
-		> If you have require start script you should point link to it in this parameter.
+		> If you have require.js start script you should point link to it in this parameter.
 		
 		```javascript
 		requrejsSandbox.set('TestApp', {
@@ -109,7 +109,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 			
 	* **sandboxLinks** *Type: Object*
 	
-		> If you need to link variables from main page to sandbox you can specify them as hash object with links. Defined key will be available in sandbox as `window.key`.
+		> If you need to link variables from the main page to sandbox you can specify them as hash object with links. The defined key will be available in sandbox as `window.key`.
 		
 		```javascript
 		requrejsSandbox.set('TestApp', {
@@ -153,7 +153,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 			
 	* **patch** *Type: Array of strings*
 	
-		> List of patches' names to be applied to sandbox environment. Patches are required to configure libs in sandbox work transparently with main page objects (`window`, `document` objects etc.).
+		> The list of patch names to be applied to sandbox's environment. Patches are required to configure libs in sandbox working transparently with main page objects (`window`, `document` objects etc.).
 		
 		```javascript
 		requrejsSandbox.set('TestApp', {
@@ -165,7 +165,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 			
 	* **plugins** *Type: Array of objects*
 	
-		> You can specify plugins that will be available in sandbox requirejs object. Listed objects will be passed through `define` function and create plugins with specified `name` and `handler`
+		> You can specify plugins that will be available in sandbox `requirejs` object. Listed objects will be passed through `define` function and create plugins with specified `name` and `handler`
 
 		```javascript		
 		var plugin = {
@@ -221,7 +221,7 @@ Returns sandbox instance with requested name if it was created. Otherwise return
 		
 ---
 
-Create and returns sandbox with specified name and params.
+Create and returns sandbox with the specified name and params.
 
 ###.destroy( name )
 
@@ -231,7 +231,7 @@ Create and returns sandbox with specified name and params.
 	
 ---
 
-Destroy sandbox instance and free all used resources.
+Destroys the sandbox instance and frees all used resources.
 
 # How to build your own requirejs-sandbox
 
