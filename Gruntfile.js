@@ -99,7 +99,7 @@ var fileSystem = require('fs'),
 				options: {
 					baseUrl: pkg.srcPath,
 					name: 'sandbox-manager',
-					optimize: "none",
+					optimize: 'none',
 					out: pkg.buildPath + 'requirejs-sandbox.js',
 					onBuildWrite: getModulePreprocessor()
 				}
@@ -108,15 +108,26 @@ var fileSystem = require('fs'),
 				options: {
 					baseUrl: pkg.srcPath,
 					name: 'sandbox-manager',
-					optimize: "uglify2",
+					optimize: 'uglify2',
 					out: pkg.buildPath + 'requirejs-sandbox.min.js',
 					onBuildRead: getModulePreprocessor(true),
 					onBuildWrite: getModulePreprocessor()
 				}
 			}
 		},
+		usebanner: {
+			banners: {
+				options: {
+					linebreak: false,
+					banner: bannerTemplate
+				},
+				files: {
+					src: [pkg.buildPath + 'requirejs-sandbox.js', pkg.buildPath + 'requirejs-sandbox.min.js']
+				}
+			}
+		},
 		jshint: {
-			lint: [pkg.srcPath + '**/*.js', pkg.pluginPath + '**/*.js'],
+			lint: ['Gruntfile.js', pkg.srcPath + '**/*.js', pkg.pluginPath + '**/*.js'],
 			options: {
 				indent: 4,
 				boss: true, // Позволяет делать присвоение в условиях `if (a = true) { ... }`
@@ -170,6 +181,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-bumpup');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-banner');
 
 	// Регистрируем кастомные таски
 	grunt.registerTask('updatepkg', 'Update pkg version after bumpup.', function() {
@@ -180,7 +192,7 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
-	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'qunit']);
-	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify']);
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'qunit']);
+	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'usebanner', 'qunit']);
+	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
 };

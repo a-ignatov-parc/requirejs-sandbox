@@ -1,7 +1,7 @@
 {
   "name": "requrejs-sandbox",
-  "description": "Sandbox manager for requre.js to run dedicated apps",
-  "version": "0.3.0-67",
+  "description": "Sandbox manager for require.js allows user to run multiple apps without scope intersection issues",
+  "version": "0.3.0-70",
   "author": {
     "name": "Anton Ignatov",
     "web": "https://github.com/a-ignatov-parc"
@@ -41,7 +41,8 @@
     "grunt-contrib-qunit": "0.2.x",
     "grunt-contrib-stylus": "0.7.x",
     "grunt-bumpup": "0.2.x",
-    "grunt-contrib-requirejs": "0.4.x"
+    "grunt-contrib-requirejs": "0.4.x",
+    "grunt-banner": "0.2.x"
   },
   "srcPath": "src/",
   "testPath": "tests/",
