@@ -1,5 +1,5 @@
-define('requirejs-sandbox/patches/jquery', [
-	'requirejs-sandbox/logger'
+define([
+	'logger/logger'
 ], function(console) {
 	return {
 		// Имя модуля используемое в require.js.

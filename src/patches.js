@@ -1,5 +1,5 @@
-define('requirejs-sandbox/patches', [
-	'requirejs-sandbox/patches/jquery'
+define([
+	'patches/jquery'
 ], function() {
 	var patches = {};
 
