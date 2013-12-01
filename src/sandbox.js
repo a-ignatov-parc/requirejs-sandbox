@@ -12,9 +12,10 @@ define('requirejs-sandbox', [
 				requireUrl: null,
 				requireMain: null,
 				requireConfig: {},
-				sandboxExport: {},
+				sandboxLinks: {},
 				patch: [],
-				plugins: []
+				plugins: [],
+				callback: null
 			}, options);
 
 			// Создаем свойства класса.
@@ -26,10 +27,10 @@ define('requirejs-sandbox', [
 			// 
 			// * `-1` – Песочница не создана.
 			// 
-			// * `0` – Песочница создана с ошибкой. Дальнейшая работа с такой песочницей не 
-			// возможна.
+			// * `0` – Песочница создана без ошибок.
 			// 
-			// * `1` – Песочница создана без ошибок.
+			// * `1` – Песочница создана с ошибкой. Дальнейшая работа с такой песочницей не 
+			// возможна.
 			this.api = {
 				name: this.options.name,
 				require: null,
@@ -53,9 +54,9 @@ define('requirejs-sandbox', [
 				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
 
 				// Прокидываем экспорты в песочницу.
-				for (var key in this.options.sandboxExport) {
-					if (this.options.sandboxExport.hasOwnProperty(key)) {
-						sandbox[key] = this.options.sandboxExport[key];
+				for (var key in this.options.sandboxLinks) {
+					if (this.options.sandboxLinks.hasOwnProperty(key)) {
+						sandbox[key] = this.options.sandboxLinks[key];
 					}
 				}
 
@@ -188,7 +189,7 @@ define('requirejs-sandbox', [
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = this.sandbox.sandboxApi.require = sandbox.require;
 					this.api.define = this.sandbox.sandboxApi.define = sandbox.define;
-					this.api.status = this.sandbox.sandboxApi.status = 1;
+					this.api.status = this.sandbox.sandboxApi.status = 0;
 
 					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
 					if (this.options.debug) {
@@ -289,7 +290,7 @@ define('requirejs-sandbox', [
 				// 
 				// А пока ничего не реализовано вызываем колбек без передеча ссылки на require.
 				// Если колбек не объявлен, то выкидываем ошибку.
-				this.api.status = this.sandbox.sandboxApi.status = 0;
+				this.api.status = this.sandbox.sandboxApi.status = 1;
 
 				if (typeof(this.options.callback) === 'function') {
 					this.options.callback.call(this.api);
