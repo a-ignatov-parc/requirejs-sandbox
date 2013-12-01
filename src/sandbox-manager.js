@@ -1,7 +1,7 @@
-define('requirejs-sandbox', [
-	'requirejs-sandbox/logger',
-	'requirejs-sandbox/utils',
-	'requirejs-sandbox/patches'
+define([
+	'logger/logger',
+	'helpers/utils',
+	'patches'
 ], function(console, utils, patches) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {

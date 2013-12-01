@@ -7,6 +7,56 @@ var fileSystem = require('fs'),
 		' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
 		' * Licensed MIT\n' +
 		' */\n',
+	dependenciesRegex = /define\(\[([^\]]+)\]/,
+	processedDependenciesRegex = /define\(['"][^'"]+['"],\s?\[([^\]]+)\]/,
+	getModulePreprocessor = function(isBeforeRead) {
+		return function(moduleName, path, contents) {
+			var match = contents.match(isBeforeRead ? dependenciesRegex : processedDependenciesRegex) || [],
+				matchedDeps = match[1],
+				deps = matchedDeps ? matchedDeps
+					.replace(/\n?\t?/g, '')
+					.replace(/['"]/g, '')
+					.split(',') : false,
+				bodyStartIndex = contents.indexOf('function'),
+				processedContent = 'define(';
+
+			if (!isBeforeRead) {
+				processedContent += '\'';
+
+				if (moduleName == 'sandbox-manager') {
+					processedContent += 'requirejs-sandbox';
+				} else {
+					processedContent += 'requirejs-sandbox/' + moduleName;
+				}
+				processedContent += '\'';
+			}
+
+			if (deps) {
+				if (isBeforeRead) {
+					processedContent += '[';
+				} else {
+					processedContent += ',[';
+				}
+
+				for (var i = 0, length = deps.length; i < length; i++) {
+					if (i) {
+						processedContent += ',';
+					}
+
+					if (isBeforeRead) {
+						processedContent += '\'' + (deps[i] == 'logger/logger' ? 'logger/fake' : deps[i]) + '\'';
+					} else {
+						processedContent += '\'requirejs-sandbox/' + deps[i] + '\'';
+					}
+				}
+				processedContent += '],';
+			} else if (!isBeforeRead) {
+				processedContent += ',';
+			}
+			processedContent += contents.substr(bodyStartIndex);
+			return processedContent;
+		};
+	},
 	gruntConfig = {
 		pkg: pkg,
 		bumpup: {
@@ -36,33 +86,34 @@ var fileSystem = require('fs'),
 				}
 			}
 		},
-		concat: {
-			dev: {
-				src: [pkg.srcPath + '*.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/logger.js'],
-				dest: pkg.buildPath + 'requirejs-sandbox.js',
-				options: {
-					banner: bannerTemplate
-				}
-			},
-			prod: {
-				src: [pkg.srcPath + '*.js', pkg.srcPath + 'patches/*.js', pkg.srcPath + 'helpers/*.js', pkg.srcPath + 'logger/fake.js'],
-				dest: pkg.buildPath + 'requirejs-sandbox.js'
-			}
-		},
 		uglify: {
-			manager: {
-				src: pkg.buildPath + 'requirejs-sandbox.js',
-				dest: pkg.buildPath + 'requirejs-sandbox.min.js',
-				options: {
-					banner: bannerTemplate
-				}
-			},
 			plugins: {
 				files : {}
 			}
 		},
 		qunit: {
 			files: [pkg.testPath + '**/*.html']
+		},
+		requirejs: {
+			dev: {
+				options: {
+					baseUrl: pkg.srcPath,
+					name: 'sandbox-manager',
+					optimize: "none",
+					out: pkg.buildPath + 'requirejs-sandbox.js',
+					onBuildWrite: getModulePreprocessor()
+				}
+			},
+			prod: {
+				options: {
+					baseUrl: pkg.srcPath,
+					name: 'sandbox-manager',
+					optimize: "uglify2",
+					out: pkg.buildPath + 'requirejs-sandbox.min.js',
+					onBuildRead: getModulePreprocessor(true),
+					onBuildWrite: getModulePreprocessor()
+				}
+			}
 		},
 		jshint: {
 			lint: [pkg.srcPath + '**/*.js', pkg.pluginPath + '**/*.js'],
@@ -112,13 +163,13 @@ module.exports = function(grunt) {
 	grunt.initConfig(gruntConfig);
 
 	// Подключаем таски
-	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-bumpup');
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
 
 	// Регистрируем кастомные таски
 	grunt.registerTask('updatepkg', 'Update pkg version after bumpup.', function() {
@@ -129,7 +180,7 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
-	grunt.registerTask('travis', ['jshint', 'concat:prod', 'uglify', 'concat:dev', 'qunit']);
-	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify', 'concat:dev']);
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'concat:prod', 'uglify', 'concat:dev', 'qunit']);
+	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'qunit']);
+	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify']);
+	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'qunit']);
 };

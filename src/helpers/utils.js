@@ -1,5 +1,5 @@
 /* jshint -W089 */
-define('requirejs-sandbox/utils', function() {
+define(function() {
 	var ArrayProto = Array.prototype,
 		ObjProto = Object.prototype,
 		hasOwnProperty = ObjProto.hasOwnProperty,

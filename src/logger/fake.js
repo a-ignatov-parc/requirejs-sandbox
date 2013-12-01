@@ -1,4 +1,4 @@
-define('requirejs-sandbox/logger', function() {
+define(function() {
 	var namespace = 'logger';
 
 	return {
