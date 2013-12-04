@@ -1,0 +1,18 @@
+{
+	"indent": 4,
+	"boss": true,
+	"undef": true,
+	"curly": true,
+	"forin": true,
+	"unused": true,
+	"newcap": true,
+	"eqnull": true,
+	"noempty": true,
+	"latedef": true,
+	"camelcase": true,
+	"quotmark": "single",
+	"globals": {
+		"module": true,
+		"require": true
+	}
+}

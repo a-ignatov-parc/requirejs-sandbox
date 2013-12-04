@@ -1,0 +1,25 @@
+{
+	"indent": 4,
+	"boss": true,
+	"undef": true,
+	"curly": true,
+	"forin": true,
+	"newcap": true,
+	"eqnull": true,
+	"browser": true,
+	"noempty": true,
+	"latedef": true,
+	"camelcase": true,
+	"quotmark": "single",
+	"globals": {
+		"define": true,
+		"requirejs": true,
+		"test": true,
+		"QUnit": true,
+		"equal": true,
+		"notEqual": true,
+		"strictEqual": true,
+		"start": true,
+		"stop": true
+	}
+}

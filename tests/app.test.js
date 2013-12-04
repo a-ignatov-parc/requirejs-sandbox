@@ -17,7 +17,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				QUnit.start();
 
 				test('Loading and executing code in sandbox', function() {
-					var instance = new AppView;
+					var instance = new AppView();
 
 					equal(typeof(AppView), 'function', 'Loaded app has not returned constructor');
 					equal(typeof(instance), 'object', 'App has wrong instance');

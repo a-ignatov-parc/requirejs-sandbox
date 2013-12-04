@@ -24,7 +24,7 @@ requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requ
 							success: true
 						});
 					}
-				}
+				};
 			}
 		}],
 		requireConfig: {
@@ -40,7 +40,7 @@ requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requ
 						equal(error.requireModules[0], 'custom_plugin', 'Returned module object is not object');
 					});
 				}
-			}
+			};
 
 			require(['css!style2'], function(style) {
 				QUnit.start();

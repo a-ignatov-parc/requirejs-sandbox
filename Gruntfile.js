@@ -127,29 +127,28 @@ var fileSystem = require('fs'),
 			}
 		},
 		jshint: {
-			lint: ['Gruntfile.js', pkg.srcPath + '**/*.js', pkg.pluginPath + '**/*.js'],
-			options: {
-				indent: 4,
-				boss: true, // Позволяет делать присвоение в условиях `if (a = true) { ... }`
-				undef: true, // Ругается на необъявленные переменные
-				curly: true, // Обязует ставить { } при работе с if, for и т.д.
-				forin: true, // Обязует использовать hasOwnProperty при работе с for in
-				unused: true, // Ругается если переменная объявлена, но никогда не использовалась
-				newcap: true, // Обязует все конструкторы называть с большой Буквы
-				eqnull: true, // Отключает предупреждения при нестрогом сравнении с null (== null) 
-				jquery: true, // Не ругается на jquery
-				browser: true, // Не ругается на хостовые переменные браузера
-				noempty: true, // Ругается если обнаружен пустой блок в js
-				latedef: true, // Запрещает работать с переменными до того, как они были объявлены
-				camelcase: true, // Все переменные должны быть только в camelCase
-				quotmark: 'single', // Все ковычки должны быть одинарными
-				scripturl: true, // Позволяет в урле использовать конструкции типа `javascript:0`
-				'-W030': false, // Expected an assignment or function call and instead saw an expression
-				globals: {
-					module: true,
-					define: true,
-					require: true,
-					console: true
+			grunt: {
+				src: 'Gruntfile.js',
+				options: {
+					jshintrc: '.jshintrc'
+				}
+			},
+			src: {
+				src: pkg.srcPath + '**/*.js',
+				options: {
+					jshintrc: pkg.srcPath + '.jshintrc'
+				}
+			},
+			plugins: {
+				src: pkg.pluginPath + '**/*.js',
+				options: {
+					jshintrc: pkg.pluginPath + '.jshintrc'
+				}
+			},
+			tests: {
+				src: pkg.testPath + '*.js',
+				options: {
+					jshintrc: pkg.testPath + '.jshintrc'
 				}
 			}
 		}
@@ -164,7 +163,7 @@ fileSystem
 		fileExtension = rawFileName.pop(),
 		fileName = rawFileName.join('');
 
-	if (file.indexOf('._') !== 0 && !fileSystem.statSync(path).isDirectory()) {
+	if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
 		gruntConfig.uglify.plugins.files[pkg.buildPath + 'plugins/' + fileName + '.min.' + fileExtension] = path;
 	}
 });
