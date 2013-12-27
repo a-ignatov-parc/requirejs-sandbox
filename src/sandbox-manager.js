@@ -1,13 +1,14 @@
 define([
 	'logger/logger',
 	'helpers/utils',
-	'patches'
-], function(console, utils, patches) {
+	'patches',
+	'helpers/require'
+], function(console, utils, patches, requireResolver) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
-			this.options = utils.extend({
+			this.options = utils.defaults(options, {
 				debug: false,
 				requireUrl: null,
 				requireMain: null,
@@ -15,12 +16,14 @@ define([
 				sandboxLinks: {},
 				patch: [],
 				plugins: [],
-				callback: null
-			}, options);
+				success: function() {},
+				error: function() {}
+			});
 
 			// Создаем свойства класса.
 			this.iframe = null;
 			this.sandbox = null;
+			this.requireUrl = null;
 
 			// Создаем api объект песочницы.
 			// Список доступных статусов:
@@ -65,8 +68,17 @@ define([
 					parentWindow: window
 				});
 
-				// Создаем загрузчик в песочнице.
-				this.createLoader(sandbox);
+				// Резолвим ссылку на require.js для песочницы.
+				requireResolver.resolve(this.options, utils.bind(function(requireUrl) {
+					// Сохраняем зарезовленный урл и создаем загрузчик в песочнице.
+					this.requireUrl = requireUrl;
+					this.createLoader(sandbox);
+				}, this), utils.bind(function(errorMsg) {
+					// Если колбек не объявлен, то выкидываем ошибку.
+					this.api.status = this.sandbox.sandboxApi.status = 1;
+					this.options.error.call(this.api);
+					console.error(errorMsg);
+				}, this));
 			});
 			return this.api;
 		};
@@ -271,33 +283,14 @@ define([
 
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
-					if (typeof(this.options.callback) === 'function') {
-						this.options.callback.call(this.api, this.api.require, this.api.define);
-					}
+					this.options.success.call(this.api, this.api.require, this.api.define);
 				};
 
-			if (this.options.requireUrl) {
-				this.createScript(target, this.options.requireUrl, {
-					main: this.options.requireMain
-				}, utils.bind(loadHandler, this));
-			} else {
-				// [TODO] Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
-				// модуль.
-				// 
-				// Нужно для юзкейса, когда в странице куда встраивается виджет нет ни `require.js`
-				// ни пользователю не охото заморачиваться с ссылкам, но зато он может собрать 
-				// модуль с встроенным `require.js`.
-				// 
-				// А пока ничего не реализовано вызываем колбек без передеча ссылки на require.
-				// Если колбек не объявлен, то выкидываем ошибку.
-				this.api.status = this.sandbox.sandboxApi.status = 1;
+			// Вставляем с песочницу скрипт reuqire.js.
+			this.createScript(target, this.requireUrl, {
+				main: this.options.requireMain
+			}, utils.bind(loadHandler, this));
 
-				if (typeof(this.options.callback) === 'function') {
-					this.options.callback.call(this.api);
-				} else {
-					throw 'Unable to alocate require.js. Creating sandbox failed!';
-				}
-			}
 			console.debug('Creating loader inside specified target:', target);
 		}
 	};

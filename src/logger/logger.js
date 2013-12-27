@@ -56,6 +56,9 @@ define(function() {
 			setNamespace: function(ns) {
 				namespace = ns;
 			},
+			log: function() {
+				this.debug.apply(this, arguments);
+			},
 			debug: function() {
 				log(arguments, levels.debug);
 			},

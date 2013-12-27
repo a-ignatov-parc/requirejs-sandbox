@@ -6,6 +6,7 @@ define(function() {
 		setNamespace: function(ns) {
 			namespace = ns;
 		},
+		log: function() {},
 		debug: function() {},
 		info: function() {},
 		warn: function() {
