@@ -7,8 +7,11 @@ define([
 
 	return utils.defaults({
 		id: 'script',
-		resolve: function(options, onResolveHandler, onFailHandler) {
+		resolve: function(onResolve, onFail) {
 			if (this.state() == this.STATE_IDLE) {
+				// Регистрируем хендлеры.
+				this._setHandlers(onResolve, onFail);
+
 				console.debug(this.id + ' resolver: starting resolving');
 
 				utils.each(utils.scripts(), utils.bind(function(scriptNode) {
@@ -19,7 +22,7 @@ define([
 					}
 				}, this));
 			}
-			return this._hanldleResolver(onResolveHandler, onFailHandler);
+			return this._hanldleResolver();
 		}
 	}, abstract);
 });

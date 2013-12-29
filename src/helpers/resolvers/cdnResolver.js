@@ -7,9 +7,11 @@ define([
 		id: 'cdn',
 		_state: abstract.STATE_RESOLVED,
 		_resolvedUrl: '//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js',
-		resolve: function(options, onResolveHandler, onFailHandler) {
+		resolve: function(onResolve) {
+			// Регистрируем хендлеры.
+			this._setHandlers(onResolve);
 			console.debug(this.id + ' resolver: starting resolving');
-			return this._hanldleResolver(onResolveHandler, onFailHandler);
+			return this._hanldleResolver();
 		}
 	}, abstract);
 });

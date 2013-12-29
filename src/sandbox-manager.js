@@ -69,16 +69,19 @@ define([
 				});
 
 				// Резолвим ссылку на require.js для песочницы.
-				requireResolver.resolve(this.options, utils.bind(function(requireUrl) {
-					// Сохраняем зарезовленный урл и создаем загрузчик в песочнице.
-					this.requireUrl = requireUrl;
-					this.createLoader(sandbox);
-				}, this), utils.bind(function(errorMsg) {
-					// Если колбек не объявлен, то выкидываем ошибку.
-					this.api.status = this.sandbox.sandboxApi.status = 1;
-					this.options.error.call(this.api);
-					console.error(errorMsg);
-				}, this));
+				requireResolver.resolve(
+					utils.bind(function(requireUrl) {
+						// Сохраняем зарезовленный урл и создаем загрузчик в песочнице.
+						this.requireUrl = requireUrl;
+						this.createLoader(sandbox);
+					}, this),
+					utils.bind(function(errorMsg) {
+						// Если колбек не объявлен, то выкидываем ошибку.
+						this.api.status = this.sandbox.sandboxApi.status = 1;
+						this.options.error.call(this.api);
+						console.error(errorMsg);
+					}, this),
+				this.options, Sandbox.prototype);
 			});
 			return this.api;
 		};
@@ -184,7 +187,7 @@ define([
 						if (!loaded && (this.readyState == null || this.readyState === 'loaded' || this.readyState === 'complete')) {
 							loaded = true;
 							script.onload = script.onreadystatechange = null;
-							callback(window);
+							callback(script, window);
 						}
 					};
 				}
@@ -195,7 +198,7 @@ define([
 		},
 
 		createLoader: function(target) {
-			var loadHandler = function(sandbox) {
+			var loadHandler = function(script, sandbox) {
 					var pathList = this.options.patch;
 
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним

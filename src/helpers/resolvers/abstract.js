@@ -4,29 +4,36 @@ define([
 ], function(console) {
 	return {
 		STATE_IDLE: 'idle',
-
 		STATE_RESOLVING: 'resolving',
-
 		STATE_RESOLVED: 'resolved',
 
 		_state: 'idle',
 		_resolvedUrl: false,
+		_onSuccess: function() {
+			console.warn('No success handler defined for ' + this.id + ' resolver! Use _setHandlers() method to do this.');
+		},
+		_onFail: function() {
+			console.warn('No fail handler defined for ' + this.id + ' resolver! Use _setHandlers() method to do this.');
+		},
 
-		_hanldleResolver: function(onResolveHandler, onFailHandler) {
+		_setHandlers: function(onResolve, onFail) {
+			if (typeof(onResolve) === 'function') {
+				this._onSuccess = onResolve;
+			}
+			if (typeof(onFail) === 'function') {
+				this._onFail = onFail;
+			}
+		},
+
+		_hanldleResolver: function() {
 			switch (this.state()) {
 				case this.STATE_RESOLVED:
 					console.debug(this.id + ' resolver: resolved', this._resolvedUrl);
-
-					if (typeof(onResolveHandler) === 'function') {
-						onResolveHandler(this._resolvedUrl);
-					}
+					this._onSuccess(this._resolvedUrl);
 					return this._resolvedUrl;
 				case this.STATE_IDLE:
 					console.debug(this.id + ' resolver: failed to resolve');
-
-					if (typeof(onResolveHandler) === 'function') {
-						onFailHandler();
-					}
+					this._onFail();
 					return;
 				default:
 					return;

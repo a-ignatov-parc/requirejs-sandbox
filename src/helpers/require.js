@@ -1,27 +1,46 @@
 define([
 	'logger/logger',
+	'helpers/utils',
 	'helpers/resolvers/optionsResolver',
 	'helpers/resolvers/scriptResolver',
 	'helpers/resolvers/iframeResolver',
 	'helpers/resolvers/cdnResolver'
-], function(console, optionsResolver, scriptResolver, iframeResolver, cdnResolver) {
+], function(console, utils, optionsResolver, scriptResolver, iframeResolver, cdnResolver) {
 	var resolvedUrl = false,
 		resolveQueueIndex = 0,
-		resolveQueue = [optionsResolver, scriptResolver, iframeResolver, cdnResolver];
+		resolveQueue = [optionsResolver, scriptResolver, iframeResolver, cdnResolver],
+		handlersQueue = [],
+		inProgress = false;
 
-	function success(value, handler) {
-		if (typeof(handler) === 'function') {
-			handler(value);
-			return true;
-		}
-		return false;
+	function success(value) {
+		utils.each(handlersQueue, function(args) {
+			if (typeof(args[0]) === 'function') {
+				args[0](value);
+			} else {
+				error('No fail handler', args[1] || false);
+			}
+		});
+
+		// Так как мы завершили поиску url, то выставляем флаг в неактивное состояние.
+		inProgress = false;
+		handlersQueue.length = resolveQueueIndex = 0;
 	}
 
 	function error(msg, handler) {
-		if (typeof(handler) === 'function') {
-			handler(msg);
+		if (handler != null) {
+			if (typeof(handler) === 'function') {
+				handler(msg);
+			} else {
+				throw msg;
+			}
 		} else {
-			throw msg;
+			utils.each(handlersQueue, function(args) {
+				error(msg, args[1] || false);
+			});
+
+			// Так как мы завершили поиску url, то выставляем флаг в неактивное состояние.
+			inProgress = false;
+			handlersQueue.length = resolveQueueIndex = 0;
 		}
 	}
 
@@ -32,32 +51,57 @@ define([
 			return !!resolvedUrl;
 		},
 
-		resolve: function(options, onResolveHandler, onFailHandler) {
-			var _this = this;
+		resolve: function() {
+			var _this = this,
+				args;
 
+			// Чтоб небыло проблем с несколькими запросами на резолв урла мы помещаем все запросы 
+			// в очередь и запускаем один процесс резолвинга. Как только попытка резуолвинга 
+			// закончилась, не важно успешно или нет, мы для всех элементов очереди сообщаем 
+			// результаты.
+			// 
+			// В аргументах должны передаваться следующие значения:
+			// `arguments[0]` – onResolveHandler
+			// `arguments[1]` – onFailHandler
+			// `arguments[2]` – options
+			// `arguments[3]` – context
+			if (arguments.length) {
+				handlersQueue.push(args = arguments);
+			} else if (handlersQueue.length) {
+				args = handlersQueue[0];
+			} else {
+				console.error('No handlers passed');
+				return;
+			}
+
+			// Если резолвинг уже в процессе, то выходим из метода, так как хендлеры уже все равно
+			// добавленны в очередь на обработку.
+			if (inProgress && arguments.length) {
+				return;
+			}
+
+			// Выставляем флаг о том что процесс резолвинга начался.
+			inProgress = true;
+
+			// Проверяем, если url уже зарезолвен, то сразу же выдаем результат без запуска 
+			// очередного этапа поиска.
+			// Если же урл еще не найден, то запускаем механизм поиска.
 			if (this.resolved()) {
 				console.debug(this.id + ' resolver: already resolved as', resolvedUrl);
-
-				if (!success(resolvedUrl, onResolveHandler)) {
-					error('No fail handler', onFailHandler);
-				}
+				success(resolvedUrl);
 				return resolvedUrl;
 			} else if (resolveQueue[resolveQueueIndex] != null) {
 				console.debug(this.id + ' resolver: starting "' + resolveQueue[resolveQueueIndex].id + '" resolver');
 
-				resolveQueue[resolveQueueIndex].resolve(options, function(url) {
-					if (!success(resolvedUrl = url, onResolveHandler)) {
-						error('No fail handler', onFailHandler);
-					}
+				resolveQueue[resolveQueueIndex].resolve(function(url) {
+					success(resolvedUrl = url);
 				}, function() {
 					resolveQueueIndex++;
-					_this.resolve(options, onResolveHandler, onFailHandler);
-				});
+					_this.resolve();
+				}, args[2], args[3]);
 			} else {
 				console.debug(this.id + ' resolver: all resolvers failed');
-
-				resolveQueueIndex = 0;
-				error('Unable to resolve require.js source url', onFailHandler);
+				error('Unable to resolve require.js source url');
 			}
 		}
 	};

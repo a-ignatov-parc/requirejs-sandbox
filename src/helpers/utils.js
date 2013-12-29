@@ -75,7 +75,7 @@ define(function() {
 		},
 
 		scripts: function() {
-			return document.getElementsByTagName('script');
+			return Array.prototype.slice.call(document.getElementsByTagName('script'), 0);
 		}
 	};
 });
