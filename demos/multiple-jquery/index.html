@@ -34,7 +34,6 @@
 					var version = jQueryCollection[i];
 
 					requrejsSandbox.set('sandbox' + version, {
-						requireUrl: '../../static/js/libs/require.min.js',
 						requireConfig: {
 							baseUrl: 'app',
 							paths: {
@@ -47,7 +46,7 @@
 							}
 						},
 						patch: ['jquery'],
-						callback: function(require) {
+						success: function(require) {
 							var sandbox = this;
 
 							require(['jquery'], function($) {
