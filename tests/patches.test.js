@@ -8,7 +8,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 			}
 		},
 		patch: ['jquery'],
-		callback: function(require) {
+		success: function(require) {
 			var qunitEl = document.getElementById('qunit');
 
 			require(['jquery'], function($) {

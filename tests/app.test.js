@@ -10,7 +10,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				'jquery': '../../static/js/libs/jquery/jquery.min'
 			}
 		},
-		callback: function(require) {
+		success: function(require) {
 			var sandboxApi = this;
 
 			require(['view', 'configTest/view', 'jquery'], function(AppView, subView, $) {

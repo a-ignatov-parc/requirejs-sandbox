@@ -30,7 +30,7 @@ requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requ
 		requireConfig: {
 			baseUrl: 'app'
 		},
-		callback: function(require) {
+		success: function(require) {
 			var sandboxApi = this;
 
 			require.onError = function(error) {

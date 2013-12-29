@@ -34,7 +34,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 
 	var callbackTestSandbox = requrejsSandbox.set('CallbackTest', {
 		requireUrl: '../static/js/libs/require.min.js',
-		callback: function(require, define) {
+		success: function(require, define) {
 			var sandboxApi = this,
 				args = arguments,
 				context = callbackTestSandbox;
@@ -67,7 +67,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	});
 
 	var wrongTestSandbox = requrejsSandbox.set('WrongTest', {
-		callback: function(require, define) {
+		success: function(require, define) {
 			var sandboxApi = this;
 
 			test('Creating sandbox without specifying requireUrl', function() {
@@ -93,7 +93,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		debug: true,
 		requireMain: 'app/main',
 		requireUrl: '../static/js/libs/require.min.js',
-		callback: function(require, define) {
+		success: function(require, define) {
 			var sandboxApi = this,
 				scripts = sandboxApi.sandboxManager.sandbox.document.getElementsByTagName('script');
 
@@ -124,7 +124,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		debug: true,
 		requireUrl: '../static/js/libs/require.min.js',
 		sandboxLinks: exports,
-		callback: function() {
+		success: function() {
 			var sandboxApi = this;
 
 			test('Checking exported variables', function() {
