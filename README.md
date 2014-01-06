@@ -196,9 +196,9 @@ Returns sandbox instance with the requested name if it was created. Otherwise re
 		});
 		```
 	
-	* **callback** *Type: Function*
+	* **success** *Type: Function*
 	
-		> You can specify callback handler for sandbox creating process. When sandbox will be created it will execute passed function with 2 arguments: `sandbox.require` and `sandbox.define` functions. 
+		> You can specify success handler for sandbox creating process. When sandbox will be created it will execute passed function with 2 arguments: `sandbox.require` and `sandbox.define` functions. 
 		
 		`this` will be an api object that contains next fields:
 		
@@ -220,6 +220,12 @@ Returns sandbox instance with the requested name if it was created. Otherwise re
 		
 		* **sandboxManager** (extended debug api) – Link to manager instance of created sandbox.
 		
+	* **error** *Type: Function*
+
+		> You can specify error handler for sandbox creating process. If sandbox will fail to be created you'll be able to handle this situation.
+
+		`this` will be an api object same as in `success` handler.
+
 ---
 
 Create and returns sandbox with the specified name and params.
