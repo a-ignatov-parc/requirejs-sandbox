@@ -14,7 +14,6 @@ requirejs(['css!style1'], function(style) {
 requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requirejsCss) {
 	requrejsSandbox.set('AppTest', {
 		debug: true,
-		requireUrl: '../static/js/libs/require.min.js',
 		plugins: [requirejsCss, {
 			name: 'defined_plugin',
 			handler: function() {

@@ -51,6 +51,13 @@ define([
 			return !!resolvedUrl;
 		},
 
+		reset: function() {
+			resolvedUrl = false;
+			utils.each(resolveQueue, function(resolver) {
+				resolver.reset();
+			});
+		},
+
 		resolve: function() {
 			var _this = this,
 				args;

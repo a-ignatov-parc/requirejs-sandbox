@@ -1,7 +1,6 @@
 requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	requrejsSandbox.set('AppTest', {
 		debug: true,
-		requireUrl: '../static/js/libs/require.min.js',
 		patch: ['jquery'],
 		requireConfig: {
 			baseUrl: 'app',

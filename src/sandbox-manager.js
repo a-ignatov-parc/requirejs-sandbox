@@ -26,14 +26,19 @@ define([
 			this.requireUrl = null;
 
 			// Создаем api объект песочницы.
+			// С песочницей со статусом больше 0 дальнейшая работа не возможна.
 			// Список доступных статусов:
 			// 
 			// * `-1` – Песочница не создана.
 			// 
 			// * `0` – Песочница создана без ошибок.
 			// 
-			// * `1` – Песочница создана с ошибкой. Дальнейшая работа с такой песочницей не 
-			// возможна.
+			// * `1` – Песочница не смогла зарезолвить ссылку до require.js.
+			// 
+			// * `2` – Песочница не смогла получить правильные ссылки для функций `require` 
+			// и `define`.
+			// 
+			// * `3` – Загрузчик не смог загрузить файл с require.js в песочницу.
 			this.api = {
 				name: this.options.name,
 				require: null,
@@ -153,11 +158,12 @@ define([
 			}
 		},
 
-		createScript: function(window, src, dataAttributes, callback) {
+		createScript: function(window, src, dataAttributes, callback, error) {
 			var script = null,
 				loaded = false;
 
-			if (typeof(dataAttributes) === 'function' && callback == null) {
+			if (typeof(dataAttributes) === 'function') {
+				error = callback;
 				callback = dataAttributes;
 				dataAttributes = void(0);
 			}
@@ -183,11 +189,16 @@ define([
 				// Если переданный аргумент `callback` - функция, то реалзиовываем кроссбраузерный 
 				// колбек.
 				if (typeof(callback) === 'function') {
-					script.onload = script.onreadystatechange = function() {
-						if (!loaded && (this.readyState == null || this.readyState === 'loaded' || this.readyState === 'complete')) {
+					script.onload = script.onerror = script.onreadystatechange = function(event) {
+						if (!loaded) {
 							loaded = true;
-							script.onload = script.onreadystatechange = null;
-							callback(script, window);
+							script.onload = script.onerror = script.onreadystatechange = null;
+
+							if (event.type === 'load' || this.readyState === 'loaded' || this.readyState === 'complete') {
+								callback(script, window);
+							} else if (typeof(error) === 'function' && (event.type === 'error' || this.readyState === 'error')) {
+								error(script, window);
+							}
 						}
 					};
 				}
@@ -209,6 +220,19 @@ define([
 					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
 					if (this.options.debug) {
 						this.api.sandboxManager = this;
+					}
+
+					if (typeof(this.api.require) !== 'function' || typeof(this.api.define) !== 'function') {
+						// Если мы не смогли получить доступ к функциям require.js внутри 
+						// песочницы, то скорее всего мы ошибочно зарезолвили путь до библиотеки.
+						// Сбрасываем резолвер.
+						requireResolver.reset();
+
+						// Сбрасываем статусы песочницы и вызываем обработку ошибки.
+						this.api.status = this.sandbox.sandboxApi.status = 2;
+						this.options.error.call(this.api);
+						console.error('Can not gain access to require.js inside sandbox');
+						return;
 					}
 
 					console.debug('require.js has loaded! Patching "load" method...');
@@ -292,7 +316,15 @@ define([
 			// Вставляем с песочницу скрипт reuqire.js.
 			this.createScript(target, this.requireUrl, {
 				main: this.options.requireMain
-			}, utils.bind(loadHandler, this));
+			}, utils.bind(loadHandler, this), utils.bind(function() {
+				// Сбрасываем резолвер.
+				requireResolver.reset();
+
+				// Сбрасываем статусы песочницы и вызываем обработку ошибки.
+				this.api.status = this.sandbox.sandboxApi.status = 3;
+				this.options.error.call(this.api);
+				console.error('Can not load require.js into sandbox');
+			}, this));
 
 			console.debug('Creating loader inside specified target:', target);
 		}
@@ -309,16 +341,18 @@ define([
 		set: function(name, params) {
 			var sandbox;
 
-			if (typeof(name) === 'string' && typeof(params) === 'object') {
+			if (typeof(name) === 'string') {
 				sandbox = this.get(name);
 
-				if (sandbox && sandbox.status) {
+				if (sandbox && sandbox.status <= 0) {
 					console.warn('Sandbox with name: ' + name + ' already exist! Returning existed sandbox.', sandbox);
 					return sandbox;
 				}
 				return createdSandboxes[name] = new Sandbox(utils.extend({}, params, {
 					name: name
 				}));
+			} else {
+				console.error('Sandbox name should be string');
 			}
 		},
 		destroy: function(name) {
@@ -327,6 +361,8 @@ define([
 			if (sandbox) {
 				sandbox.destroy();
 				delete createdSandboxes[name];
+			} else {
+				console.warn('Sandbox with name: "' + name + '" was not found');
 			}
 		}
 	};

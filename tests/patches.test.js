@@ -1,6 +1,5 @@
 requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	requrejsSandbox.set('TransitsTest', {
-		requireUrl: '../static/js/libs/require.min.js',
 		requireConfig: {
 			baseUrl: 'app',
 			paths: {

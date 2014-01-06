@@ -11,11 +11,11 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 
 	test('Creating sandbox with name: Test', function() {
 		equal(typeof(requrejsSandbox.set()), 'undefined', 'requirejs-sandbox returned value when it should not');
-		equal(typeof(requrejsSandbox.set('Test')), 'undefined', 'requirejs-sandbox returned value when it should not');
+		equal(typeof(requrejsSandbox.set(123)), 'undefined', 'requirejs-sandbox returned value when it should not');
+		equal(typeof(requrejsSandbox.set(true)), 'undefined', 'requirejs-sandbox returned value when it should not');
+		equal(typeof(requrejsSandbox.set({ name: 'Test' })), 'undefined', 'requirejs-sandbox returned value when it should not');
 
-		var sandbox = requrejsSandbox.set('Test', {
-			requireUrl: '../static/js/libs/require.min.js'
-		});
+		var sandbox = requrejsSandbox.set('Test');
 
 		equal(typeof(sandbox), 'object', 'sandbox api has not been returned');
 		equal(Object.keys(sandbox).length, 5, 'sandbox api has wrong methods count');
@@ -26,14 +26,13 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		equal(sandbox.define, null, '"define" function is defined before loaded');
 		equal(typeof(sandbox.destroy), 'function', 'destroy method is undefined');
 
-		var anotherSandbox = requrejsSandbox.set('Test', {});
+		var anotherSandbox = requrejsSandbox.set('Test');
 
 		equal(typeof(anotherSandbox), 'object', 'anotherSandbox api has not been returned');
 		equal(anotherSandbox, sandbox, 'requirejs-sandbox returned wrong sandbox instance');
 	});
 
 	var callbackTestSandbox = requrejsSandbox.set('CallbackTest', {
-		requireUrl: '../static/js/libs/require.min.js',
 		success: function(require, define) {
 			var sandboxApi = this,
 				args = arguments,
@@ -66,33 +65,9 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		}
 	});
 
-	var wrongTestSandbox = requrejsSandbox.set('WrongTest', {
-		success: function(require, define) {
-			var sandboxApi = this;
-
-			test('Creating sandbox without specifying requireUrl', function() {
-				var sandbox;
-
-				equal(sandboxApi, wrongTestSandbox, 'callback has wrong context');
-				equal(typeof(require), 'undefined', 'require.js function "require" can\'t be created without specifying requireUrl');
-				equal(typeof(define), 'undefined', 'require.js function "define" can\'t be created without specifying requireUrl');
-				equal(typeof(sandboxApi), 'object', 'WrongTest can\'t be found');
-				strictEqual(sandboxApi.status, 1, 'WrongTest has wrong status');
-
-				requrejsSandbox.destroy('WrongTest');
-				sandbox = requrejsSandbox.get(sandboxApi.name);
-
-				equal(typeof(sandbox), 'undefined', 'requirejs-sandbox returned deleted sandbox');
-				equal(Object.keys(sandboxApi).length, 0, 'sandbox api has wrong methods count');
-				equal(Object.keys(wrongTestSandbox).length, 0, 'sandbox api has wrong methods count');
-			});
-		}
-	});
-
 	requrejsSandbox.set('DebugDataAttributeTest', {
 		debug: true,
 		requireMain: 'app/main',
-		requireUrl: '../static/js/libs/require.min.js',
 		success: function(require, define) {
 			var sandboxApi = this,
 				scripts = sandboxApi.sandboxManager.sandbox.document.getElementsByTagName('script');
@@ -122,7 +97,6 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 
 	requrejsSandbox.set('ExportsTest', {
 		debug: true,
-		requireUrl: '../static/js/libs/require.min.js',
 		sandboxLinks: exports,
 		success: function() {
 			var sandboxApi = this;
