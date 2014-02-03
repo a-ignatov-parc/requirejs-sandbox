@@ -9,8 +9,6 @@ requirejs([
 			anotherUrl = 'another-url-to/require.js',
 			resolvedUrl;
 
-		console.log(optionsResolver);
-
 		equal(typeof(optionsResolver), 'object', 'options resolver is undefined');
 		equal(typeof(optionsResolver.id), 'string', 'id attribute is not undefined or has wrong type');
 		equal(optionsResolver.id, 'options', 'options resolver has wrong id');
