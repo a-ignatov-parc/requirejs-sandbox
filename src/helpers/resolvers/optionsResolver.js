@@ -5,6 +5,7 @@ define([
 ], function(console, utils, abstract) {
 	return utils.defaults({
 		id: 'options',
+
 		resolve: function(onResolve, onFail, options) {
 			if (this.state() == this.STATE_IDLE) {
 				// Регистрируем хендлеры.

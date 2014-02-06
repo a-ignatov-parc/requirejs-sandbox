@@ -19,6 +19,7 @@ define([
 
 	return utils.defaults({
 		id: 'iframe',
+
 		resolve: function(onResolve, onFail, options, context) {
 			var _this = this,
 				scripts;
