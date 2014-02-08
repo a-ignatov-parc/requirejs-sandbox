@@ -1,2 +1,3 @@
-// Конфигурируем require
-console.log('Main module loaded with require.js');
+if (typeof(testCallback) === 'function') {
+	testCallback();
+}

@@ -1,7 +1,6 @@
 requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	requrejsSandbox.set('AppTest', {
 		debug: true,
-		requireUrl: '../static/js/libs/require.min.js',
 		patch: ['jquery'],
 		requireConfig: {
 			baseUrl: 'app',
@@ -10,7 +9,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				'jquery': '../../static/js/libs/jquery/jquery.min'
 			}
 		},
-		callback: function(require) {
+		success: function(require) {
 			var sandboxApi = this;
 
 			require(['view', 'configTest/view', 'jquery'], function(AppView, subView, $) {

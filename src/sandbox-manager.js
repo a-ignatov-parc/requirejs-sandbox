@@ -1,13 +1,14 @@
 define([
 	'logger/logger',
 	'helpers/utils',
-	'patches'
-], function(console, utils, patches) {
+	'patches',
+	'helpers/require'
+], function(console, utils, patches, requireResolver) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
 			// инициализации.
-			this.options = utils.extend({
+			this.options = utils.defaults(options, {
 				debug: false,
 				requireUrl: null,
 				requireMain: null,
@@ -15,22 +16,29 @@ define([
 				sandboxLinks: {},
 				patch: [],
 				plugins: [],
-				callback: null
-			}, options);
+				success: function() {},
+				error: function() {}
+			});
 
 			// Создаем свойства класса.
 			this.iframe = null;
 			this.sandbox = null;
+			this.requireUrl = null;
 
 			// Создаем api объект песочницы.
+			// С песочницей со статусом больше 0 дальнейшая работа не возможна.
 			// Список доступных статусов:
 			// 
 			// * `-1` – Песочница не создана.
 			// 
 			// * `0` – Песочница создана без ошибок.
 			// 
-			// * `1` – Песочница создана с ошибкой. Дальнейшая работа с такой песочницей не 
-			// возможна.
+			// * `1` – Песочница не смогла зарезолвить ссылку до require.js.
+			// 
+			// * `2` – Песочница не смогла получить правильные ссылки для функций `require` 
+			// и `define`.
+			// 
+			// * `3` – Загрузчик не смог загрузить файл с require.js в песочницу.
 			this.api = {
 				name: this.options.name,
 				require: null,
@@ -65,8 +73,20 @@ define([
 					parentWindow: window
 				});
 
-				// Создаем загрузчик в песочнице.
-				this.createLoader(sandbox);
+				// Резолвим ссылку на require.js для песочницы.
+				requireResolver.resolve(
+					utils.bind(function(requireUrl) {
+						// Сохраняем зарезовленный урл и создаем загрузчик в песочнице.
+						this.requireUrl = requireUrl;
+						this.createLoader(sandbox);
+					}, this),
+					utils.bind(function(errorMsg) {
+						// Если колбек не объявлен, то выкидываем ошибку.
+						this.api.status = this.sandbox.sandboxApi.status = 1;
+						this.options.error.call(this.api);
+						console.error(errorMsg);
+					}, this),
+				this.options);
 			});
 			return this.api;
 		};
@@ -138,13 +158,19 @@ define([
 			}
 		},
 
-		createScript: function(window, src, dataAttributes, callback) {
+		createScript: function(window, src, dataAttributes, callback, error) {
 			var script = null,
-				loaded = false;
+				loaded = false,
+				successHandler,
+				errorHandler;
 
-			if (typeof(dataAttributes) === 'function' && callback == null) {
-				callback = dataAttributes;
+			if (typeof(dataAttributes) === 'function') {
+				errorHandler = callback;
+				successHandler = dataAttributes;
 				dataAttributes = void(0);
+			} else {
+				successHandler = callback;
+				errorHandler = error;
 			}
 
 			if (window && window.document && window.document.body) {
@@ -161,18 +187,36 @@ define([
 				}
 
 				// Если передан путь до файла, то указываем его у тега.
-				if (typeof(src) === 'string' && src) {
-					script.src = src;
+				switch (typeof(src)) {
+					case 'string':
+						if (src) {
+							script.src = src;
+						} else if (typeof(errorHandler) === 'function') {
+							errorHandler(false, window);
+							return;
+						}
+						break;
+					case 'object':
+					case 'undefined':
+						if (typeof(errorHandler) === 'function') {
+							errorHandler(false, window);
+						}
+						return;
 				}
 
-				// Если переданный аргумент `callback` - функция, то реалзиовываем кроссбраузерный 
+				// Если переданный аргумент `successHandler` - функция, то реалзиовываем кроссбраузерный 
 				// колбек.
-				if (typeof(callback) === 'function') {
-					script.onload = script.onreadystatechange = function() {
-						if (!loaded && (this.readyState == null || this.readyState === 'loaded' || this.readyState === 'complete')) {
+				if (typeof(successHandler) === 'function') {
+					script.onload = script.onerror = script.onreadystatechange = function(event) {
+						if (!loaded) {
 							loaded = true;
-							script.onload = script.onreadystatechange = null;
-							callback(window);
+							script.onload = script.onerror = script.onreadystatechange = null;
+
+							if (event.type === 'load' || this.readyState === 'loaded' || this.readyState === 'complete') {
+								successHandler(script, window);
+							} else if (typeof(errorHandler) === 'function' && (event.type === 'error' || this.readyState === 'error')) {
+								errorHandler(script, window);
+							}
 						}
 					};
 				}
@@ -183,7 +227,7 @@ define([
 		},
 
 		createLoader: function(target) {
-			var loadHandler = function(sandbox) {
+			var loadHandler = function(script, sandbox) {
 					var pathList = this.options.patch;
 
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
@@ -194,6 +238,19 @@ define([
 					// В режиме дебага добавляем в апи песочницы ссылку на инстанс менеджера.
 					if (this.options.debug) {
 						this.api.sandboxManager = this;
+					}
+
+					if (typeof(this.api.require) !== 'function' || typeof(this.api.define) !== 'function') {
+						// Если мы не смогли получить доступ к функциям require.js внутри 
+						// песочницы, то скорее всего мы ошибочно зарезолвили путь до библиотеки.
+						// Сбрасываем резолвер.
+						requireResolver.reset();
+
+						// Сбрасываем статусы песочницы и вызываем обработку ошибки.
+						this.api.status = this.sandbox.sandboxApi.status = 2;
+						this.options.error.call(this.api);
+						console.error('Can not gain access to require.js inside sandbox');
+						return;
 					}
 
 					console.debug('require.js has loaded! Patching "load" method...');
@@ -271,33 +328,22 @@ define([
 
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
 					// качестве аргументов ссылку на функцию `require` их песочницы.
-					if (typeof(this.options.callback) === 'function') {
-						this.options.callback.call(this.api, this.api.require, this.api.define);
-					}
+					this.options.success.call(this.api, this.api.require, this.api.define);
 				};
 
-			if (this.options.requireUrl) {
-				this.createScript(target, this.options.requireUrl, {
-					main: this.options.requireMain
-				}, utils.bind(loadHandler, this));
-			} else {
-				// [TODO] Тут реализуем механизм вставки `require.js` в песочницу если он встроен в данный
-				// модуль.
-				// 
-				// Нужно для юзкейса, когда в странице куда встраивается виджет нет ни `require.js`
-				// ни пользователю не охото заморачиваться с ссылкам, но зато он может собрать 
-				// модуль с встроенным `require.js`.
-				// 
-				// А пока ничего не реализовано вызываем колбек без передеча ссылки на require.
-				// Если колбек не объявлен, то выкидываем ошибку.
-				this.api.status = this.sandbox.sandboxApi.status = 1;
+			// Вставляем с песочницу скрипт reuqire.js.
+			this.createScript(target, this.requireUrl, {
+				main: this.options.requireMain
+			}, utils.bind(loadHandler, this), utils.bind(function() {
+				// Сбрасываем резолвер.
+				requireResolver.reset();
 
-				if (typeof(this.options.callback) === 'function') {
-					this.options.callback.call(this.api);
-				} else {
-					throw 'Unable to alocate require.js. Creating sandbox failed!';
-				}
-			}
+				// Сбрасываем статусы песочницы и вызываем обработку ошибки.
+				this.api.status = this.sandbox.sandboxApi.status = 3;
+				this.options.error.call(this.api);
+				console.error('Can not load require.js into sandbox');
+			}, this));
+
 			console.debug('Creating loader inside specified target:', target);
 		}
 	};
@@ -307,30 +353,40 @@ define([
 	console.setNamespace('requirejs-sandbox');
 
 	return {
+		_getSandboxConstructor: function() {
+			return Sandbox.prototype;
+		},
+
 		get: function(name) {
 			return createdSandboxes[name];
 		},
+
 		set: function(name, params) {
 			var sandbox;
 
-			if (typeof(name) === 'string' && typeof(params) === 'object') {
+			if (typeof(name) === 'string') {
 				sandbox = this.get(name);
 
-				if (sandbox && sandbox.status) {
+				if (sandbox && sandbox.status <= 0) {
 					console.warn('Sandbox with name: ' + name + ' already exist! Returning existed sandbox.', sandbox);
 					return sandbox;
 				}
 				return createdSandboxes[name] = new Sandbox(utils.extend({}, params, {
 					name: name
 				}));
+			} else {
+				console.error('Sandbox name should be string');
 			}
 		},
+
 		destroy: function(name) {
 			var sandbox = this.get(name);
 
 			if (sandbox) {
 				sandbox.destroy();
 				delete createdSandboxes[name];
+			} else {
+				console.warn('Sandbox with name: "' + name + '" was not found');
 			}
 		}
 	};

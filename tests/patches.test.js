@@ -1,6 +1,5 @@
 requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	requrejsSandbox.set('TransitsTest', {
-		requireUrl: '../static/js/libs/require.min.js',
 		requireConfig: {
 			baseUrl: 'app',
 			paths: {
@@ -8,7 +7,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 			}
 		},
 		patch: ['jquery'],
-		callback: function(require) {
+		success: function(require) {
 			var qunitEl = document.getElementById('qunit');
 
 			require(['jquery'], function($) {

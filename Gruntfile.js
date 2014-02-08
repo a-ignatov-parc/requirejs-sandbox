@@ -66,6 +66,10 @@ var fileSystem = require('fs'),
 			styles: {
 				files: pkg.stylusPath + 'main.styl',
 				tasks: ['stylus:dev']
+			},
+			js: {
+				files: pkg.srcPath + '**/*.js',
+				tasks: ['requirejs:dev']
 			}
 		},
 		stylus: {
