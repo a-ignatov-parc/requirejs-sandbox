@@ -3,6 +3,8 @@ define([
 	'helpers/utils',
 	'helpers/resolvers/abstract'
 ], function(console, utils, abstract) {
+	var sandboxContructor;
+
 	function checkScript(scripts, sandbox, createScript, callback) {
 		if (scripts.length) {
 			createScript(sandbox, scripts.shift().getAttribute('src'), function(script) {
@@ -11,6 +13,8 @@ define([
 				} else {
 					checkScript(scripts, sandbox, createScript, callback);
 				}
+			}, function() {
+				checkScript(scripts, sandbox, createScript, callback);
 			});
 		} else {
 			callback(false);
@@ -20,25 +24,28 @@ define([
 	return utils.defaults({
 		id: 'iframe',
 
-		resolve: function(onResolve, onFail, options, context) {
-			var _this = this,
-				scripts;
+		resolve: function(onResolve, onFail) {
+			var scripts;
 
 			if (this.state() == this.STATE_IDLE) {
 				// Регистрируем хендлеры.
 				this._setHandlers(onResolve, onFail);
 
 				// Получаем список скриптов которые в дальнейшем будем проверять.
-				scripts = utils.scripts();
+				scripts = this._getScripts();
 
 				console.debug(this.id + ' resolver: starting resolving');
 
 				if (scripts.length) {
 					this._state = this.STATE_RESOLVING;
 
+					if (!sandboxContructor) {
+						sandboxContructor = require('requirejs-sandbox')._getSandboxConstructor();
+					}
+
 					// Создаем песочницу для поиска require.js среди скриптов загруженных на 
 					// странице.
-					context.createFrame(null, function(iframe) {
+					sandboxContructor.createFrame(null, utils.bind(function(iframe) {
 						var sandbox = iframe.contentWindow;
 
 						// Во избежания отображения не нужных ошибок в консоль во время проверки 
@@ -47,7 +54,7 @@ define([
 
 						// Начинаем проверку всех доступных скриптов на странице в поисках 
 						// require.js
-						checkScript(scripts, sandbox, context.createScript, utils.bind(function(url) {
+						checkScript(scripts, sandbox, sandboxContructor.createScript, utils.bind(function(url) {
 							if (url) {
 								this._resolvedUrl = url;
 								this._state = this.STATE_RESOLVED;
@@ -62,9 +69,11 @@ define([
 
 							// Вызываем хендлеры в зависимости от текущего состояния.
 							this._hanldleResolver();
-						}, _this));
-					});
+						}, this));
+					}, this));
 				}
+			} else if (this.state() == this.STATE_RESOLVED) {
+				return this._resolvedUrl;
 			}
 		}
 	}, abstract);

@@ -1,7 +1,8 @@
 /* jshint -W015 */
 define([
-	'logger/logger'
-], function(console) {
+	'logger/logger',
+	'helpers/utils'
+], function(console, utils) {
 	var abstractObj = {
 			STATE_IDLE: 'idle',
 			STATE_RESOLVING: 'resolving',
@@ -9,9 +10,11 @@ define([
 
 			_state: null,
 			_resolvedUrl: false,
+
 			_onSuccess: function() {
 				console.warn('No success handler defined for ' + this.id + ' resolver! Use _setHandlers() method to do this.');
 			},
+
 			_onFail: function() {
 				console.warn('No fail handler defined for ' + this.id + ' resolver! Use _setHandlers() method to do this.');
 			},
@@ -38,6 +41,10 @@ define([
 					default:
 						return;
 				}
+			},
+
+			_getScripts: function() {
+				return utils.scripts();
 			},
 
 			state: function() {

@@ -3,10 +3,11 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 
 	test('Check requirejs-sandbox api', function() {
 		equal(typeof(requrejsSandbox), 'object', 'requirejs-sandbox api is undefined');
-		equal(Object.keys(requrejsSandbox).length, 3, 'requirejs-sandbox api has wrong methods count');
+		equal(Object.keys(requrejsSandbox).length, 4, 'requirejs-sandbox api has wrong methods count');
 		equal(typeof(requrejsSandbox.get), 'function', 'get method is undefined');
 		equal(typeof(requrejsSandbox.set), 'function', 'set method is undefined');
 		equal(typeof(requrejsSandbox.destroy), 'function', 'destroy method is undefined');
+		equal(typeof(requrejsSandbox._getSandboxConstructor), 'function', '_getSandboxConstructor private method is undefined');
 	});
 
 	test('Creating sandbox with name: Test', function() {
@@ -65,27 +66,6 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		}
 	});
 
-	requrejsSandbox.set('DebugDataAttributeTest', {
-		debug: true,
-		requireMain: 'app/main',
-		success: function(require, define) {
-			var sandboxApi = this,
-				scripts = sandboxApi.sandboxManager.sandbox.document.getElementsByTagName('script');
-
-			test('Creating sandbox with specifying requireMain', function() {
-				equal(scripts.length, 2, 'sandbox has different script tag count');
-				equal(scripts[1].getAttribute('data-main'), sandboxApi.sandboxManager.options.requireMain, 'require.js script tag has different data-main attribute');
-				stop();
-
-				setTimeout(function() {
-					equal(scripts.length, 3, 'sandbox has different script tag count');
-					equal(scripts[2].getAttribute('src'), sandboxApi.sandboxManager.options.requireMain + '.js', 'sandbox has different script tag count');
-					start();
-				}, 1000);
-			});
-		}
-	});
-
 	var exports = {
 			export1: 'abc',
 			export2: 123,
@@ -120,5 +100,28 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.parentWindow, window, 'Sandbox public api has wrong link to parent window object');
 			});
 		}
+	});
+
+	test('Creating sandbox with specifying requireMain', function() {
+		var sandboxApi,
+			scripts;
+
+		stop();
+		requrejsSandbox.set('DebugDataAttributeTest', {
+			debug: true,
+			requireMain: 'app/main',
+			sandboxLinks: {
+				testCallback: function() {
+					start();
+					equal(scripts.length, 2, 'sandbox has different script tag count');
+					equal(scripts[0].getAttribute('data-main'), sandboxApi.sandboxManager.options.requireMain, 'require.js script tag has different data-main attribute');
+					equal(scripts[1].getAttribute('src'), sandboxApi.sandboxManager.options.requireMain + '.js', 'sandbox has different script tag count');
+				}
+			},
+			success: function(require, define) {
+				sandboxApi = this;
+				scripts = sandboxApi.sandboxManager.sandbox.document.getElementsByTagName('script');
+			}
+		});
 	});
 });

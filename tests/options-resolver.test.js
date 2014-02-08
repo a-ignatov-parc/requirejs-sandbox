@@ -26,6 +26,7 @@ requirejs([
 
 		equal(optionsResolver.state(), optionsResolver.STATE_IDLE, 'internal resolved value is not equal to initial value');
 		equal(optionsResolver._resolvedUrl, false, 'internal resolved value is not equal to initial value');
+		equal(resolvedUrl, void(0), 'returned value has incorrect value');
 
 		resolvedUrl = optionsResolver.resolve(null, null, {
 			hello: 'world'
@@ -33,6 +34,7 @@ requirejs([
 
 		equal(optionsResolver.state(), optionsResolver.STATE_IDLE, 'internal resolved value is not equal to initial value');
 		equal(optionsResolver._resolvedUrl, false, 'internal resolved value is not equal to initial value');
+		equal(resolvedUrl, void(0), 'returned value has incorrect value');
 
 		resolvedUrl = optionsResolver.resolve(null, null, {
 			requireUrl: targetUrl
@@ -50,11 +52,13 @@ requirejs([
 		equal(optionsResolver.state(), optionsResolver.STATE_RESOLVED, 'resolver has wrong state');
 		notEqual(optionsResolver._resolvedUrl, anotherUrl, 'resolved value is equal to wrong value');
 		equal(optionsResolver._resolvedUrl, targetUrl, 'resolved value is not equal to initial value');
+		equal(resolvedUrl, targetUrl, 'returned value is not equal to initial value');
 
 		resolvedUrl = optionsResolver.resolve();
 
 		equal(optionsResolver.state(), optionsResolver.STATE_RESOLVED, 'resolver has wrong state');
 		equal(optionsResolver._resolvedUrl, targetUrl, 'resolved value is not equal to initial value');
+		equal(resolvedUrl, targetUrl, 'returned value is not equal to initial value');
 
 		optionsResolver.reset();
 

@@ -26,8 +26,8 @@ requirejs([
 		equal(typeof(scriptResolver.resolve), 'function', 'resolve is undefined');
 		equal(typeof(scriptResolver.reset), 'function', 'reset is undefined');
 		equal(typeof(scriptResolver.state), 'function', 'state is undefined');
-		equal(typeof(scriptResolver._checkUrl), 'function', 'privat method _checkUrl is undefined');
-		equal(typeof(scriptResolver._getScripts), 'function', 'privat method _getScripts is undefined');
+		equal(typeof(scriptResolver._checkUrl), 'function', 'private method _checkUrl is undefined');
+		equal(typeof(scriptResolver._getScripts), 'function', 'private method _getScripts is undefined');
 		equal(typeof(scriptResolver._state), 'string', 'internal attribute has wrong type');
 		equal(scriptResolver._state, scriptResolver.STATE_IDLE, 'internal attribute has wrong initial value');
 		equal(typeof(scriptResolver.state()), 'string', 'public method returned value has wrong type');

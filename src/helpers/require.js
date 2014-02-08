@@ -71,7 +71,6 @@ define([
 			// `arguments[0]` – onResolveHandler
 			// `arguments[1]` – onFailHandler
 			// `arguments[2]` – options
-			// `arguments[3]` – context
 			if (arguments.length) {
 				handlersQueue.push(args = arguments);
 			} else if (handlersQueue.length) {
@@ -105,7 +104,7 @@ define([
 				}, function() {
 					resolveQueueIndex++;
 					_this.resolve();
-				}, args[2], args[3]);
+				}, args[2]);
 			} else {
 				console.debug(this.id + ' resolver: all resolvers failed');
 				error('Unable to resolve require.js source url');

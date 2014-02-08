@@ -86,7 +86,7 @@ define([
 						this.options.error.call(this.api);
 						console.error(errorMsg);
 					}, this),
-				this.options, Sandbox.prototype);
+				this.options);
 			});
 			return this.api;
 		};
@@ -160,12 +160,17 @@ define([
 
 		createScript: function(window, src, dataAttributes, callback, error) {
 			var script = null,
-				loaded = false;
+				loaded = false,
+				successHandler,
+				errorHandler;
 
 			if (typeof(dataAttributes) === 'function') {
-				error = callback;
-				callback = dataAttributes;
+				errorHandler = callback;
+				successHandler = dataAttributes;
 				dataAttributes = void(0);
+			} else {
+				successHandler = callback;
+				errorHandler = error;
 			}
 
 			if (window && window.document && window.document.body) {
@@ -182,22 +187,35 @@ define([
 				}
 
 				// Если передан путь до файла, то указываем его у тега.
-				if (typeof(src) === 'string' && src) {
-					script.src = src;
+				switch (typeof(src)) {
+					case 'string':
+						if (src) {
+							script.src = src;
+						} else if (typeof(errorHandler) === 'function') {
+							errorHandler(false, window);
+							return;
+						}
+						break;
+					case 'object':
+					case 'undefined':
+						if (typeof(errorHandler) === 'function') {
+							errorHandler(false, window);
+						}
+						return;
 				}
 
-				// Если переданный аргумент `callback` - функция, то реалзиовываем кроссбраузерный 
+				// Если переданный аргумент `successHandler` - функция, то реалзиовываем кроссбраузерный 
 				// колбек.
-				if (typeof(callback) === 'function') {
+				if (typeof(successHandler) === 'function') {
 					script.onload = script.onerror = script.onreadystatechange = function(event) {
 						if (!loaded) {
 							loaded = true;
 							script.onload = script.onerror = script.onreadystatechange = null;
 
 							if (event.type === 'load' || this.readyState === 'loaded' || this.readyState === 'complete') {
-								callback(script, window);
-							} else if (typeof(error) === 'function' && (event.type === 'error' || this.readyState === 'error')) {
-								error(script, window);
+								successHandler(script, window);
+							} else if (typeof(errorHandler) === 'function' && (event.type === 'error' || this.readyState === 'error')) {
+								errorHandler(script, window);
 							}
 						}
 					};
@@ -335,9 +353,14 @@ define([
 	console.setNamespace('requirejs-sandbox');
 
 	return {
+		_getSandboxConstructor: function() {
+			return Sandbox.prototype;
+		},
+
 		get: function(name) {
 			return createdSandboxes[name];
 		},
+
 		set: function(name, params) {
 			var sandbox;
 
@@ -355,6 +378,7 @@ define([
 				console.error('Sandbox name should be string');
 			}
 		},
+
 		destroy: function(name) {
 			var sandbox = this.get(name);
 

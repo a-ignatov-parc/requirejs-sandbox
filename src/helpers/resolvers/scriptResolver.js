@@ -12,10 +12,6 @@ define([
 			return regex.test(url);
 		},
 
-		_getScripts: function() {
-			return utils.scripts();
-		},
-
 		resolve: function(onResolve, onFail) {
 			if (this.state() == this.STATE_IDLE) {
 				// Регистрируем хендлеры.
