@@ -21,8 +21,9 @@ Sandbox manager for [require.js](http://requirejs.org/) allows user to run multi
 
 # Demos
 
-1. [Basic demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/basic/) – loading app through config manager, css loading and working with patches;
-1. [Multiple sandboxes demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/multiple-jquery/) – loading multiple [jQuery](http://jquery.com/) versions in different sandboxes with code execution without intercepting main page scope;
+1. [Basic demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/basic/) – loading app through config manager, css loading and working with patches.
+1. [Multiple sandboxes demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/multiple-jquery/) – loading multiple [jQuery](http://jquery.com/) versions in different sandboxes with code execution without intercepting main page scope.
+1. [Twitter bootstrap sandboxing demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/bootstrap/) – trying to lunch [bootstrap](http://getbootstrap.com/) components on page with old [jQuery](http://jquery.com/) and in sandbox with new version.
 
 # API
 
