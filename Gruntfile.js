@@ -9,9 +9,9 @@ var fileSystem = require('fs'),
 		' */\n',
 	dependenciesRegex = /define\(\[([^\]]+)\]/,
 	processedDependenciesRegex = /define\(['"][^'"]+['"],\s?\[([^\]]+)\]/,
-	getModulePreprocessor = function(isBeforeRead) {
+	getModulePreprocessor = function(isBeforeRead, isPatch) {
 		return function(moduleName, path, contents) {
-			var match = contents.match(isBeforeRead ? dependenciesRegex : processedDependenciesRegex) || [],
+			var match = contents.match(isBeforeRead || isPatch ? dependenciesRegex : processedDependenciesRegex) || [],
 				matchedDeps = match[1],
 				deps = matchedDeps ? matchedDeps
 					.replace(/\n?\t?/g, '')
@@ -26,7 +26,7 @@ var fileSystem = require('fs'),
 				if (moduleName == 'sandbox-manager') {
 					processedContent += 'requirejs-sandbox';
 				} else {
-					processedContent += 'requirejs-sandbox/' + moduleName;
+					processedContent += 'requirejs-sandbox/' + (isPatch ? 'patches/' : '') + moduleName;
 				}
 				processedContent += '\'';
 			}
@@ -53,6 +53,7 @@ var fileSystem = require('fs'),
 			} else if (!isBeforeRead) {
 				processedContent += ',';
 			}
+
 			processedContent += contents.substr(bodyStartIndex);
 			return processedContent;
 		};
@@ -144,9 +145,15 @@ var fileSystem = require('fs'),
 				}
 			},
 			plugins: {
-				src: pkg.pluginPath + '**/*.js',
+				src: pkg.pluginsPath + '**/*.js',
 				options: {
-					jshintrc: pkg.pluginPath + '.jshintrc'
+					jshintrc: pkg.pluginsPath + '.jshintrc'
+				}
+			},
+			patches: {
+				src: pkg.patchesPath + '**/*.js',
+				options: {
+					jshintrc: pkg.patchesPath + '.jshintrc'
 				}
 			},
 			tests: {
@@ -160,15 +167,37 @@ var fileSystem = require('fs'),
 
 // Создаем список плугинов для их минификации.
 fileSystem
-	.readdirSync(pkg.pluginPath)
+	.readdirSync(pkg.pluginsPath)
 	.forEach(function(file) {
-		var path = pkg.pluginPath + file,
+		var path = pkg.pluginsPath + file,
 			rawFileName = file.split('.'),
 			fileExtension = rawFileName.pop(),
 			fileName = rawFileName.join('');
 
 		if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
 			gruntConfig.uglify.plugins.files[pkg.buildPath + 'plugins/' + fileName + '.min.' + fileExtension] = path;
+		}
+	});
+
+// Создаем список патчей для их процессинга.
+fileSystem
+	.readdirSync(pkg.patchesPath)
+	.forEach(function(file) {
+		var path = pkg.patchesPath + file,
+			rawFileName = file.split('.'),
+			fileExtension = rawFileName.pop(),
+			fileName = rawFileName.join('');
+
+		if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
+			gruntConfig.requirejs[fileName + '_patch'] = {
+				options: {
+					baseUrl: pkg.patchesPath,
+					name: fileName,
+					optimize: 'none',
+					out: pkg.buildPath + 'patches/' + fileName + '.' + fileExtension,
+					onBuildRead: getModulePreprocessor(false, true)
+				}
+			}
 		}
 	});
 

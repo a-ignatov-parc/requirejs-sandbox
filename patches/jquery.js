@@ -1,6 +1,6 @@
-define('requirejs-sandbox/patches/jquery'/*, [
+define([
 	'logger/logger'
-]*/, function(/*console*/) {
+], function(console) {
 	return {
 		// Имя модуля используемое в require.js.
 		name: 'jquery',
