@@ -1,9 +1,8 @@
 define([
 	'logger/logger',
 	'helpers/utils',
-	'patches',
 	'helpers/require'
-], function(console, utils, patches, requireResolver) {
+], function(console, utils, requireResolver) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -228,7 +227,7 @@ define([
 
 		createLoader: function(target) {
 			var loadHandler = function(script, sandbox) {
-					var pathList = this.options.patch;
+					var patchList = this.options.patch;
 
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = this.sandbox.sandboxApi.require = sandbox.require;
@@ -261,27 +260,52 @@ define([
 							if (!context.completeLoad.isOverided) {
 								context.completeLoad = (function(completeLoad) {
 									return function(moduleName) {
-										// Проверяем имя модуля и делаем его патч если необходимо.
-										for (var i = 0, length = pathList.length; i < length; i++) {
-											if (pathList[i] == moduleName) {
-												var patch = patches[moduleName];
-
+										var fnContext = this,
+											fnArgs = arguments,
+											patchIsResolved,
+											patchName,
+											registry,
+											applyPatch = function(patch) {
 												console.debug('Found patch for loaded module: "' + moduleName + '"! Applying...');
 
 												// Если патч для данного модуля существует, то инициализируем его.
 												if (patch) {
 													try {
-														patch.enable(window, sandbox, this.registry.jquery.shim ? this.registry.jquery.shim.exportsFn() : sandbox[patch.shimName]);
+														registry = fnContext.registry[moduleName];
+														patch.enable(window, sandbox, registry && registry.shim ? registry.shim.exportsFn() : sandbox[patch.shimName]);
 														console.debug('Patch for module "' + moduleName + '" applied correctly');
+														completeLoad.apply(fnContext, fnArgs);
 													} catch(e) {
 														console.debug('Patch for module "' + moduleName + '" did not applied correctly! Look into debug info for more details');
 														console.error(moduleName, e);
 													}
 												}
+											};
+
+										// Проверяем имя модуля и делаем его патч если необходимо.
+										for (var i = 0, length = patchList.length; i < length; i++) {
+											if (typeof(patchList[i]) === 'string') {
+												patchName = patchList[i];
+												patchIsResolved = false;
+											} else if (typeof(patchList[i]) === 'object' && typeof(patchList[i].enable) === 'function') {
+												patchName = patchList[i].name;
+												patchIsResolved = true;
+											} else {
+												patchName = false;
+												patchIsResolved = false;
 											}
-											break;
+
+											if (patchName == moduleName) {
+												if (patchIsResolved) {
+													applyPatch(patchList[i]);
+													break;
+												} else {
+													window.require([['requirejs-sandbox', 'patches', moduleName].join('/')], applyPatch);
+													return;
+												}
+											}
 										}
-										return completeLoad.apply(this, arguments);
+										return completeLoad.apply(fnContext, fnArgs);
 									};
 								})(context.completeLoad);
 

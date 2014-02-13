@@ -162,15 +162,15 @@ var fileSystem = require('fs'),
 fileSystem
 	.readdirSync(pkg.pluginPath)
 	.forEach(function(file) {
-	var path = pkg.pluginPath + file,
-		rawFileName = file.split('.'),
-		fileExtension = rawFileName.pop(),
-		fileName = rawFileName.join('');
+		var path = pkg.pluginPath + file,
+			rawFileName = file.split('.'),
+			fileExtension = rawFileName.pop(),
+			fileName = rawFileName.join('');
 
-	if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
-		gruntConfig.uglify.plugins.files[pkg.buildPath + 'plugins/' + fileName + '.min.' + fileExtension] = path;
-	}
-});
+		if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
+			gruntConfig.uglify.plugins.files[pkg.buildPath + 'plugins/' + fileName + '.min.' + fileExtension] = path;
+		}
+	});
 
 module.exports = function(grunt) {
 	// Инициализируем конфиг

@@ -5,10 +5,11 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title>requrejs-sandbox demo</title>
 		<script src="../../static/js/libs/require.min.js"></script>
-		<script src="../../plugins/require-css.js"></script>
+		<script src="../../patches/jquery.js"></script>
+		<script src="../../build/plugins/require-css.min.js"></script>
 		<script src="../../build/requirejs-sandbox.js"></script>
 		<script>
-			requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requirejsCss) {
+			requirejs(['requirejs-sandbox', 'requirejs-css', 'requirejs-sandbox/patches/jquery'], function(requrejsSandbox, requirejsCss, jqueryPatch) {
 				console.log('requirejs-sandbox api', requrejsSandbox);
 
 				// Инициализируем песочницу для первого приложения и пытаемся загрузить в нее 
@@ -48,7 +49,7 @@
 				// файл `/app/main.js`.
 				requrejsSandbox.set('DemoApp', {
 					requireMain: 'app/main',
-					patch: ['jquery'],
+					patch: [jqueryPatch],
 					plugins: [requirejsCss]
 				});
 			});
