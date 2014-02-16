@@ -40,7 +40,7 @@ define([
 					this._state = this.STATE_RESOLVING;
 
 					if (!sandboxContructor) {
-						sandboxContructor = require('requirejs-sandbox')._getSandboxConstructor();
+						sandboxContructor = window.require('requirejs-sandbox')._getSandboxConstructor();
 					}
 
 					// Создаем песочницу для поиска require.js среди скриптов загруженных на 
