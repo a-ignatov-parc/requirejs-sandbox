@@ -197,7 +197,17 @@ fileSystem
 					out: pkg.buildPath + 'patches/' + fileName + '.' + fileExtension,
 					onBuildRead: getModulePreprocessor(false, true)
 				}
-			}
+			};
+
+			gruntConfig.requirejs[fileName + '_patch_min'] = {
+				options: {
+					baseUrl: pkg.patchesPath,
+					name: fileName,
+					optimize: 'uglify2',
+					out: pkg.buildPath + 'patches/' + fileName + '.min.' + fileExtension,
+					onBuildRead: getModulePreprocessor(false, true)
+				}
+			};
 		}
 	});
 
