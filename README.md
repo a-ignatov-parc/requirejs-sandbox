@@ -5,7 +5,6 @@ Sandbox manager for [require.js](http://requirejs.org/) allows user to run multi
 ---
 
 [![Build Status](https://travis-ci.org/a-ignatov-parc/requirejs-sandbox.png?branch=master)](https://travis-ci.org/a-ignatov-parc/requirejs-sandbox)
-[![Maintainability Status](http://platojs.nodejitsu.com/a-ignatov-parc/requirejs-sandbox/master/maintainability.png)](http://platojs.nodejitsu.com/a-ignatov-parc/requirejs-sandbox/master/)
 
 # Use cases
 
@@ -18,6 +17,7 @@ Sandbox manager for [require.js](http://requirejs.org/) allows user to run multi
 	> For example see demo #2
 
 1. Running widgets simultaneously with different conflicting libs as dependencies. You can easily run widgets written with [jQuery](http://jquery.com/) and [MooTools](http://mootools.net/) on one page without worrying about incompatibilities.
+1. Creating API lib with it's own set of libraries (e.g. `jQuery`, `easyXDM`, etc) that will not affect parent page environment.
 
 # Demos
 
