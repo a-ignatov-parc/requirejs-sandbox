@@ -1,7 +1,8 @@
 define([
-	'logger/logger'
-], function(console) {
-	return {
+	'logger/logger',
+	'helpers/patch'
+], function(console, patchAbstract) {
+	return patchAbstract.init({
 		// Имя модуля используемое в require.js.
 		name: 'jquery',
 
@@ -11,6 +12,8 @@ define([
 
 		// Метод инициализации патча.
 		enable: function(window, sandbox, jQuery) {
+			var options = this._options;
+
 			// Проверка на существование `jQuery`
 			if (typeof(jQuery) !== 'function') {
 				console.error('This patch require jQuery to be defined!');
@@ -52,7 +55,7 @@ define([
 				// Создаем новый, пропатченный, метод `init`.
 				proto.__patchedInit = function(selector, context, rootjQuery) {
 					if (typeof(selector) === 'string' && !context) {
-						return new Fn(selector, window.document, rootjQuery);
+						return new Fn(selector, options.rootEl || window.document, rootjQuery);
 					} else if (selector == sandbox && context != sandbox) {
 						return new Fn(window, context, rootjQuery);
 					} else if (selector == sandbox.document) {
@@ -60,9 +63,9 @@ define([
 					} else if (selector == sandbox.document.head) {
 						return new Fn(window.document.head, context, rootjQuery);
 					} else if (selector == sandbox.document.body) {
-						return new Fn(window.document.body, context, rootjQuery);
+						return new Fn(options.rootEl || window.document.body, context, rootjQuery);
 					} else {
-						return new Fn(selector, context, rootjQuery);
+						return new Fn(selector, options.rootEl || context, rootjQuery);
 					}
 				};
 
@@ -84,5 +87,5 @@ define([
 				console.warn('jQuery wasn\'t patched. Skipping...');
 			}
 		}
-	};
+	});
 });

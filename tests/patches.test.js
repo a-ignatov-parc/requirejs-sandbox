@@ -35,11 +35,14 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 						start();
 
 						equal(typeof(jqueryPatch), 'object', 'Patch object has wrong type');
-						equal(Object.keys(jqueryPatch).length, 4, 'Patch object attributes has wrong count');
+						equal(Object.keys(jqueryPatch).length, 6, 'Patch object attributes has wrong count');
 						equal(typeof(jqueryPatch.name), 'string', 'Patch object "name" attribute has wrong type');
 						equal(typeof(jqueryPatch.shimName), 'string', 'Patch object "shimName" attribute has wrong type');
+						equal(typeof(jqueryPatch._options), 'object', 'Patch object "_options" attribute has wrong type');
+						equal(Object.keys(jqueryPatch._options).length, 0, 'Patch object "_options" has wrong default value');
 						equal(typeof(jqueryPatch.enable), 'function', 'Patch method "enable" has wrong type');
 						equal(typeof(jqueryPatch.disable), 'function', 'Patch method "disable" has wrong type');
+						equal(typeof(jqueryPatch.setOptions), 'function', 'Patch method "setOptions" has wrong type');
 
 						stop();
 
