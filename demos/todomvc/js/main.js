@@ -14,11 +14,12 @@ require.config({
 require([
 	'requirejs-sandbox',
 	'requirejs-sandbox/patches/jquery',
+	'requirejs-sandbox/helpers/patch',
 	'angular',
 	'app',
 	'controllers/todo',
 	'directives/todoFocus'
-], function (requrejsSandbox, jqueryPatch, angular) {
+], function (requrejsSandbox, jqueryPatch, patchAbstract, angular) {
 	angular.bootstrap(document, ['todomvc']);
 
 	requrejsSandbox.set('TodoMVC', {
@@ -50,6 +51,15 @@ require([
 		},
 		patch: [jqueryPatch.setOptions({
 			rootEl: document.getElementById('backbone')
+		}), patchAbstract.init({
+			name: 'backbone',
+
+			shimName: 'Backbone',
+
+			enable: function(window, sandbox, Backbone) {
+				Backbone.history.location = window.location;
+				Backbone.history.history = window.history;
+			}
 		})],
 		success: function(require) {
 			require([

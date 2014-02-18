@@ -12,7 +12,12 @@ define([
 
 		// Метод инициализации патча.
 		enable: function(window, sandbox, jQuery) {
-			var options = this._options;
+			var options = this._options,
+				rootEl;
+
+			if (options.rootEl && options.rootEl.nodeType && options.rootEl.nodeType === 1) {
+				rootEl = options.rootEl;
+			}
 
 			// Проверка на существование `jQuery`
 			if (typeof(jQuery) !== 'function') {
@@ -55,7 +60,7 @@ define([
 				// Создаем новый, пропатченный, метод `init`.
 				proto.__patchedInit = function(selector, context, rootjQuery) {
 					if (typeof(selector) === 'string' && !context) {
-						return new Fn(selector, options.rootEl || window.document, rootjQuery);
+						return new Fn(selector, rootEl || window.document, rootjQuery);
 					} else if (selector == sandbox && context != sandbox) {
 						return new Fn(window, context, rootjQuery);
 					} else if (selector == sandbox.document) {
@@ -63,9 +68,9 @@ define([
 					} else if (selector == sandbox.document.head) {
 						return new Fn(window.document.head, context, rootjQuery);
 					} else if (selector == sandbox.document.body) {
-						return new Fn(options.rootEl || window.document.body, context, rootjQuery);
+						return new Fn(rootEl || window.document.body, context, rootjQuery);
 					} else {
-						return new Fn(selector, options.rootEl || context, rootjQuery);
+						return new Fn(selector, rootEl || context, rootjQuery);
 					}
 				};
 
