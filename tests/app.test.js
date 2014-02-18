@@ -6,7 +6,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 			baseUrl: 'app',
 			paths: {
 				'configTest': 'submodule',
-				'jquery': '../../static/js/libs/jquery/jquery.min'
+				'jquery': '../../bower_components/jquery/jquery'
 			}
 		},
 		success: function(require) {

@@ -5,7 +5,7 @@ requirejs([
 	QUnit.start();
 
 	test('Iframe resolver initial state and resolving', function() {
-		var targetUrl = '../static/js/libs/require.min.js',
+		var targetUrl = '../bower_components/requirejs/require.js',
 			resolvedUrl;
 
 		equal(typeof(iframeResolver), 'object', 'iframe resolver is undefined');

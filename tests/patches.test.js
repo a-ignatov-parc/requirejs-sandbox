@@ -3,7 +3,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		requireConfig: {
 			baseUrl: 'app',
 			paths: {
-				'jquery': '../../static/js/libs/jquery/jquery.min'
+				'jquery': '../../bower_components/jquery/jquery'
 			}
 		},
 		patch: ['jquery'],
@@ -50,7 +50,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 							requireConfig: {
 								baseUrl: 'app',
 								paths: {
-									'jquery': '../../static/js/libs/jquery/jquery.min'
+									'jquery': '../../bower_components/jquery/jquery'
 								}
 							},
 							patch: [jqueryPatch],

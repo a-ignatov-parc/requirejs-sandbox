@@ -2,7 +2,7 @@
 require.config({
 	baseUrl: 'js/apps/angular',
 	paths: {
-		angular: '../../../bower_components/angular/angular'
+		angular: '../../../../../bower_components/angular/angular'
 	},
 	shim: {
 		angular: {
@@ -26,11 +26,11 @@ require([
 		requireConfig: {
 			baseUrl: 'js/apps/backbone',
 			paths: {
-				jquery: '../../../bower_components/jquery/jquery',
-				underscore: '../../../bower_components/underscore/underscore',
-				backbone: '../../../bower_components/backbone/backbone',
-				backboneLocalstorage: '../../../bower_components/backbone.localStorage/backbone.localStorage',
-				text: '../../../bower_components/requirejs-text/text'
+				jquery: '../../../../../bower_components/jquery/jquery',
+				backbone: '../../../../../bower_components/backbone/backbone',
+				underscore: '../../../../../bower_components/underscore/underscore',
+				backboneLocalstorage: '../../../../../bower_components/backbone.localStorage/backbone.localStorage',
+				text: '../../../../../bower_components/requirejs-text/text'
 			},
 			shim: {
 				underscore: {
