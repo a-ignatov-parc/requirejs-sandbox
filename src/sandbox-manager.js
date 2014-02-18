@@ -266,6 +266,11 @@ define([
 											patchIsResolved,
 											patchName,
 											registry,
+											module,
+											patchModule = function(module, patch) {
+												patch.enable(window, sandbox, module);
+												console.debug('Patch for module "' + moduleName + '" applied correctly');
+											},
 											applyPatch = function(patch) {
 												console.debug('Found patch for loaded module: "' + moduleName + '"! Applying...');
 
@@ -273,9 +278,25 @@ define([
 												if (patch) {
 													try {
 														registry = fnContext.registry[moduleName];
-														patch.enable(window, sandbox, registry && registry.shim ? registry.shim.exportsFn() : sandbox[patch.shimName]);
-														console.debug('Patch for module "' + moduleName + '" applied correctly');
-														completeLoad.apply(fnContext, fnArgs);
+														module = registry && registry.shim && registry.shim.exportsFn() || sandbox[patch.shimName];
+
+														if (module == null) {
+															if (registry && registry.events.defined && typeof(registry.events.defined.push) === 'function') {
+																registry.events.defined.push(function(module) {
+																	patchModule(module, patch);
+																});
+
+																// Резолвим загрузку модуля.
+																completeLoad.apply(fnContext, fnArgs);
+															} else {
+																throw 'Module registry does not have defined event';
+															}
+														} else {
+															patchModule(module, patch);
+
+															// Резолвим загрузку модуля.
+															completeLoad.apply(fnContext, fnArgs);
+														}
 													} catch(e) {
 														console.debug('Patch for module "' + moduleName + '" did not applied correctly! Look into debug info for more details');
 														console.error(moduleName, e);
@@ -299,11 +320,10 @@ define([
 											if (patchName == moduleName) {
 												if (patchIsResolved) {
 													applyPatch(patchList[i]);
-													break;
 												} else {
 													window.require([['requirejs-sandbox', 'patches', moduleName].join('/')], applyPatch);
-													return;
 												}
+												return;
 											}
 										}
 										return completeLoad.apply(fnContext, fnArgs);
