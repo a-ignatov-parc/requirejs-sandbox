@@ -30,7 +30,7 @@ define([
 
 	return {
 		init: function(obj) {
-			return utils.defaults(obj, defaults);
+			return utils.defaults(obj || {}, defaults);
 		}
 	};
 });
