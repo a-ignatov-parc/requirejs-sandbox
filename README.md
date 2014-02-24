@@ -24,6 +24,7 @@ Sandbox manager for [require.js](http://requirejs.org/) allows user to run multi
 1. [Basic demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/basic/) – loading app through config manager, css loading and working with patches.
 1. [Multiple sandboxes demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/multiple-jquery/) – loading multiple [jQuery](http://jquery.com/) versions in different sandboxes with code execution without intercepting main page scope.
 1. [Twitter bootstrap sandboxing demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/bootstrap/) – trying to lunch [bootstrap](http://getbootstrap.com/) components on page with old [jQuery](http://jquery.com/) and in sandbox with new version.
+1. [Multiple webapps demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/todomvc/) – trying to lunch two [todomvc](http://todomvc.com/) webapps. One created with [angular.js](http://angularjs.org/) and another with [backbone.js](http://backbonejs.org/). All apps running without any changes in source code.
 
 # API
 
@@ -153,7 +154,7 @@ Returns sandbox instance with the requested name if it was created. Otherwise re
 		});
 		```
 			
-	* **patch** *Type: Array of strings*
+	* **patch** *Type: Array of strings or objects*
 	
 		> The list of patch names to be applied to sandbox's environment. Patches are required to configure libs in sandbox working transparently with main page objects (`window`, `document` objects etc.).
 		
@@ -161,9 +162,38 @@ Returns sandbox instance with the requested name if it was created. Otherwise re
 		requrejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js',
 			requireMain: 'app/main',
-			patch: ['jquery']
+			patch: ['jquery', patchObject]
 		});
 		```
+
+		> Objects passed to patch list should be created with patch helper (`requirejs-sandbox/helpers/patch`) by running `patchAbstract.init` method with passed patch object as argument.
+
+		Patch example used in [todomvc demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/todomvc/)
+
+		```javascript
+		requirejs(['requirejs-sandbox/helpers/patch'], function(patchAbstract) {
+			var patch = patchAbstract.init({
+				name: 'backbone',
+				shimName: 'Backbone',
+				enable: function(window, sandbox, Backbone) {
+					Backbone.history.location = window.location;
+					Backbone.history.history = window.history;
+				}
+			})
+		});
+		```
+
+		Every patch can create wrapped instance with custom options by executing `setOptions` method
+
+		```javascript
+		requirejs(['requirejs-sandbox/patches/jquery'], function(jqueryPatch) {
+			var patchWithCustomRoot = jqueryPatch.setOptions({
+				rootEl: document.getElementById('new-root-el')
+			});
+		});
+		```
+
+		> While `patchWithCustomRoot` has custom root object original `jqueryPatch` still has default root element setted to `window.document.body`.
 			
 	* **plugins** *Type: Array of objects*
 	

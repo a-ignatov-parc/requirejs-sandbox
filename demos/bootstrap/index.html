@@ -5,12 +5,12 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title>requrejs-sandbox demo</title>
 
-		<link href="app/styles/bootstrap.css" rel="stylesheet" type="text/css" />
+		<link href="../../../../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="../../static/styles/css/main.css">
 
 		<script src="app/libs/jquery.min.js"></script>
-		<script src="app/libs/bootstrap.js"></script>
-		<script src="../../static/js/libs/require.min.js"></script>
+		<script src="../../../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="../../../../bower_components/requirejs/require.js"></script>
 		<script src="../../build/patches/jquery.min.js"></script>
 		<script src="../../build/requirejs-sandbox.js"></script>
 		<script>
@@ -37,8 +37,8 @@
 					requireConfig: {
 						baseUrl: 'app',
 						paths: {
-							'jquery': '../../../static/js/libs/jquery/jquery.min',
-							'bootstrap': 'libs/bootstrap'
+							'jquery': '../../../bower_components/jquery/jquery',
+							'bootstrap': '../../../bower_components/bootstrap/dist/js/bootstrap'
 						},
 						shim: {
 							bootstrap: {

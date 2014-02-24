@@ -3,9 +3,9 @@ require.config({
 	baseUrl: 'app',
 	paths: {
 		'css': '../../../static/styles/css',
-		'backbone': '../../../static/js/libs/backbone',
-		'jquery': '../../../static/js/libs/jquery/jquery.min',
-		'underscore': '../../../static/js/libs/underscore.min'
+		'jquery': '../../../bower_components/jquery/jquery',
+		'backbone': '../../../bower_components/backbone/backbone',
+		'underscore': '../../../bower_components/underscore/underscore'
 	},
 	shim: {
 		underscore: {
