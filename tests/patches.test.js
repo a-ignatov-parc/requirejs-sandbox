@@ -41,7 +41,6 @@ requirejs(['requirejs-sandbox', 'requirejs-sandbox/helpers/patch'], function(req
 
 					equal(typeof(anotherPatch), 'object', 'Wrapped patch object has wrong type');
 					notEqual(anotherPatch, patch, 'Wrapped patch and original patch should not be equal');
-					equal(anotherPatch.__proto__, patch, 'Wrapped patch prototype should be equal to original patch object');
 					equal(Object.keys(anotherPatch).length, 1, 'Wrapped patch object attributes has wrong count');
 					equal(typeof(anotherPatch._options.someValue), 'number', 'Wrapped patch options should contains "someValue" attribute');
 					equal(typeof(patch._options.someValue), 'undefined', 'Original patch options should not contains "someValue" attribute');
