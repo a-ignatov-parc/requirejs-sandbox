@@ -23,10 +23,15 @@ var fileSystem = require('fs'),
 			if (!isBeforeRead) {
 				processedContent += '\'';
 
-				if (moduleName == 'sandbox-manager') {
-					processedContent += 'requirejs-sandbox';
-				} else {
-					processedContent += 'requirejs-sandbox/' + (isPatch ? 'patches/' : '') + moduleName;
+				switch(moduleName) {
+					case 'sandbox-manager':
+						processedContent += 'requirejs-sandbox';
+						break;
+					case 'logger/fake':
+						processedContent += 'requirejs-sandbox/logger/logger';
+						break;
+					default:
+						processedContent += 'requirejs-sandbox/' + (isPatch ? 'patches/' : '') + moduleName;
 				}
 				processedContent += '\'';
 			}
@@ -46,7 +51,7 @@ var fileSystem = require('fs'),
 					if (isBeforeRead) {
 						processedContent += '\'' + (deps[i] == 'logger/logger' ? 'logger/fake' : deps[i]) + '\'';
 					} else {
-						processedContent += '\'requirejs-sandbox/' + deps[i] + '\'';
+						processedContent += '\'requirejs-sandbox/' + (deps[i] == 'logger/fake' ? 'logger/logger' : deps[i]) + '\'';
 					}
 				}
 				processedContent += '],';
