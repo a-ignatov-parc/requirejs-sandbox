@@ -1,5 +1,10 @@
 {
 	"name": "requrejs-sandbox",
+	"main": "build/requirejs-sandbox.min.js",
+	"main-debug": "build/requirejs-sandbox.js",
+	"scripts": {
+		"install": ["npm install", "grunt compile"]
+	},
 	"dependencies": {
 		"jquery": "~2.0.0",
 		"angular": "~1.2.8",
