@@ -234,6 +234,7 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
+	grunt.registerTask('bower', ['requirejs', 'uglify', 'usebanner']);
 	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'usebanner', 'qunit']);
 	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner']);
 	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
