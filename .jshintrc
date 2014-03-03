@@ -11,6 +11,7 @@
 	"latedef": true,
 	"camelcase": true,
 	"quotmark": "single",
+	"-W015": false,
 	"globals": {
 		"module": true,
 		"require": true
