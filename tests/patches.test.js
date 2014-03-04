@@ -86,6 +86,13 @@ requirejs(['requirejs-sandbox', 'requirejs-sandbox/helpers/patch'], function(req
 									equal($('html')[0].tagName, 'HTML', 'jQuery has wrong searching scope. Selector should return parent page "html" element');
 									equal($('body').length, 1, 'jQuery has wrong searching scope. Selector should return root element "test-container"');
 									equal($('body')[0], document.body, 'jQuery has wrong searching scope. Selector should return parent page "body" element');
+
+									var element = $('.element1');
+
+									equal(element.find('ul').length, 2, 'jQuery has wrong searching scope. There is only 2 "ul" elements in element ".element1"');
+									equal(element.find('> ul').length, 1, 'jQuery has wrong searching scope. There is only 1 child "ul" element in element ".element1"');
+									equal($('ul', element).length, 2, 'jQuery has wrong searching scope. There is only 2 "ul" elements in element ".element1"');
+									equal($('> ul', element).length, 1, 'jQuery has wrong searching scope. There is only 1 child "ul" element in element ".element1"');
 									stop();
 
 									requrejsSandbox.set('PatchTest3', {
@@ -108,6 +115,13 @@ requirejs(['requirejs-sandbox', 'requirejs-sandbox/helpers/patch'], function(req
 												equal($('html')[0].tagName, 'HTML', 'jQuery has wrong searching scope. Selector should return parent page "html" element');
 												equal($('body').length, 1, 'jQuery has wrong searching scope. Selector should return root element "test-container"');
 												equal($('body')[0], document.getElementById('test-container'), 'jQuery has wrong searching scope. Selector should return root element "test-container"');
+
+												var element = $('.element1');
+
+												equal(element.find('ul').length, 2, 'jQuery has wrong searching scope. There is only 2 "ul" elements in element ".element1"');
+												equal(element.find('> ul').length, 1, 'jQuery has wrong searching scope. There is only 1 child "ul" element in element ".element1"');
+												equal($('ul', element).length, 2, 'jQuery has wrong searching scope. There is only 2 "ul" elements in element ".element1"');
+												equal($('> ul', element).length, 1, 'jQuery has wrong searching scope. There is only 1 child "ul" element in element ".element1"');
 											});
 										}
 									});

@@ -77,7 +77,28 @@ define([
 					} else if (selector == sandbox.document.body) {
 						return new Fn(rootEl || window.document.body, context, rootjQuery);
 					} else {
-						return new Fn(selector, rootEl ? (this && this.contains && this.contains(rootEl, context) ? context : rootEl) : context, rootjQuery);
+						if (rootEl) {
+							var container = rootEl,
+								contained = context;
+
+							// Так как для проверки на вложенность одного элемента в другой 
+							// необходимы DOM элементы, то мы делаем проверку и получаем их.
+							if (container instanceof jQuery) {
+								container = container[0];
+							}
+
+							if (contained instanceof jQuery) {
+								contained = contained[0];
+							}
+
+							if (jQuery.contains(container, contained)) {
+								return new Fn(selector, context, rootjQuery);
+							} else {
+								return new Fn(selector, rootEl, rootjQuery);
+							}
+						} else {
+							return new Fn(selector, context, rootjQuery);
+						}
 					}
 				};
 
