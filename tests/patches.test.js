@@ -82,6 +82,35 @@ requirejs(['requirejs-sandbox', 'requirejs-sandbox/helpers/patch'], function(req
 									equal($('#qunit').length, 1, 'jQuery has wrong searching scope. There is element with id "qunit" in main page');
 									equal($('#qunit')[0], qunitEl, '"qunitEl" should be equal to jQuery result');
 									equal($('#qunit').is(':visible'), true, 'jQuery patch has wrong "getComputedStyle" in sandbox. Element with id "qunit" is visible in main page');
+									equal($('html').length, 1, 'jQuery has wrong searching scope. Selector should return parent page "html" element');
+									equal($('html')[0].tagName, 'HTML', 'jQuery has wrong searching scope. Selector should return parent page "html" element');
+									equal($('body').length, 1, 'jQuery has wrong searching scope. Selector should return root element "test-container"');
+									equal($('body')[0], document.body, 'jQuery has wrong searching scope. Selector should return parent page "body" element');
+									stop();
+
+									requrejsSandbox.set('PatchTest3', {
+										requireConfig: {
+											baseUrl: 'app',
+											paths: {
+												'jquery': '../../bower_components/jquery/jquery'
+											}
+										},
+										patch: [jqueryPatch.setOptions({
+											rootEl: document.getElementById('test-container')
+										})],
+										success: function(require) {
+											require(['jquery'], function($) {
+												start();
+												equal(typeof($), 'function', 'Returned jQuery instance is not function');
+												equal($('#qunit').length, 0, 'jQuery has wrong searching scope. There is no element with id "qunit" in root element "test-container"');
+												equal($('.element1').length, 1, 'jQuery has wrong searching scope. There is element with class "element1" in root element "test-container"');
+												equal($('html').length, 1, 'jQuery has wrong searching scope. Selector should return parent page "html" element');
+												equal($('html')[0].tagName, 'HTML', 'jQuery has wrong searching scope. Selector should return parent page "html" element');
+												equal($('body').length, 1, 'jQuery has wrong searching scope. Selector should return root element "test-container"');
+												equal($('body')[0], document.getElementById('test-container'), 'jQuery has wrong searching scope. Selector should return root element "test-container"');
+											});
+										}
+									});
 								});
 							}
 						});

@@ -60,7 +60,14 @@ define([
 				// Создаем новый, пропатченный, метод `init`.
 				proto.__patchedInit = function(selector, context, rootjQuery) {
 					if (typeof(selector) === 'string' && !context) {
-						return new Fn(selector, rootEl || window.document, rootjQuery);
+						switch (selector) {
+							case 'html':
+								return new Fn(selector, window.document, rootjQuery);
+							case 'body':
+								return new Fn(rootEl || window.document.body, context, rootjQuery);
+							default:
+								return new Fn(selector, rootEl || window.document, rootjQuery);
+						}
 					} else if (selector == sandbox && context != sandbox) {
 						return new Fn(window, context, rootjQuery);
 					} else if (selector == sandbox.document) {
@@ -70,7 +77,7 @@ define([
 					} else if (selector == sandbox.document.body) {
 						return new Fn(rootEl || window.document.body, context, rootjQuery);
 					} else {
-						return new Fn(selector, rootEl || context, rootjQuery);
+						return new Fn(selector, rootEl ? (this && this.contains && this.contains(rootEl, context) ? context : rootEl) : context, rootjQuery);
 					}
 				};
 
