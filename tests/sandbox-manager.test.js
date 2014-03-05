@@ -78,7 +78,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 	requrejsSandbox.set('ExportsTest', {
 		debug: true,
 		sandboxLinks: exports,
-		success: function() {
+		success: function(require) {
 			var sandboxApi = this;
 
 			test('Checking exported variables', function() {
@@ -98,6 +98,14 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.define, sandboxApi.define, 'Sandbox public api has wrong value');
 				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.destroy, sandboxApi.destroy, 'Sandbox public api has wrong value');
 				equal(sandboxApi.sandboxManager.sandbox.sandboxApi.parentWindow, window, 'Sandbox public api has wrong link to parent window object');
+			});
+
+			require(['sandbox'], function(sandbox) {
+				test('Checking predefined modules', function() {
+					equal(typeof(sandboxApi.sandboxManager.sandbox), 'object', 'Sandbox public api should be available');
+					equal(typeof(sandbox), 'object', 'Sandbox public api should be available');
+					equal(sandbox, sandboxApi.sandboxManager.sandbox, 'Sandbox public api should be available');
+				});
 			});
 		}
 	});

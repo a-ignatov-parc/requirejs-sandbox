@@ -369,6 +369,14 @@ define([
 						}
 					}
 
+					console.debug('Creating predefined modules');
+
+					// Для того чтоб разработчик могу получить доступ к объекту `window` 
+					// песочницы, создаем модуль с названием `sandbox`.
+					this.api.define('sandbox', function() {
+						return sandbox;
+					});
+
 					console.debug('Executing module callback');
 
 					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
