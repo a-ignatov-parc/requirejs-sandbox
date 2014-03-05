@@ -2,9 +2,6 @@
 	"name": "requrejs-sandbox",
 	"main": "build/requirejs-sandbox.min.js",
 	"main-debug": "build/requirejs-sandbox.js",
-	"scripts": {
-		"install": ["npm install", "grunt bower"]
-	},
 	"dependencies": {
 		"jquery": "~2.0.0",
 		"requirejs": "~2.1.5"

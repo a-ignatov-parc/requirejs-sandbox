@@ -5,7 +5,6 @@
 
 #Project temp data
 static/styles/css/
-build/
 
 #grunt.js packages
 node_modules/
