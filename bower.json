@@ -1,5 +1,5 @@
 {
-	"name": "requrejs-sandbox",
+	"name": "requirejs-sandbox",
 	"main": "build/requirejs-sandbox.min.js",
 	"main-debug": "build/requirejs-sandbox.js",
 	"dependencies": {
