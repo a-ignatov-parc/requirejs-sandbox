@@ -1,5 +1,5 @@
 /**
- * requirejs-sandbox - v0.4.2-59 (build date: 06/03/2014)
+ * requirejs-sandbox - v0.4.2-63 (build date: 07/03/2014)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for require.js allows user to run multiple apps without scope intersection issues
  * Copyright (c) 2014 Anton Ignatov

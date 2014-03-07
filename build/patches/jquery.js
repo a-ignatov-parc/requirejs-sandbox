@@ -88,7 +88,7 @@ define('requirejs-sandbox/patches/jquery',['requirejs-sandbox/logger/logger','re
 								contained = contained[0];
 							}
 
-							if (jQuery.contains(container, contained)) {
+							if (jQuery.contains(container, contained) || !jQuery.contains(document.body, contained)) {
 								return new Fn(selector, context, rootjQuery);
 							} else {
 								return new Fn(selector, rootEl, rootjQuery);
