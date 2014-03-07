@@ -93,6 +93,18 @@ requirejs(['requirejs-sandbox', 'requirejs-sandbox/helpers/patch'], function(req
 									equal(element.find('> ul').length, 1, 'jQuery has wrong searching scope. There is only 1 child "ul" element in element ".element1"');
 									equal($('ul', element).length, 2, 'jQuery has wrong searching scope. There is only 2 "ul" elements in element ".element1"');
 									equal($('> ul', element).length, 1, 'jQuery has wrong searching scope. There is only 1 child "ul" element in element ".element1"');
+
+									var shadowEl = document.createElement('div');
+
+									shadowEl.innerHTML = '<div class="shadow-el">test</div>';
+
+									equal($.contains(document.body, shadowEl), false, '"shadowEl" should not be placed in body');
+
+									var shadowTarget = $('div', shadowEl);
+
+									equal(shadowTarget.length, 1, 'jQuery should find only one div element inside "shadowEl"');
+									equal(shadowTarget.hasClass('shadow-el'), true, 'div element finded inside "shadowEl" should have className "shadow-el"');
+
 									stop();
 
 									requrejsSandbox.set('PatchTest3', {
