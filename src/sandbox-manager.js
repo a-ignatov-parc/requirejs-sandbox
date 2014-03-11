@@ -2,8 +2,9 @@ define([
 	'logger/logger',
 	'helpers/utils',
 	'helpers/patch',
-	'helpers/require'
-], function(console, utils, patchAbstract, requireResolver) {
+	'helpers/require',
+	'helpers/preprocess'
+], function(console, utils, patchAbstract, requireResolver, preprocessPlugin) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -376,6 +377,11 @@ define([
 					this.api.define('sandbox', function() {
 						return sandbox;
 					});
+
+					console.debug('Creating "preprocess" plugin for sandbox require.js');
+
+					// Регистрируем плагин загрузки и препроцессинга ресурсов.
+					this.api.define(preprocessPlugin.name, preprocessPlugin.handler);
 
 					console.debug('Executing module callback');
 
