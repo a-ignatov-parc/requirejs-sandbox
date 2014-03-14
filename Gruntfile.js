@@ -70,7 +70,7 @@ var fileSystem = require('fs'),
 		},
 		watch: {
 			styles: {
-				files: pkg.stylusPath + 'main.styl',
+				files: pkg.stylusPath + '**/*.styl',
 				tasks: ['stylus:dev']
 			},
 			js: {

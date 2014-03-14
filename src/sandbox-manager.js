@@ -380,6 +380,9 @@ define([
 
 					console.debug('Creating "preprocess" plugin for sandbox require.js');
 
+					// Выставляем контекст исполнения.
+					preprocessPlugin.setContext(sandbox);
+
 					// Регистрируем плагин загрузки и препроцессинга ресурсов.
 					this.api.define(preprocessPlugin.name, preprocessPlugin.handler);
 
