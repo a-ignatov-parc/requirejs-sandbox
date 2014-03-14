@@ -9,4 +9,3 @@ static/styles/css/
 #grunt.js packages
 node_modules/
 bower_components/
-build/
