@@ -1,11 +1,10 @@
 define([
-	'logger/logger',
-	'helpers/utils'
-], function(console, utils) {
+	'logger/logger'
+], function(console) {
 	console.debug('Creating plugin for loading and preprocessing resources');
 
 	var Response = function(success, sourceCode) {
-			if (typeof(success) === 'boolean' || success == 1 || success == 0) {
+			if (typeof(success) === 'boolean' || success === 1 || success === 0 || success === '1' || success === '0') {
 				if (typeof(success) === 'boolean') {
 					this.status = +!success;
 				} else {
@@ -17,7 +16,7 @@ define([
 				console.debug('Creating simple response with status: ' + success);
 				return {
 					status: success
-				}
+				};
 			}
 		},
 		pluginHandler = function() {
@@ -58,7 +57,7 @@ define([
 
 						// Mayby this?
 						// Пытаемся загрузить стандартными средствами.
-						req([name], function(result) {
+						req([name], function() {
 							onload({
 								status: 2
 							});
