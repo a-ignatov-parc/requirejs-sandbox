@@ -130,15 +130,19 @@ define([
 			} else {
 				evaledCode = new target.Function(sourceCode);
 				try {
-					evaledCode();
+					resolvingResult = evaledCode();
 				} catch(e) {
 					console.error(e);
+				}
+
+				if (typeof(callback) === 'function') {
+					callback(resolvingResult);
 				}
 			}
 			return this;
 		},
 		autoWrap: function() {
-			responseSourceCache[this.id] = 'with(window.sandboxApi.windowProxy || window) {;' + responseSourceCache[this.id] + ';}';
+			responseSourceCache[this.id] = ';with(window.sandboxApi.windowProxy || window) {;' + responseSourceCache[this.id] + ';};';
 			return this;
 		}
 	};
