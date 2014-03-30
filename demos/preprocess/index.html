@@ -63,10 +63,11 @@
 										codeProcessedFn();
 
 										require(['preprocess-css!styles'], function(stylesProcessor) {
-											console.log(123, stylesProcessor);
-
 											// Резолвим процессор и вставляем стили в страницу.
-											stylesProcessor.resolve();
+											stylesProcessor
+												.replace(/(font-weight:\s*)normal/, '$1bold')
+												.prefix('#style-content')
+												.resolve();
 										});
 									});
 							});
@@ -77,6 +78,14 @@
 		</script>
 	</head>
 	<body>
+		<div id="style-content" class="b-content">
+			<h1 class="b-content-title">Test list:</h1>
+			<ol class="b-content-list">
+				<li>Item 1</li>
+				<li>Item 2</li>
+				<li>Item 3</li>
+			</ol>
+		</div>
 		<div class="b-content">
 			<h1 class="b-content-title">Execution logs:</h1>
 			<ol id="content" class="b-content-list"></ol>

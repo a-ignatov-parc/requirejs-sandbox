@@ -32,9 +32,9 @@ define([
 		Processor.prototype = {
 			responseSourceCache: [],
 			replace: function(pattern, replace) {
-				console.debug('Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
+				console.debug('[replace] Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
 				this.responseSourceCache[this.id] = this.responseSourceCache[this.id].replace(pattern, replace);
-				console.debug('Executing result: ', this.responseSourceCache[this.id]);
+				console.debug('[replace] Executing result: ', this.responseSourceCache[this.id]);
 				return this;
 			},
 			resolve: function(callback) {
