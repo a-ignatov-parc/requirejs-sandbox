@@ -9,7 +9,11 @@
 		<script src="../../build/plugins/require-css.min.js"></script>
 		<script src="../../build/requirejs-sandbox.js"></script>
 		<script>
-			requirejs(['requirejs-sandbox', 'requirejs-css', 'requirejs-sandbox/patches/jquery'], function(requrejsSandbox, requirejsCss, jqueryPatch) {
+			requirejs([
+				'requirejs-sandbox',
+				'requirejs-css',
+				'requirejs-sandbox/patches/jquery'
+			], function(requrejsSandbox, requirejsCss, jqueryPatch) {
 				console.log('requirejs-sandbox api', requrejsSandbox);
 
 				// Инициализируем песочницу для первого приложения и пытаемся загрузить в нее 

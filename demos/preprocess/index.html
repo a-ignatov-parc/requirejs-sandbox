@@ -7,9 +7,16 @@
 		<link rel="stylesheet" type="text/css" href="../../static/styles/css/main.css" />
 		<script src="../../bower_components/requirejs/require.js"></script>
 		<script src="../../build/patches/jquery.min.js"></script>
+		<script src="../../build/plugins/require-css.min.js"></script>
+		<script src="../../build/plugins/require-preprocess-css.min.js"></script>
 		<script src="../../build/requirejs-sandbox.js"></script>
 		<script>
-			requirejs(['requirejs-sandbox', 'requirejs-sandbox/patches/jquery'], function(requrejsSandbox, jqueryPatch) {
+			requirejs([
+				'requirejs-sandbox',
+				'requirejs-css',
+				'requirejs-preprocess-css',
+				'requirejs-sandbox/patches/jquery'
+			], function(requrejsSandbox, requirejsCss, requirejsPreprocessCss, jqueryPatch) {
 				requrejsSandbox.set('PreprocessDemoApp', {
 					requireConfig: {
 						baseUrl: 'app',
@@ -20,6 +27,7 @@
 					patch: [jqueryPatch.setOptions({
 						rootEl: document.getElementById('content')
 					})],
+					plugins: [requirejsCss, requirejsPreprocessCss],
 					success: function(require) {
 						// Загружаем в песочницу виджет как обычным способом, так и альтернативным 
 						// загрузчиком осуществляя препроцессинг кода.
@@ -53,6 +61,13 @@
 										// Получаем и исполняем функцию, которую мы загрузили и 
 										// отпроцессили до этого.
 										codeProcessedFn();
+
+										require(['preprocess-css!styles'], function(stylesProcessor) {
+											console.log(123, stylesProcessor);
+
+											// Резолвим процессор и вставляем стили в страницу.
+											stylesProcessor.resolve();
+										});
 									});
 							});
 						});
@@ -63,7 +78,7 @@
 	</head>
 	<body>
 		<div class="b-content">
-			Execution logs:
+			<h1 class="b-content-title">Execution logs:</h1>
 			<ol id="content" class="b-content-list"></ol>
 		</div>
 	</body>

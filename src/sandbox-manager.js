@@ -3,8 +3,8 @@ define([
 	'helpers/utils',
 	'helpers/patch',
 	'helpers/require',
-	'helpers/preprocess'
-], function(console, utils, patchAbstract, requireResolver, preprocessPlugin) {
+	'helpers/preprocess/plugin'
+], function(console, utils, patchAbstract, requireResolver, PreprocessPlugin) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -243,7 +243,8 @@ define([
 
 		createLoader: function(target) {
 			var loadHandler = function(script, sandbox) {
-					var patchList = this.options.patch;
+					var patchList = this.options.patch,
+						preprocessPlugin;
 
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = this.sandbox.sandboxApi.require = sandbox.require;
@@ -394,8 +395,8 @@ define([
 
 					console.debug('Creating "preprocess" plugin for sandbox require.js');
 
-					// Выставляем контекст исполнения.
-					preprocessPlugin.setContext(sandbox);
+					// Создаем инстанс плагина, с переданным контекстом.
+					preprocessPlugin = new PreprocessPlugin(sandbox);
 
 					// Регистрируем плагин загрузки и препроцессинга ресурсов.
 					this.api.define(preprocessPlugin.name, preprocessPlugin.handler);
