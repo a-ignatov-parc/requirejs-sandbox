@@ -5,11 +5,11 @@
 
 @font-face{
 	font-family:'Planetside2';
-	src:url('${cdnRoot}/styles/fonts/planetside2-webfont.eot?v=${cdnVersion}');
-	src:url('${cdnRoot}/styles/fonts/planetside2-webfont.eot?v=${cdnVersion}&#iefix') format('embedded-opentype'),
-		url('${cdnRoot}/styles/fonts/planetside2-webfont.woff?v=${cdnVersion}') format('woff'),
-		url('${cdnRoot}/styles/fonts/planetside2-webfont.ttf?v=${cdnVersion}') format('truetype'),
-		url('${cdnRoot}/styles/fonts/planetside2-webfont.svg#webfont?v=${cdnVersion}') format('svg');
+	src:url('cdnRoot/styles/fonts/planetside2-webfont.eot?v=cdnVersion');
+	src:url('cdnRoot/styles/fonts/planetside2-webfont.eot?v=cdnVersion&#iefix') format('embedded-opentype'),
+		url('cdnRoot/styles/fonts/planetside2-webfont.woff?v=cdnVersion') format('woff'),
+		url('cdnRoot/styles/fonts/planetside2-webfont.ttf?v=cdnVersion') format('truetype'),
+		url('cdnRoot/styles/fonts/planetside2-webfont.svg#webfont?v=cdnVersion') format('svg');
 }
 /* ============== HTML5 element display ============== */
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section{
@@ -309,7 +309,7 @@ table{
 }
 /* ============== Primary styles - default global settings and layout ============== */
 body{
-	background:#000 url("${cdnRoot}/images/global/bodyBg4.jpg?v=${cdnVersion}") center 40px no-repeat;
+	background:#000 url("cdnRoot/images/global/bodyBg4.jpg?v=cdnVersion") center 40px no-repeat;
 	color:#fff;
 }
 .ctn-center{
@@ -360,11 +360,11 @@ header .external{
 	font-weight:500;
 }
 header .external ul{
-	 background:url("${cdnRoot}/images/global/dividerTopNav.png?v=${cdnVersion}") left center no-repeat;
+	 background:url("cdnRoot/images/global/dividerTopNav.png?v=cdnVersion") left center no-repeat;
 	 height:39px;
 }
 header .external li{
-	background:url("${cdnRoot}/images/global/dividerTopNav.png?v=${cdnVersion}") right center no-repeat;
+	background:url("cdnRoot/images/global/dividerTopNav.png?v=cdnVersion") right center no-repeat;
 	float:left;
 	text-align:center;
 	padding:0 15px;
@@ -397,7 +397,7 @@ header #myAcct em.menuArrow{
 	width:10px;
 	height:7px;
 	display:inline-block;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") -393px -249px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") -393px -249px;
 	margin:-5px 0 0 7px;
 }
 header .auth{
@@ -483,7 +483,7 @@ header #myAcctDropdown li, header #loginDropdown li{
 	padding-left:2px;
 }
 header #myAcctDropdown li em, header #loginDropdown li em{
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -697px -218px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -697px -218px transparent;
 	display:inline-block;
 	width:17px;
 	height:17px;
@@ -504,13 +504,13 @@ header h1{
 	width:444px;
 }
 .logoPS2{
-	background:url("${cdnRoot}/images/global/en/logoPS2Beta.png?v=${cdnVersion}");
+	background:url("cdnRoot/images/global/en/logoPS2Beta.png?v=cdnVersion");
 	width:444px;
 	height:106px;
 	margin:0 auto;
 }
 .logoSony{
-	background:url("${cdnRoot}/images/global/spriteLogos.gif?v=${cdnVersion}");
+	background:url("cdnRoot/images/global/spriteLogos.gif?v=cdnVersion");
 	width:70px;
 	height:24px;
 	float:left;
@@ -535,23 +535,23 @@ header h1{
 #headerSearch .searchBoxLeft{
 	width:14px;
 	height:31px;
-	background-image:url("${cdnRoot}/images/global/search/searchBoxLeft_14x31.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/search/searchBoxLeft_14x31.png?v=cdnVersion");
 }
 #headerSearch .searchBoxMid{
 	width:80px;
 	height:31px;
-	background-image:url("${cdnRoot}/images/global/search/searchBoxMid_1x31.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/search/searchBoxMid_1x31.png?v=cdnVersion");
 }
 #headerSearch .searchBtnMid{
 	width:30px;
 	height:25px;
-	background-image:url("${cdnRoot}/images/global/search/searchBtnMid_1x25.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/search/searchBtnMid_1x25.png?v=cdnVersion");
 	margin-top:3px;
 }
 #headerSearch .searchBtnRight{
 	width:9px;
 	height:25px;
-	background-image:url("${cdnRoot}/images/global/search/searchBtnRight_9x25.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/search/searchBtnRight_9x25.png?v=cdnVersion");
 	margin-top:3px;
 }
 #headerSearch #searchText{
@@ -560,7 +560,7 @@ header h1{
 header nav{
 	position:relative;
 	height:37px;
-	background:url("${cdnRoot}/images/global/dividerTopNavBotBrd.png?v=${cdnVersion}") center bottom no-repeat;
+	background:url("cdnRoot/images/global/dividerTopNavBotBrd.png?v=cdnVersion") center bottom no-repeat;
 	overflow:visible;
 	text-transform:uppercase;
 }
@@ -571,7 +571,7 @@ header nav ul{
 header nav li{
 	float:left;
 	margin:0 15px 0 0;
-	background:url("${cdnRoot}/images/global/dividerTopNav.png?v=${cdnVersion}") top right no-repeat;
+	background:url("cdnRoot/images/global/dividerTopNav.png?v=cdnVersion") top right no-repeat;
 }
 header nav li.last{
 	background:none;
@@ -587,7 +587,7 @@ header nav a:hover{
 }
 header nav a.active{
 	clear:both;
-	background:url("${cdnRoot}/images/global/topNavActState.png?v=${cdnVersion}") center bottom no-repeat;
+	background:url("cdnRoot/images/global/topNavActState.png?v=cdnVersion") center bottom no-repeat;
 	height:19px;
 }
 header nav a em{
@@ -596,7 +596,7 @@ header nav a em{
 	width:52px;
 	height:52px;
 	margin:-18px 0 0 -3px;
-	background-image:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion");
 	background-repeat:no-repeat;
 }
 header nav a span{
@@ -647,7 +647,7 @@ header nav a.nav-search.active em{
 	background-position:-59px -215px;
 }
 header nav #charSelect {
-	background:url("${cdnRoot}/images/player/profile/dropdownArrowSprite.png?v=${cdnVersion}") no-repeat 10px 0;
+	background:url("cdnRoot/images/player/profile/dropdownArrowSprite.png?v=cdnVersion") no-repeat 10px 0;
 	width:35px;
 	height:39px;
 	position:relative;
@@ -670,7 +670,7 @@ header nav #charSelect.drop {
 	display:none;
 	padding-bottom:8px;
 	position:absolute;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -389px -2011px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -389px -2011px transparent;
 	height:auto;
 	width:275px;
 	top:37px;
@@ -700,7 +700,7 @@ header nav #charSelect.drop {
 	border-bottom:#033C43 solid 1px;
 }
 #charSelect ul.sub-select li a.activeChar{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -406px -1969px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -406px -1969px;
 }
 #charSelect ul.sub-select li a span{
 	overflow:hidden;
@@ -723,7 +723,7 @@ header nav #charSelect.drop {
 	text-shadow:none;
 	color:#fff;
 	cursor:default;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -406px -1969px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -406px -1969px;
 }
 #charSelect ul.sub-select li a.activeChar span{
 	top:-7px;
@@ -735,7 +735,7 @@ header nav #charSelect.drop {
 	left:31px;
 	position:relative;
 	top:-17px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -697px -218px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -697px -218px;
 	height:19px;
 	width:100px;
 	padding-left:17px;
@@ -744,13 +744,13 @@ header nav #charSelect.drop {
 	display:block;
 }
 #charSelect .dropdownDivider{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2953px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2953px;
 	width:100%;
 	height:2px;
 	clear:both;
 }
 .charFactionIcon {
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -321px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -321px -235px;
 	width:24px;
 	height:24px;
 	position:absolute;
@@ -766,7 +766,7 @@ header nav #charSelect.drop {
 	background-position:-345px -235px;
 }
 header nav a.btn-play {
-	background:url("${cdnRoot}/images/global/sprite.btn.play.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprite.btn.play.png?v=cdnVersion") no-repeat;
 	width:160px;
 	height:34px;
 	padding:0;
@@ -785,7 +785,7 @@ header nav .arr.arr-left { margin:0 10px 0 0;}
 header nav .arr.arr-right { margin:0 0 0 10px;}
 /* ============== Footer ============== */
 footer{
-	background:url("${cdnRoot}/images/global/footerBg.png?v=${cdnVersion}") center top no-repeat;
+	background:url("cdnRoot/images/global/footerBg.png?v=cdnVersion") center top no-repeat;
 	width:100%;
 	min-height:560px;
 	float:left;
@@ -856,13 +856,13 @@ footer #logoSpacer{
 	height:100%;
 }
 footer .logoSOE{
-	background:url("${cdnRoot}/images/global/footer/soeLogo.png?v=${cdnVersion}");
+	background:url("cdnRoot/images/global/footer/soeLogo.png?v=cdnVersion");
 	width:99px;
 	height:63px;
 	margin-top:20px;
 }
 footer .logoESRB{
-	background:url("${cdnRoot}/images/global/footer/esrb_T.png?v=${cdnVersion}");
+	background:url("cdnRoot/images/global/footer/esrb_T.png?v=cdnVersion");
 	width:180px;
 	height:114px;
 }
@@ -873,13 +873,13 @@ footer .logoESRBPrivacy{
 	margin-top:25px;
 }
 footer .logoNvidia{
-	background:url("${cdnRoot}/images/global/footer/nvidia-logo.png?v=${cdnVersion}");
+	background:url("cdnRoot/images/global/footer/nvidia-logo.png?v=cdnVersion");
 	width:133px;
 	height:62px;
 	margin-top:20px;
 }
 footer .logoAlienware{
-	background:url("${cdnRoot}/images/global/footer/alienware-logo.png?v=${cdnVersion}");
+	background:url("cdnRoot/images/global/footer/alienware-logo.png?v=cdnVersion");
 	width:145px;
 	height:72px;
 	margin-top:15px;
@@ -908,7 +908,7 @@ footer .links-social a{
 	height:44px;
 	margin:0;
 	float:left;
-	background-image:url("${cdnRoot}/images/global/footer/social-sprite_44x44.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/footer/social-sprite_44x44.png?v=cdnVersion");
 	background-repeat:no-repeat;
 }
 footer .links-social a.twitch{
@@ -954,7 +954,7 @@ footer #langSelectTitle{
 }
 footer #langSelect{
 	float:left;
-	background:#000 url("${cdnRoot}/images/player/profile/dropdownArrowSprite.png?v=${cdnVersion}") no-repeat scroll 63px -1px;
+	background:#000 url("cdnRoot/images/player/profile/dropdownArrowSprite.png?v=cdnVersion") no-repeat scroll 63px -1px;
 	margin:4px 0 0 0;
 	width:88px;
 	height:26px;
@@ -974,22 +974,22 @@ footer #langSelect span em{
 	margin:3px 10px 0 0;
 	width:16px;
 	height:10px;
-	background:url("${cdnRoot}/images/global/flags/en.png?v=${cdnVersion}") no-repeat 0 0;
+	background:url("cdnRoot/images/global/flags/en.png?v=cdnVersion") no-repeat 0 0;
 }
 footer #langSelect span em.frFlag{
-	background-image:url("${cdnRoot}/images/global/flags/fr.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/fr.png?v=cdnVersion");
 }
 footer #langSelect span em.itFlag{
-	background-image:url("${cdnRoot}/images/global/flags/it.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/it.png?v=cdnVersion");
 }
 footer #langSelect span em.deFlag{
-	background-image:url("${cdnRoot}/images/global/flags/de.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/de.png?v=cdnVersion");
 }
 footer #langSelect span em.esFlag{
-	background-image:url("${cdnRoot}/images/global/flags/es.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/es.png?v=cdnVersion");
 }
 footer #langSelect span em.trFlag{
-	background-image:url("${cdnRoot}/images/global/flags/tr.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/tr.png?v=cdnVersion");
 }
 footer #langSelect ul.sub-select{
 	display:none;
@@ -1005,7 +1005,7 @@ footer #langSelect ul.sub-select{
 	top:5px;
 }
 footer #langSelect ul li{
-	background:url("${cdnRoot}/images/global/flags/en.png?v=${cdnVersion}") no-repeat 10px 8px;
+	background:url("cdnRoot/images/global/flags/en.png?v=cdnVersion") no-repeat 10px 8px;
 	padding:0;
 	margin:0;
 	width:88px;
@@ -1015,19 +1015,19 @@ footer #langSelect ul li{
 	line-height:26px;
 }
 footer #langSelect ul li.itLang{
-	background-image:url("${cdnRoot}/images/global/flags/it.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/it.png?v=cdnVersion");
 }
 footer #langSelect ul li.frLang{
-	background-image:url("${cdnRoot}/images/global/flags/fr.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/fr.png?v=cdnVersion");
 }
 footer #langSelect ul li.deLang{
-	background-image:url("${cdnRoot}/images/global/flags/de.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/de.png?v=cdnVersion");
 }
 footer #langSelect ul li.esLang{
-	background-image:url("${cdnRoot}/images/global/flags/es.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/es.png?v=cdnVersion");
 }
 footer #langSelect ul li.trLang{
-	background-image:url("${cdnRoot}/images/global/flags/tr.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/flags/tr.png?v=cdnVersion");
 }
 footer #langSelect ul li a{
 	padding-left:40px;
@@ -1045,7 +1045,7 @@ footer #langSelect ul li a:hover{
 
 }
 #subNavContainer{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -7px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -7px;
 	width:987px;
 	height:110px;
 	display:block;
@@ -1058,13 +1058,13 @@ footer #langSelect ul li a:hover{
 	margin:3px 0 0 15px;
 }
 #factionLogo.faction_vs{
-	background:url("${cdnRoot}/images/global/factions/vs_70x70.png?v=${cdnVersion}") no-repeat center center;
+	background:url("cdnRoot/images/global/factions/vs_70x70.png?v=cdnVersion") no-repeat center center;
 }
 #factionLogo.faction_nc{
-	background:url("${cdnRoot}/images/global/factions/nc_70x70.png?v=${cdnVersion}") no-repeat center center;
+	background:url("cdnRoot/images/global/factions/nc_70x70.png?v=cdnVersion") no-repeat center center;
 }
 #factionLogo.faction_tr{
-	background:url("${cdnRoot}/images/global/factions/tr_56x68.png?v=${cdnVersion}") no-repeat center center;
+	background:url("cdnRoot/images/global/factions/tr_56x68.png?v=cdnVersion") no-repeat center center;
 }
 #subNavContainer #nameServerOverflow{
 	float:left;
@@ -1082,7 +1082,7 @@ footer #langSelect ul li a:hover{
 	text-align:right;
 }
 #subNavBox #outdated.show{
-	background:url("${cdnRoot}/images/global/outdated-character.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/outdated-character.png?v=cdnVersion") no-repeat;
 	height:62px;
 	width:auto;
 	display:block;
@@ -1142,7 +1142,7 @@ footer #langSelect ul li a:hover{
 	min-width:92px;
 	height:41px;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") -95px -3286px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") -95px -3286px;
 }
 #subNavContainer #worldName{
 	float:left;
@@ -1168,7 +1168,7 @@ footer #langSelect ul li a:hover{
 	width:450px;
 	display:block;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -326px -3286px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -326px -3286px;
 }
 #subNavContainer #subNav{
 	float:left;
@@ -1183,7 +1183,7 @@ footer #langSelect ul li a:hover{
 	display:block;
 	float:left;
 	margin-top:5px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -900px -1056px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -900px -1056px;
 }
 #subNavContainer #subNav .navElement{
 	float:left;
@@ -1193,10 +1193,10 @@ footer #langSelect ul li a:hover{
 	line-height:41px;
 }
 #subNavContainer #subNav .navElement:hover{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2020px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2020px;
 }
 #subNavContainer #subNav .navElement.current{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -1969px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -1969px;
 }
 #subNavContainer #subNav .navElement a{
 	height:100%;
@@ -1212,7 +1212,7 @@ footer #langSelect ul li a:hover{
 #quickStats{
 	width:960px;
 	height:78px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -1803px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -1803px;
 	margin:-24px 0 10px 25px;
 	overflow:hidden;
 }
@@ -1227,7 +1227,7 @@ footer #langSelect ul li a:hover{
 	width:20px;
 	height:25px;
 	margin:13px 5px 30px 10px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -777px -147px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -777px -147px;
 }
 #quickStats .stats-highlight .label{
 	font-size:17px;
@@ -1245,7 +1245,7 @@ footer #langSelect ul li a:hover{
 	float:left;
 	width:705px;
 	height:73px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -1720px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -1720px;
 }
 #quickStats #battleRank{
 	width:145px;
@@ -1258,7 +1258,7 @@ footer #langSelect ul li a:hover{
 	width:32px;
 	height:40px;
 	margin:21px 8px 0 15px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -675px -181px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -675px -181px;
 }
 #quickStats #status{
 	width:75px;
@@ -1277,7 +1277,7 @@ footer #langSelect ul li a:hover{
 	width:38px;
 	height:42px;
 	margin:11px 8px 0 19px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -423px -432px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -423px -432px;
 }
 #quickStats #kdRatio{
 	width:140px;
@@ -1286,7 +1286,7 @@ footer #langSelect ul li a:hover{
 	width:42px;
 	height:42px;
 	margin:11px 7px 0 19px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -307px -7px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -307px -7px;
 }
 #quickStats .stats .section{
 	float:left;
@@ -1360,7 +1360,7 @@ footer #langSelect ul li a:hover{
 	margin-top:7px;
 	width:2px;
 	height:55px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -914px -1134px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -914px -1134px;
 }
 #quickStats .stats .stat-block{
 	height:100%;
@@ -1399,7 +1399,7 @@ footer #langSelect ul li a:hover{
 	margin-left:5px;
 }
 #quickStats .stats .stat-block .stat-icon{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") 100px 100px no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") 100px 100px no-repeat;
 	display:block;
 	width:34px;
 	height:34px;
@@ -1512,7 +1512,7 @@ footer #langSelect ul li a:hover{
 #quickStats .stats .tooltip,
 .useable-by .tooltip{
 	margin:1px 0 0 0;
-	background:url("${cdnRoot}/images/global/tooltipTop.png?v=${cdnVersion}") no-repeat top center;
+	background:url("cdnRoot/images/global/tooltipTop.png?v=cdnVersion") no-repeat top center;
 }
 #quickStats .stats .tooltip .copy,
 .useable-by .tooltip .copy{
@@ -1541,7 +1541,7 @@ footer #langSelect ul li a:hover{
 }
 #loaderOverlay{
 	text-align:center;
-	background-image:url("${cdnRoot}/images/global/loading_ani.gif?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/loading_ani.gif?v=cdnVersion");
 	background-position:center center;
 	background-repeat:no-repeat;
 }
@@ -1567,7 +1567,7 @@ footer #langSelect ul li a:hover{
 	top:150px;
 }
 #loaderOverlay .errorMessage{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2542px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2542px;
 	height:206px;
 	font-size:13px;
 }
@@ -1591,7 +1591,7 @@ footer #langSelect ul li a:hover{
 	color:#2EE7F8;
 }
 #loaderOverlay .errorMessage button{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -861px -990px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -861px -990px transparent;
 	border:none;
 	color:#fff;
 	width:98px;
@@ -1601,7 +1601,7 @@ footer #langSelect ul li a:hover{
 /*
 #loaderOverlay .errorMessageBottom{
 	width:312px;
-	background:url("${cdnRoot}/images/global/sprites-main.png?v=${cdnVersion}") no-repeat -7px -5317px;
+	background:url("cdnRoot/images/global/sprites-main.png?v=cdnVersion") no-repeat -7px -5317px;
 	height:21px;
 	clear:both;
 }
@@ -1677,7 +1677,7 @@ body #poorExperience {
 	width:430px;
 	height:216px;
 	position:absolute;
-	background:url("${cdnRoot}/images/global/error_modal.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/error_modal.png?v=cdnVersion") no-repeat;
 	top:50%;
 	left:50%;
 	margin-top:-108px;
@@ -1709,7 +1709,7 @@ body #poorExperience {
 }
 #charLoadError #loadError button,
 #poorExperience #poorWindow button{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -861px -990px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -861px -990px transparent;
 	border:none;
 	color:#fff;
 	width:98px;
@@ -1728,7 +1728,7 @@ body #poorExperience {
 	width:300px;
 	height:100%;
 	min-height:500px;
-	background:url("${cdnRoot}/images/player/profile/char-bg-sprite.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/player/profile/char-bg-sprite.png?v=cdnVersion") no-repeat;
 }
 #profileImage.tr{
 	background-position:-299px 0;
@@ -1761,7 +1761,7 @@ body #poorExperience {
 	text-align:center;
 	top:0;
 	right:0;
-	background:url("${cdnRoot}/images/player/profile/medal-default.png?v=${cdnVersion}") no-repeat bottom center;
+	background:url("cdnRoot/images/player/profile/medal-default.png?v=cdnVersion") no-repeat bottom center;
 }
 #profileMainStats{
 	overflow:hidden;
@@ -1789,7 +1789,7 @@ body #poorExperience {
 #progressOverview #overviewHeader{
 	width:100%;
 	height:40px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2066px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2066px;
 	display:block;
 }
 #progressOverview .label{
@@ -1817,7 +1817,7 @@ body #poorExperience {
 	text-align:center;
 	color:#000;
 	font-size:17px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -420px -1350px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -420px -1350px;
 	margin-right:3px;
 }
 #BRProgressBarBkgd{
@@ -1827,7 +1827,7 @@ body #poorExperience {
 	height:18px;
 	width:216px;
 	background-color:#222;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -7px -357px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -7px -357px;
 }
 #BRProgressBarBkgd #BRProgressBarRuler{
 	float:right;
@@ -1844,7 +1844,7 @@ body #poorExperience {
 }
 #BRProgressBarBkgd #BRProgressBarRuler div{
 	height:10px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	display:block;
 }
 #BRProgressBarBkgd #BRProgressBarRuler .line-left{
@@ -1863,7 +1863,7 @@ body #poorExperience {
 	position:relative;
 	float:left;
 	height:100%;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -269px -357px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -269px -357px;
 }
 #nextBR{
 	overflow:hidden;
@@ -1875,7 +1875,7 @@ body #poorExperience {
 	text-align:center;
 	color:#FFF;
 	font-size:17px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -470px -1350px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -470px -1350px;
 	margin-left:3px;
 }
 #BRPoints{
@@ -1899,7 +1899,7 @@ body #poorExperience {
 	width:32px;
 	display:block;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -501px -203px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -501px -203px;
 }
 #certLogoTable{
 	width:32px;
@@ -1939,7 +1939,7 @@ body #poorExperience {
 	position:relative;
 	float:left;
 	height:100%;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -7px -378px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -7px -378px;
 }
 #CertProgressBarTable{
 	width:auto;
@@ -1950,7 +1950,7 @@ body #poorExperience {
 	display:block;
 	position:absolute;
 	right:-8px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -487px -378px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -487px -378px;
 }
 #CertProgressPercent{
 	position:absolute;
@@ -1981,7 +1981,7 @@ body #poorExperience {
 	float:left;
 	width:162px;
 	height:248px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -681px -877px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -681px -877px;
 }
 #implants .box-padding{
 	padding:10px;
@@ -2013,7 +2013,7 @@ body #poorExperience {
 .implantHolder{
 	width:66px;
 	height:70px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -932px -169px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -932px -169px;
 	position:relative;
 }
 .implantIcon{
@@ -2048,7 +2048,7 @@ body #poorExperience {
 	display:none;
 	height:auto;
 	z-index:1000;
-	background:url("${cdnRoot}/images/global/tooltipLeft.png?v=${cdnVersion}") no-repeat left center;
+	background:url("cdnRoot/images/global/tooltipLeft.png?v=cdnVersion") no-repeat left center;
 	margin-left:-8px;
 }
 .tooltip span{
@@ -2064,7 +2064,7 @@ body #poorExperience {
 	box-shadow:4px 4px 4px #000;
 }
 .deep-details .tooltip {
-	background:url("${cdnRoot}/images/global/tooltipRight.png?v=${cdnVersion}") no-repeat right center;
+	background:url("cdnRoot/images/global/tooltipRight.png?v=cdnVersion") no-repeat right center;
 	padding-right:11px;
 	margin-left:-11px;
 }
@@ -2077,7 +2077,7 @@ body #poorExperience {
 	float:right;
 	width:333px;
 	height:248px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -196px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -196px;
 }
 #resources .dotted-divider{
 	margin:-1px 0;
@@ -2092,7 +2092,7 @@ body #poorExperience {
 .resourceIcon{
 	width:50px;
 	height:50px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	float:left;
 	margin-left:10px;
 }
@@ -2140,7 +2140,7 @@ body #poorExperience {
 	height:113px;
 	margin-top:9px;
 	padding:10px 20px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -1246px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -1246px;
 }
 #kpf .label{
 	font-size:14px;
@@ -2154,7 +2154,7 @@ body #poorExperience {
 	float:left;
 	width:85px;
 	height:85px;
-	background:url("${cdnRoot}/images/player/profile/temp-graph-2.png?v=${cdnVersion}");
+	background:url("cdnRoot/images/player/profile/temp-graph-2.png?v=cdnVersion");
 	margin-right:5px;
 }
 #kpfChart.no-data{
@@ -2192,7 +2192,7 @@ body #poorExperience {
 	height:32px;
 	margin-top:4px;
 	margin-left:10px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 }
 .factionIcon.vs{
 	background-position:-163px -211px;
@@ -2228,7 +2228,7 @@ body #poorExperience {
 	height:32px;
 	text-align:center;
 	line-height:32px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -646px -822px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -646px -822px;
 	cursor:pointer;
 }
 .tabButtons.active{
@@ -2241,7 +2241,7 @@ body #poorExperience {
 	width:300px;
 	height:318px;
 	display:none;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -11px -877px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -11px -877px;
 	padding:20px;
 }
 #scoreTab{
@@ -2269,7 +2269,7 @@ body #poorExperience {
 .profile-tab .section .icon{
 	width:46px;
 	height:64px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	display:block;
 	float:left;
 }
@@ -2344,7 +2344,7 @@ body #poorExperience {
 	letter-spacing:0.06em;
 	text-transform:uppercase;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -350px -1301px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -350px -1301px;
 	width:243px;
 	height:36px;
 	line-height:36px;
@@ -2358,7 +2358,7 @@ body #poorExperience {
 	width:308px;
 	height:395px;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -359px -877px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -359px -877px;
 	margin-left:14px;
 	padding: 9px 5px 9px 9px;
 	position:relative;
@@ -2381,7 +2381,7 @@ body #poorExperience {
 	display:block;
 	width:14px;
 	height:14px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -407px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -407px -235px;
 	float:right;
 	margin-top:2px;
 }
@@ -2397,7 +2397,7 @@ body #poorExperience {
 	margin-right:0;
 }
 .profileDetailsBox_2across .container{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -1390px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -1390px;
 	height:144px;
 	width:453px;
 	position:relative;
@@ -2421,7 +2421,7 @@ body #poorExperience {
 	display:block;
 	width:14px;
 	height:14px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -407px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -407px -235px;
 	float:right;
 	margin-top:2px;
 }
@@ -2429,13 +2429,13 @@ body #poorExperience {
 	width:294px;
 	height:112px;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -9px -1561px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -9px -1561px;
 	overflow:hidden;
 	position:relative;
 	margin-bottom:12px;
 }
 #topWeapons #noWeaponData, #topVehicles #noVehicleData {
-	background: url("${cdnRoot}/images/player/weapons/hichartGraph.png") no-repeat scroll -160px 0 transparent;
+	background: url("cdnRoot/images/player/weapons/hichartGraph.png") no-repeat scroll -160px 0 transparent;
 	height: 160px;
 	margin: 80px auto 40px;
 	text-align: center;
@@ -2454,7 +2454,7 @@ body #poorExperience {
 	display:block;
 	width:25px;
 	height:20px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -797px -147px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -797px -147px;
 	float:right;
 	margin:4px 6px 0 0;
 	cursor:pointer;
@@ -2466,7 +2466,7 @@ body #poorExperience {
 	font-size:18px;
 	line-height:28px;
 	text-align:center;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -707px -181px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -707px -181px;
 	margin:8px 7px -5px 9px;
 	float:left;
 }
@@ -2575,7 +2575,7 @@ body #poorExperience {
 	background:#ccc;
 	margin-left:20px;
 	margin-top:5px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	cursor:pointer;
 }
 #classesOverview .container .timechart .class-icon.medic,
@@ -2625,7 +2625,7 @@ body #poorExperience {
 	display:none;
 	clear:both;
 	width:269px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat;
 	padding:22px 12px 0;
 	float:left;
 }
@@ -2666,7 +2666,7 @@ body #poorExperience {
 	display:block;
 	width:42px;
 	height:42px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	margin-right:5px;
 }
 #classesOverview .class-info .stat-block .icon.time{
@@ -2729,7 +2729,7 @@ body #poorExperience {
 	display:block;
 	width:25px;
 	height:20px;
-	background-image:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion");
 	background-repeat:no-repeat;
 	background-position:-797px -147px;
 	position:absolute;
@@ -2846,7 +2846,7 @@ body #poorExperience {
 	display:block;
 	height:122px;
 	width:142px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -533px -147px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -533px -147px;
 	margin-right:5px;
 }
 #achievements .container .info{
@@ -2915,7 +2915,7 @@ body #poorExperience {
 	height:100%;
 	top:0;
 	left:0;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -196px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -196px;
 }
 #wepOverview .weaponItem.locked .weapon-item-bg{
 	opacity:0.4;
@@ -2957,7 +2957,7 @@ body #poorExperience {
 	left:20px;
 	top:-35px;
 	z-index:-1;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 }
 #wepOverview .weaponItem .weaponFactionIcon.vs{
 	background-position:-533px -7px;
@@ -2976,7 +2976,7 @@ body #poorExperience {
 	position:absolute;
 	width:23px;
 	height:27px;
-	background:url("${cdnRoot}/images/player/weapons/lock.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/player/weapons/lock.png?v=cdnVersion") no-repeat;
 	top:95px;
 	left:150px;
 }
@@ -3021,7 +3021,7 @@ body #poorExperience {
 .desc .attachments .attachments-header {
 	width:100%;
 	height:9px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -17px -3109px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -17px -3109px;
 	margin:9px 0 0 10px;
 }
 .desc .attachments .attachments-header h4{
@@ -3037,7 +3037,7 @@ span.openModal{
 	position:absolute;
 	top:5px;
 	right:5px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -797px -147px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -797px -147px;
 	width:25px;
 	height:17px;
 }
@@ -3084,7 +3084,7 @@ span.openModal{
 	display:block;
 	width:25px;
 	height:20px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -797px -147px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -797px -147px;
 	float:right;
 	margin:4px 6px 0 0;
 	/*position:relative;
@@ -3112,7 +3112,7 @@ span.openModal{
 #weaponsInfo .item .itemTd .modal-trigger .weaponsDivider{
 	height:1px;
 	width:195px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -801px -250px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -801px -250px transparent;
 	margin-top:5px;
 }
 #weaponsInfo .item .itemTd .modal-trigger:hover{
@@ -3151,7 +3151,7 @@ span.openModal{
 #weaponsInfo .item .itemTd .medals div{
 	width:32px;
 	height:40px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -675px -181px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -675px -181px;
 	margin:20px auto 0;
 }
 #weaponsInfo .item .itemTd .certProgress{
@@ -3167,12 +3167,12 @@ span.openModal{
 	margin:14px 0 0 10px;
 	width:170px;
 	height:17px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -7px -357px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -7px -357px;
 }
 #weaponsInfo .item .itemTd .certProgress .certProgressBar{
 	width:170px;
 	height:17px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -269px -357px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -269px -357px;
 }
 #weaponsInfo .item .itemTd .certProgress .certProgressPercent{
 	float:left;
@@ -3199,7 +3199,7 @@ span.openModal{
 	display:block;
 	width:14px;
 	height:14px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -407px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -407px -235px;
 	float:right;
 	margin:-1px 0 0 3px;
 }
@@ -3211,7 +3211,7 @@ span.openModal{
 	margin-left:15px;
 	width:194px;
 	height:607px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -800px -1889px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -800px -1889px;
 }
 #weaponsMain #weaponsSideBar span{
 	color:#7FF4FF;
@@ -3232,7 +3232,7 @@ span.openModal{
 	width:160px;
 	height:160px;
 	margin:3px auto 0;
-	background:url("${cdnRoot}/images/player/weapons/hichartGraph.png") no-repeat;
+	background:url("cdnRoot/images/player/weapons/hichartGraph.png") no-repeat;
 }
 #weaponsMain text {
 	font-size:12px !important;
@@ -3252,7 +3252,7 @@ span.openModal{
 	font-size:14px;
 }
 #weaponsMain #weaponsSideBar div ul li{
-	background:url("${cdnRoot}/images/player/weapons/classIcons.png") no-repeat;
+	background:url("cdnRoot/images/player/weapons/classIcons.png") no-repeat;
 	height:14px;
 	margin-bottom:9px;
 	padding-left:20px;
@@ -3307,7 +3307,7 @@ span.openModal{
 #wepOverview .view-options .on,
 #secVehicle .view-options .on,
 #secVehicleOverview .view-options .on{
-	background:url("${cdnRoot}/images/global/subNavActState.png?v=${cdnVersion}") no-repeat center 18px transparent;
+	background:url("cdnRoot/images/global/subNavActState.png?v=cdnVersion") no-repeat center 18px transparent;
 	color:#FFF;
 	height:30px;
 	text-align:center;
@@ -3339,28 +3339,28 @@ span.openModal{
 	width:195px;
 	text-align:left;
 	border-bottom:1px solid #09484d;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -7px -1888px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -7px -1888px transparent;
 }
 .wpnItemTable table tbody .kills{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -202px -1888px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -202px -1888px transparent;
 }
 .wpnItemTable table tbody .kpm{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -282px -1888px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -282px -1888px transparent;
 }
 .wpnItemTable table tbody .accuracy,
 .wpnItemTable table tbody .fireCount,
 .wpnItemTable table tbody .headshots,
 .wpnItemTable table tbody .hitCount,
 .wpnItemTable table tbody .score{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -362px -1888px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -362px -1888px transparent;
 }
 .wpnItemTable table tbody .medals{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -442px -1888px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -442px -1888px transparent;
 }
 .wpnItemTable table tbody .certProgress{
 	width:233px;
 	border-bottom:1px solid #09484d;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -522px -1888px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -522px -1888px transparent;
 }
 .wpnItemTable table tbody .descending{
 	background-position:-283px -1930px;
@@ -3417,7 +3417,7 @@ span.openModal{
 	margin-left:10px;
 	margin-top:2px;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -505px -235px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -505px -235px transparent;
 }
 .wpnItemTable table tbody .certProgress span{
 	float:left;
@@ -3477,7 +3477,7 @@ th.last{
 	margin-bottom:30px;
 }
 #secLeaderboards .topContainer h1{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -508px -1348px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -508px -1348px transparent;
     display: block;
     float: left;
     font-size: 18px;
@@ -3490,7 +3490,7 @@ th.last{
     width: 250px;
 }
 #secLeaderboards .topContainer h1 span{
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -265px -175px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -265px -175px transparent;
     height: 26px;
     margin: 4px 7px 0 0;
     width: 26px;
@@ -3509,14 +3509,14 @@ th.last{
 	width:312px;
 	min-height:440px;
 	margin-left:12px;
-	background: url("${cdnRoot}/images/leaderboards/leaderboard-sprite.png?v=${cdnVersion}") no-repeat scroll 0 -161px rgba(0, 234, 255, 0.03);
+	background: url("cdnRoot/images/leaderboards/leaderboard-sprite.png?v=cdnVersion") no-repeat scroll 0 -161px rgba(0, 234, 255, 0.03);
     border-left: 1px solid rgba(0, 234, 255, 0.15);
     border-right: 1px solid rgba(0, 234, 255, 0.15);
 }
 #secLeaderboards .topItemFooter {
 	height:21px;
 	float:left;
-	background: url("${cdnRoot}/images/leaderboards/leaderboard-sprite.png?v=${cdnVersion}") no-repeat scroll -321px -161px transparent;
+	background: url("cdnRoot/images/leaderboards/leaderboard-sprite.png?v=cdnVersion") no-repeat scroll -321px -161px transparent;
 	display:block;
 	width:313px;
 	margin-left:13px;
@@ -3530,21 +3530,21 @@ th.last{
 #secLeaderboards #lbContent{
 	clear:both;
 	width:985px;
-	background:url("${cdnRoot}/images/killboard/container-middle.png?v=${cdnVersion}") repeat-y scroll 0 0 transparent;
+	background:url("cdnRoot/images/killboard/container-middle.png?v=cdnVersion") repeat-y scroll 0 0 transparent;
 	display:block;
 	float:left;
 	position:relative;
 }
 #secLeaderboards #lbFooter{
 	width:987px;
-	background:url("${cdnRoot}/images/leaderboards/leaderboard-sprite.png?v=${cdnVersion}") no-repeat 0 -130px transparent;
+	background:url("cdnRoot/images/leaderboards/leaderboard-sprite.png?v=cdnVersion") no-repeat 0 -130px transparent;
 	height:21px;
 	float:left;
 }
 #secLeaderboards #lb-top-view-main-footer{
 	width:987px;
 	height:60px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -739px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -739px;
 	float:left;
 }
 #secLeaderboards .vertDivider{
@@ -3552,11 +3552,11 @@ th.last{
 	width:2px;
 	height:28px;
 	margin:2px 18px 0;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -914px -1143px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -914px -1143px;
 }
 #perPageDropdown{
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -681px -1144px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -681px -1144px;
 	margin:4px 18px 0 0;
 	width:149px;
 	height:26px;
@@ -3568,11 +3568,11 @@ th.last{
 	cursor:default;
 }
 #perPageDropdown.drop{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -681px -1190px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -681px -1190px;
 }
 #selectFactionDropdown, #selectWorldDropdown{
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -681px -1144px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -681px -1144px;
 	width:149px;
 	height:26px;
 	margin-top:4px;
@@ -3584,7 +3584,7 @@ th.last{
 	cursor:default;
 }
 #selectFactionDropdown.drop, #selectWorldDropdown.drop{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -681px -1190px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -681px -1190px;
 }
 #perPageDropdown ul.sub-select, #selectFactionDropdown ul.sub-select, #selectWorldDropdown ul.sub-select{
 	display:none;
@@ -3610,7 +3610,7 @@ th.last{
 #perPageDropdown ul.sub-select div.sub-select-bottom, #selectFactionDropdown ul.sub-select div.sub-select-bottom, #selectWorldDropdown ul.sub-select div.sub-select-bottom{
 	height:8px;
 	width:139px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -684px -1242px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -684px -1242px;
 	position:absolute;
 	bottom:-8px;
 	left:-1px;
@@ -3652,7 +3652,7 @@ th.last{
 #secLeaderboards .lb-top-items-header{
 	height:116px;
 	width:312px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -488px -1390px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -488px -1390px;
 }
 #secLeaderboards .lb-top-items-container{
 	background:rgba(0,234,255,0.03);
@@ -3662,7 +3662,7 @@ th.last{
 	margin-top:-116px;
 }
 #secLeaderboards .lb-top-items-footer{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -488px -1515px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -488px -1515px;
 	height:21px;
 }
 #secLeaderboards .lb-top-kills,
@@ -3684,7 +3684,7 @@ th.last{
 	letter-spacing:0.006em;
 	text-transform:uppercase;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -508px -1348px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -508px -1348px;
 	width:240px;
 	padding-left:20px;
 	height:36px;
@@ -3695,7 +3695,7 @@ th.last{
 #secLeaderboards .lb-top-kills h1 span,
 #secLeaderboards .lb-top-time h1 span,
 #secLeaderboards .lb-top-score h1 span{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -265px -175px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -265px -175px;
 	margin-top:4px;
 	width:26px;
 	height:26px;
@@ -3724,7 +3724,7 @@ th.last{
 	clear:both;
 	width:294px;
 	height:80px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat;
 	margin-left:10px;
 	margin-top:8px;
 	float:left;
@@ -3777,14 +3777,14 @@ th.last{
 	width:30px;
 	line-height:29px;
 	font-size:22px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -707px -181px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -707px -181px;
 }
 #secLeaderboards .rankandfaction .faction{
 	overflow:hidden;
 	position:relative;
 	height:30px;
 	width:30px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	margin-top:8px;
 }
 #secLeaderboards .rankandfaction .faction.tr{
@@ -3803,22 +3803,22 @@ th.last{
 	width:70px;
 	height:72px;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -705px -279px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -705px -279px;
 	margin-top:5px;
 }
 #secLeaderboards .lb-top-kills-item.tr .headshot,
 .avatar-search.tr {
-	background:url("${cdnRoot}/images/global/factionHeadshots.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/factionHeadshots.png?v=cdnVersion") no-repeat;
 	background-position:0px -80px;
 }
 #secLeaderboards .lb-top-kills-item.nc .headshot,
 .avatar-search.nc {
-	background:url("${cdnRoot}/images/global/factionHeadshots.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/factionHeadshots.png?v=cdnVersion") no-repeat;
 	background-position:0px -160px;
 }
 #secLeaderboards .lb-top-kills-item.vs .headshot,
 .avatar-search.vs {
-	background:url("${cdnRoot}/images/global/factionHeadshots.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/factionHeadshots.png?v=cdnVersion") no-repeat;
 	background-position:0px 0px;
 }
 
@@ -3845,7 +3845,7 @@ th.last{
 	width:160px;
 	height:300px;
 	margin:0 auto;
-	background:url("${cdnRoot}/images/player/weapons/hichartGraph.png?v=${cdnVersion}") no-repeat -160px 80px;
+	background:url("cdnRoot/images/player/weapons/hichartGraph.png?v=cdnVersion") no-repeat -160px 80px;
 }
 #secLeaderboards .noDataText{
 	width:160px;
@@ -3864,7 +3864,7 @@ th.last{
 
 #selectFactionDropdown ul li a.current,
 #selectWorldDropdown ul li a.current {
-   background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -456px -1969px;
+   background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -456px -1969px;
 }
 
 #filterByWorld {
@@ -3873,7 +3873,7 @@ th.last{
 }
 
 .icn-world {
-	background-image: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}");
+	background-image: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion");
 	background-repeat: no-repeat;
 	display: block;
 	float: left;
@@ -3951,7 +3951,7 @@ th.last{
 	float:right;
 	width:23px;
 	height:23px;
-	background:url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat 0 0;
+	background:url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat 0 0;
 }
 #fullScreenButton span{
 	float:right;
@@ -3988,7 +3988,7 @@ th.last{
 	top:120px;
 }
 #mapContainer #mapZoom #zoomOut{
-	background:url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat -259px -182px;
+	background:url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat -259px -182px;
 	float:left;
 	cursor:pointer;
 	width:20px;
@@ -4000,7 +4000,7 @@ th.last{
 	background-position:-279px -182px;
 }
 #mapContainer #mapZoom #zoomIn{
-	background:url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat -259px -162px;
+	background:url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat -259px -162px;
 	float:left;
 	cursor:pointer;
 	width:20px;
@@ -4012,7 +4012,7 @@ th.last{
 	background-position:-279px -162px;
 }
 #mapContainer .slider {
-	background:url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat -259px -207px;
+	background:url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat -259px -207px;
 	height:100px;
 	position:relative;
 	cursor:pointer;
@@ -4037,7 +4037,7 @@ th.last{
 	top:-10px;
 	position:absolute;
 	display:block;
-	background:url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat -302px -161px;
+	background:url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat -302px -161px;
 	cursor:n-resize;
 }
 #mapContainer .handle:hover{
@@ -4047,7 +4047,7 @@ th.last{
 	display:none;
 }
 #mapContainer #mapNav{
-	background:url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat 0 -351px;
+	background:url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat 0 -351px;
 	display:block;
 	width:86px;
 	height:87px;
@@ -4061,7 +4061,7 @@ th.last{
 	left:-5px;
 	top:-5px;
 	pointer-events:none;
-	background:url("${cdnRoot}/images/map/map-border.png?v=${cdnVersion}") no-repeat 0px 0px;
+	background:url("cdnRoot/images/map/map-border.png?v=cdnVersion") no-repeat 0px 0px;
 	width:964px;
 	height:610px;
 	z-index:20000;
@@ -4072,7 +4072,7 @@ th.last{
 #mapContainer #mapSpinner{
 	display:block;
 	text-align:center;
-	background-image:url("${cdnRoot}/images/global/loading_ani.gif?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/loading_ani.gif?v=cdnVersion");
 	background-position:center center;
 	background-repeat:no-repeat;
 	width:954px;
@@ -4083,7 +4083,7 @@ th.last{
 #fullscreenMap #mapSpinner{
 	display:block;
 	text-align:center;
-	background-image:url("${cdnRoot}/images/global/loading_ani.gif?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/loading_ani.gif?v=cdnVersion");
 	background-position:center center;
 	background-repeat:no-repeat;
 	width:100%;
@@ -4113,7 +4113,7 @@ th.last{
 	margin-top:-103px;
 	top:50%;
 	left:50%;
-	background:url("${cdnRoot}/images/map/ps2_map/errorBox.png?v=${cdnVersion}") no-repeat 0 0;
+	background:url("cdnRoot/images/map/ps2_map/errorBox.png?v=cdnVersion") no-repeat 0 0;
 }
 #mapContainer #mapError h1{
 	color:red;
@@ -4131,7 +4131,7 @@ th.last{
 	font-size:14px;
 }
 #mapContainer #mapError button{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -861px -990px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -861px -990px transparent;
 	border:none;
 	color:#fff;
 	width:98px;
@@ -4172,13 +4172,13 @@ th.last{
 	width:47px;
 	height:37px;
 	display:block;
-	background:url('${cdnRoot}/images/map/ps2_map/filter-button.png?v=${cdnVersion}') 0 0 transparent;
+	background:url('cdnRoot/images/map/ps2_map/filter-button.png?v=cdnVersion') 0 0 transparent;
 }
 #mapContainer .mapFilterButton:hover{
 	background-position:-47px 0;
 }
 #mapContainer #mapFilters .mapHeader{
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -40px 0 transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -40px 0 transparent;
 	display: block;
 	font-size: 18px;
 	height: 28px;
@@ -4208,13 +4208,13 @@ th.last{
 	display:inline-block;
 	width:17px;
 	height:12px;
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -697px -223px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -697px -223px transparent;
 }
 #mapContainer #showAll:hover span{
 	color:#00EAFF;
 }
 #mapContainer #mapFilters ul{
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -41px -65px transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -41px -65px transparent;
 	border:1px solid rgba(0,234,255,0.15);
 	border-bottom:none;
 	padding:10px 10px 2px 10px;
@@ -4241,7 +4241,7 @@ th.last{
 	opacity:0.2;
 }
 #mapContainer #mapFilters li em{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -677px -223px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -677px -223px;
 	display:block;
 	width:17px;
 	height:17px;
@@ -4258,7 +4258,7 @@ th.last{
 	margin-bottom:10px;
 }
 #mapContainer #mapFilters .resource{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	display:inline-block;
 	width:17px;
 	height:17px;
@@ -4266,13 +4266,13 @@ th.last{
 	float:left;
 }
 #mapContainer #mapFilters .aerospaceIcon{
-	background:url("${cdnRoot}/images/map/icons/aerospace.png?v=${cdnVersion}") 0 2px no-repeat;
+	background:url("cdnRoot/images/map/icons/aerospace.png?v=cdnVersion") 0 2px no-repeat;
 }
 #mapContainer #mapFilters .infantryIcon{
-	background:url("${cdnRoot}/images/map/icons/infantry.png?v=${cdnVersion}") 0 2px no-repeat;
+	background:url("cdnRoot/images/map/icons/infantry.png?v=cdnVersion") 0 2px no-repeat;
 }
 #mapContainer #mapFilters .mechanizedIcon{
-	background:url("${cdnRoot}/images/map/icons/mechanized.png?v=${cdnVersion}") 0 2px no-repeat;
+	background:url("cdnRoot/images/map/icons/mechanized.png?v=cdnVersion") 0 2px no-repeat;
 }
 #mapContainer #mapFilters .alloysIcon{
 	background-position:-904px -333px;
@@ -4287,7 +4287,7 @@ th.last{
 #mapContainer #mapFilters .mapCap{
 	width:202px;
 	height:19px;
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -40px -40px transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -40px -40px transparent;
 	margin-bottom:10px;
 }
 #mapContainer #mapInfoContainer{
@@ -4299,7 +4299,7 @@ th.last{
 	display:none;
 }
 #mapContainer #mapInfo{
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -257px -64px transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -257px -64px transparent;
 	border:1px solid rgba(0,234,255,0.15);
 	border-bottom:none;
 	padding:10px 10px 2px 10px;
@@ -4318,7 +4318,7 @@ th.last{
 	z-index:2;
 }
 #mapContainer #mapInfoContainer .mapHeader{
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -255px 0 transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -255px 0 transparent;
 	display: block;
 	font-size: 18px;
 	height: 28px;
@@ -4353,7 +4353,7 @@ th.last{
 #mapContainer #mapInfoContainer .mapCap{
 	width:202px;
 	height:19px;
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -255px -40px transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -255px -40px transparent;
 	margin-left:12px;
 }
 #mapContainer #mapDropdowns{
@@ -4394,7 +4394,7 @@ th.last{
 	display:block;
 	width:19px;
 	height:26px;
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -255px -40px transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -255px -40px transparent;
 	margin:0 7px;
 }
 #mapContainer #mapDropdowns #worldDD em{
@@ -4404,7 +4404,7 @@ th.last{
 	background-position:-334px -182px;
 }
 #mapContainer #mapDropdowns .endCap{
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -361px -182px transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -361px -182px transparent;
 	display: block;
 	height: 31px;
 	position: absolute;
@@ -4465,7 +4465,7 @@ th.last{
 #worldDD ul.sub-select div.sub-select-bottom, #continentDD ul.sub-select div.sub-select-bottom{
 	height:8px;
 	width:139px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -684px -1242px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -684px -1242px;
 	position:absolute;
 	bottom:-8px;
 	left:-1px;
@@ -4509,7 +4509,7 @@ th.last{
 	width:100%;
 	height:3px;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -37px -161px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -37px -161px;
 	margin:3px 0 8px;
 }
 #scrollLock{
@@ -4526,7 +4526,7 @@ th.last{
 .filterBar #filterByDropdown{
 	position:relative;
 	background:rgba(0, 50, 55, 1.0);
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -3005px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -3005px;
 	width:964px;
 	height:42px;
 	margin:0;
@@ -4537,7 +4537,7 @@ th.last{
 	display:block;
 	width:18px;
 	height:18px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -449px -153px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -449px -153px;
 	float:left;
 	margin:10px 5px 0 5px;
 }
@@ -4552,7 +4552,7 @@ th.last{
 }
 .filterBar #filterByDropdown .tooltip{
 	margin:-10px 0 0 0;
-	background:url("${cdnRoot}/images/global/tooltipTop.png?v=${cdnVersion}") no-repeat top center;
+	background:url("cdnRoot/images/global/tooltipTop.png?v=cdnVersion") no-repeat top center;
 }
 .filterBar #filterByDropdown .tooltip .copy{
 	margin:10px 0 0 0;
@@ -4575,7 +4575,7 @@ th.last{
 	width:16px;
 	height:16px;
 	margin-right:7px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -449px -171px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -449px -171px;
 }
 .filterBar #filterByDropdown .tooltip ul li:hover em{
 	background-position:-449px -187px;
@@ -4650,7 +4650,7 @@ th.last{
 	margin:5px 0 0 0;
 	color:#00EAFF;
 	font-size:13px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat right -3057px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat right -3057px;
 	line-height:31px;
 	padding:0 7px;
 	border-left:1px solid rgba(0, 234, 255, 0.1);
@@ -4663,7 +4663,7 @@ th.last{
 	height:4px;
 	position:relative;
 	bottom:4px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -3097px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -3097px;
 }
 .filterBar .weaponsFilterOptions .dropdownOptions{
 	margin-left:15px;
@@ -4736,7 +4736,7 @@ th.last{
 .filterBar .weaponsFilterOptions .dropdownOptions ul li .wepCheckbox{
 	width:20px;
 	height:20px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -675px -221px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -675px -221px;
 	margin:0 7px 0 0;
 	cursor:pointer;
 	float:left;
@@ -4838,7 +4838,7 @@ th.last{
 	margin:0 0 10px;
 }
 .item h3, .weapontype h3{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -119px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -119px;
 	height:35px;
 	width:100%;
 	padding:0;
@@ -4859,7 +4859,7 @@ th.last{
 	letter-spacing:0.08em;
 }
 .item h3 span.collapse{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -322px -202px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -322px -202px;
 	height:16px;
 	width:16px;
 	display:block;
@@ -4867,7 +4867,7 @@ th.last{
 	margin:9px 21px 0 0;
 }
 .item h3.current span.collapse{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -322px -218px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -322px -218px;
 	height:16px;
 	width:16px;
 	display:block;
@@ -4878,7 +4878,7 @@ th.last{
 	width:100%;
 	height:3px;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -161px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -161px;
 	float:left;
 	clear:both;
 	margin:2px 0 10px;
@@ -4887,12 +4887,12 @@ th.last{
 	width:100%;
 	height:9px;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -181px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -181px;
 	float:left;
 	clear:both;
 }
 .emblem{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	display:block;
 	width:34px;
 	height:34px;
@@ -4958,7 +4958,7 @@ th.last{
 	width:350px;
 	height:386px;
 	margin:0 17px 0 0;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -196px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -196px;
 }
 .stats-div .data{
 	margin-top:13px;
@@ -4984,7 +4984,7 @@ th.last{
 	height:52px;
 	display:block;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	margin-right:5px;
 }
 .stats .stats-icon.score{
@@ -5033,7 +5033,7 @@ th.last{
 }
 .cert-progress .progress-bar-outer{
 	height:20px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -7px -357px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -7px -357px;
 	width:255px;
 	float:left;
 	margin-right:10px;
@@ -5041,7 +5041,7 @@ th.last{
 }
 .cert-progress .progress-bar-inner{
 	height:20px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -269px -357px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -269px -357px;
 }
 .cert-progress .percent{
 	font-size:20px;
@@ -5057,7 +5057,7 @@ th.last{
 .certs-div .hd{
 	width:350px;
 	height:32px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -49px -822px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -49px -822px;
 	display:block;
 	font-size:13px;
 	font-weight:500;
@@ -5086,13 +5086,13 @@ th.last{
 	margin:1px 3px 0 0;
 }
 .certs-div .hd .faction-logo.nc{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -345px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -345px -235px;
 }
 .certs-div .hd .faction-logo.vs{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -321px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -321px -235px;
 }
 .certs-div .hd .faction-logo.tr{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -369px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -369px -235px;
 }
 #classCerts > div{
 	margin:0;
@@ -5133,12 +5133,12 @@ th.last{
 .certs-div .tableFooter{
 	width:350px;
 	height:8px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -50px -861px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -50px -861px;
 }
 .dotted-divider{
 	width:100%;
 	height:6px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2953px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2953px;
 	display:block;
 	margin:5px 0;
 }
@@ -5152,7 +5152,7 @@ th.last{
 	height:25px;
 	float:left;
 	margin-right:6px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -505px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -505px -235px;
 }
 #classStats .data h4, #worldStats div h4{
 	line-height:25px;
@@ -5172,7 +5172,7 @@ th.last{
 	display:block;
 	width:14px;
 	height:14px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -407px -235px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -407px -235px;
 	float:right;
 	margin-left:3px;
 }
@@ -5190,13 +5190,13 @@ th.last{
 	height:275px;
 }
 .s-cl .avatar-bg.vs{
-	background:url("${cdnRoot}/images/player/classes/vs-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/player/classes/vs-bg.png?v=cdnVersion") no-repeat;
 }
 .s-cl .avatar-bg.nc{
-	background:url("${cdnRoot}/images/player/classes/nc-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/player/classes/nc-bg.png?v=cdnVersion") no-repeat;
 }
 .s-cl .avatar-bg.tr{
-	background:url("${cdnRoot}/images/player/classes/tr-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/player/classes/tr-bg.png?v=cdnVersion") no-repeat;
 }
 .s-cl .avatar{
 	width:215px;
@@ -5273,7 +5273,7 @@ th.last{
 	height:auto;
 }
 #secVehicleOverview .vehicleItem{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -196px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -196px;
 	float:left;
 	width:312px;
 	position:relative;
@@ -5291,13 +5291,13 @@ th.last{
 }
 #secVehicleOverview .vehicleItem .header span{
 	float:right;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -797px -147px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -797px -147px;
 	width:25px;
 	height:17px;
 }
 #secVehicleOverview .vehicleItem ul{
 	padding:10px 15px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -9px -1561px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -9px -1561px;
 	width:263px;
 	height:97px;
 	margin:0 auto;
@@ -5308,13 +5308,13 @@ th.last{
 }
 #secVehicleOverview .vehicleItem ul .vehicleInfoBar{
 	float:right;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -7px -407px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -7px -407px;
 	width:176px;
 	height:8px;
 	margin:5px auto 0;
 }
 #secVehicleOverview .vehicleItem ul .vehicleInfoBar .vehicleInfoBarInner{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -416px -407px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -416px -407px;
 	width:25%;
 	height:8px;
 }
@@ -5340,7 +5340,7 @@ th.last{
 	display:block;
 	width:45px;
 	height:35px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	float:left;
 	margin-top:-11px;
 }
@@ -5401,7 +5401,7 @@ th.last{
 	margin:0;
 	height:350px;
 	position:relative;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -196px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -196px;
 	padding-top:10px;
 }
 .desc .popup-picture{
@@ -5431,7 +5431,7 @@ th.last{
 	float:left;
 	margin-right:18px;
 	opacity:0.5;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 }
 .desc .popup-picture .useable-by.combat_medic em.combat_medic{display:block; margin-left:5px;}
 .desc .popup-picture .useable-by.light_assault em.light_assault{display:block; margin-left:5px;}
@@ -5489,7 +5489,7 @@ th.last{
 	display:block;
 	height:50px;
 	width:50px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	float:left;
 }
 .desc em.resource.catalysts{
@@ -5542,7 +5542,7 @@ th.last{
 	width:10px;
 	height:17px;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	cursor:pointer;
 	opacity:0.6;
 }
@@ -5570,7 +5570,7 @@ th.last{
 	left:280px;
 }
 #generalStats div .stats{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -196px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -196px;
 	height:380px;
 }
 #generalStats div .stats h2{
@@ -5585,7 +5585,7 @@ th.last{
 	height:386px;
 	margin:0 0 0 20px;
 	padding:0;
-	background:url("${cdnRoot}/images/player/vehicles/vehicle-bg.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/vehicle-bg.png?v=cdnVersion") no-repeat top left;
 }
 .s-vh .avatar,
 .s-vo .avatar{
@@ -5596,122 +5596,122 @@ th.last{
 	position:relative;
 }
 #secVehicle #worldStats .flash{
-	background:url("${cdnRoot}/images/player/vehicles/1-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/1-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .flash.nc{
-	background:url("${cdnRoot}/images/player/vehicles/1-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/1-nc.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .flash.vs{
-	background:url("${cdnRoot}/images/player/vehicles/1-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/1-vs.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .flash.tr{
-	background:url("${cdnRoot}/images/player/vehicles/1-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/1-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .sunderer{
-	background:url("${cdnRoot}/images/player/vehicles/2-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/2-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .sunderer.nc{
-	background:url("${cdnRoot}/images/player/vehicles/2-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/2-nc.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .sunderer.vs{
-	background:url("${cdnRoot}/images/player/vehicles/2-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/2-vs.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .sunderer.tr{
-	background:url("${cdnRoot}/images/player/vehicles/2-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/2-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .lightning{
-	background:url("${cdnRoot}/images/player/vehicles/3-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/3-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .lightning.nc{
-	background:url("${cdnRoot}/images/player/vehicles/3-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/3-nc.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .lightning.vs{
-	background:url("${cdnRoot}/images/player/vehicles/3-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/3-vs.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .lightning.tr{
-	background:url("${cdnRoot}/images/player/vehicles/3-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/3-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .prowler{
-	background:url("${cdnRoot}/images/player/vehicles/6-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/6-default.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .prowler.tr{
-	background:url("${cdnRoot}/images/player/vehicles/6-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/6-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .mosquito{
-	background:url("${cdnRoot}/images/player/vehicles/9-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/9-default.png?v=cdnVersion") no-repeat top left;
 }
 
 
 #secVehicle #worldStats .mosquito.tr{
-	background:url("${cdnRoot}/images/player/vehicles/9-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/9-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 
 #secVehicle #worldStats .liberator{
-	background:url("${cdnRoot}/images/player/vehicles/10-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/10-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .liberator.nc{
-	background:url("${cdnRoot}/images/player/vehicles/10-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/10-nc.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .liberator.vs{
-	background:url("${cdnRoot}/images/player/vehicles/10-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/10-vs.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .liberator.tr{
-	background:url("${cdnRoot}/images/player/vehicles/10-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/10-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .galaxy{
-	background:url("${cdnRoot}/images/player/vehicles/11-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/11-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .galaxy.nc {
-	background:url("${cdnRoot}/images/player/vehicles/11-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/11-nc.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .galaxy.vs {
-	background:url("${cdnRoot}/images/player/vehicles/11-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/11-vs.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .galaxy.tr {
-	background:url("${cdnRoot}/images/player/vehicles/11-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/11-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .harasser.nc {
-	background:url("${cdnRoot}/images/player/vehicles/12-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/12-nc.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .harasser.vs {
-	background:url("${cdnRoot}/images/player/vehicles/12-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/12-vs.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .harasser.tr {
-	background:url("${cdnRoot}/images/player/vehicles/12-tr.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/12-tr.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .scythe{
-	background:url("${cdnRoot}/images/player/vehicles/7-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/7-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .scythe.vs{
-	background:url("${cdnRoot}/images/player/vehicles/7-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/7-vs.png?v=cdnVersion") no-repeat top left;
 }
 
 #secVehicle #worldStats .reaver{
-	background:url("${cdnRoot}/images/player/vehicles/8-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/8-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .reaver.nc{
-	background:url("${cdnRoot}/images/player/vehicles/8-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/8-nc.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .magrider{
-	background:url("${cdnRoot}/images/player/vehicles/4-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/4-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .magrider.vs{
-	background:url("${cdnRoot}/images/player/vehicles/4-vs.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/4-vs.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .vanguard{
-	background:url("${cdnRoot}/images/player/vehicles/5-default.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/5-default.png?v=cdnVersion") no-repeat top left;
 }
 #secVehicle #worldStats .vanguard.nc{
-	background:url("${cdnRoot}/images/player/vehicles/5-nc.png?v=${cdnVersion}") no-repeat top left;
+	background:url("cdnRoot/images/player/vehicles/5-nc.png?v=cdnVersion") no-repeat top left;
 }
 /* ============== SEARCH RESULTS ============== */
 #nav-charSearch{
@@ -5733,7 +5733,7 @@ th.last{
 	margin-right:40px;
 }
 .view-search .search-container-top{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -7px -589px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -7px -589px transparent;
 	float: left;
 	height: 150px;
 	width: 987px;
@@ -5749,7 +5749,7 @@ th.last{
 	width: 983px;
 }
 .view-search .search-container-footer{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -7px -739px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -7px -739px transparent;
 	float: left;
 	height: 60px;
 	width: 987px;
@@ -5764,14 +5764,14 @@ th.last{
 	width:100%;
 	height:3px;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -37px -161px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -37px -161px;
 	margin:3px 0 8px;
 }
 .view-search #results #noSearchResults{
 	width:295px;
 	height:88px;
 	margin:50px auto 0 auto;
-	background:url("${cdnRoot}/images/search/no-results.png") no-repeat scroll 0 0 transparent;
+	background:url("cdnRoot/images/search/no-results.png") no-repeat scroll 0 0 transparent;
 }
 .view-search #results #noSearchResults span{
 	color: #4099A2;
@@ -5788,7 +5788,7 @@ th.last{
 	line-height:28px;
 }
 .view-search #pagination #firstPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -293px -201px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -293px -201px;
 	display:block;
 	width:28px;
 	height:28px;
@@ -5796,7 +5796,7 @@ th.last{
 	margin-right:10px;
 }
 .view-search #pagination #prevPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -265px -201px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -265px -201px;
 	display:block;
 	width:28px;
 	height:28px;
@@ -5813,14 +5813,14 @@ th.last{
 	font-style:normal;
 }
 .view-search #pagination #nextPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -265px -229px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -265px -229px;
 	display:block;
 	width:28px;
 	height:28px;
 	float:left;
 }
 .view-search #pagination #lastPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -293px -229px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -293px -229px;
 	display:block;
 	width:28px;
 	height:28px;
@@ -5838,7 +5838,7 @@ th.last{
 	margin:0 0 5px 0;
 }
 .view-search .resultItem{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat;
 	float:left;
 	height:80px;
 	width:294px;
@@ -5902,15 +5902,15 @@ th.last{
 	width:32px;
 }
 .view-search .faction.nc{
-	background-image:url("${cdnRoot}/images/global/factions/nc_32x32.png");
+	background-image:url("cdnRoot/images/global/factions/nc_32x32.png");
 	background-repeat:no-repeat;
 }
 .view-search .faction.tr{
-	background-image:url("${cdnRoot}/images/global/factions/tr_32x32.png");
+	background-image:url("cdnRoot/images/global/factions/tr_32x32.png");
 	background-repeat:no-repeat;
 }
 .view-search .faction.vs{
-	background-image:url("${cdnRoot}/images/global/factions/vs_32x32.png");
+	background-image:url("cdnRoot/images/global/factions/vs_32x32.png");
 	background-repeat:no-repeat;
 }
 /* ============== END SEARCH RESULTS ============== */
@@ -5934,7 +5934,7 @@ ul.as-selections{
 	padding-left:20px;
 }
 ul.as-selections.loading{
-	background-image:url("${cdnRoot}/images/global/loading_ani_small.gif?v=${cdnVersion}");
+	background-image:url("cdnRoot/images/global/loading_ani_small.gif?v=cdnVersion");
 	background-position:0 3px;
 	background-repeat:no-repeat;
 }
@@ -5999,7 +5999,7 @@ ul.as-selections li.as-original input{
 	width:159px;
 	height:32px;
 	color:#20a0a1;
-	background:url("${cdnRoot}/images/search/searchField.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/search/searchField.png?v=cdnVersion") no-repeat;
 	text-indent:1px;
 	padding-left:10px;
 		padding-right:10px;
@@ -6043,7 +6043,7 @@ font-size:12px;
 	width:39px;
 	height:23px;
 	cursor:pointer;
-	background:url("${cdnRoot}/images/search/icn-search.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/search/icn-search.png?v=cdnVersion") no-repeat;
 	position:absolute; z-index:5; top:5px; right:-9px;
 }
 li.as-result-item, li.as-message, li.as-search-link{
@@ -6168,12 +6168,12 @@ BODY:first-of-type ul.as-list, x:-moz-any-link, x:default{ /* Target FF 3.5+ */
 	float:left;
 }
 .jspTrack{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -982px -877px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -982px -877px;
 	position:relative;
 	min-height:122px;
 }
 .jspDrag{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -958px -57px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -958px -57px;
 	position:relative;
 	top:0;
 	left:1px;
@@ -6184,7 +6184,7 @@ BODY:first-of-type ul.as-list, x:-moz-any-link, x:default{ /* Target FF 3.5+ */
 	display:block;
 }
 .jspArrow{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	text-indent:-20000px;
 	display:block;
 	cursor:pointer;
@@ -6318,7 +6318,7 @@ BODY:first-of-type ul.as-list, x:-moz-any-link, x:default{ /* Target FF 3.5+ */
 	width:50%;
 	height:50%;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2113px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2113px;
 }
 .modal-target .tl,
 .overlay .tl{
@@ -6393,7 +6393,7 @@ BODY:first-of-type ul.as-list, x:-moz-any-link, x:default{ /* Target FF 3.5+ */
 	color:#2ee7f8;
 }
 .overlay.nag .content .desc button{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -861px -990px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -861px -990px transparent;
 	border:none;
 	color:#fff;
 	width:98px;
@@ -6411,7 +6411,7 @@ BODY:first-of-type ul.as-list, x:-moz-any-link, x:default{ /* Target FF 3.5+ */
 	position:absolute;
 	top:10px;
 	right:20px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -386px -2020px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -386px -2020px;
 	height:22px;
 	width:30px;
 	cursor:pointer;
@@ -6434,7 +6434,7 @@ BODY:first-of-type ul.as-list, x:-moz-any-link, x:default{ /* Target FF 3.5+ */
 /* ============== Temp CSS ============== */
 .modal-target h4,
 .overlay h4{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2964px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2964px;
 	font-size:17px;
 	height:31px;
 	line-height:27px;
@@ -6598,7 +6598,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	background:#031d1e;
 }
 #killsTable thead th, #deathsTable thead th, #timelineTable thead th{
-	background:url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll left -174px transparent;
+	background:url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll left -174px transparent;
 }
 #killsTable thead th.kdr, #deathsTable thead th.kdr, #timelineTable thead th.method{
 	background-position:right -174px;
@@ -6615,7 +6615,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	float:left;
 	width:25px;
 	height:23px;
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll 30px 30px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll 30px 30px transparent;
 	margin-right:10px;
 }
 #killsTable td span.brNum,
@@ -6653,7 +6653,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	width:21px;
 	height:21px;
 	display:inline-block;
-	background:url('${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}') -532px 0 no-repeat;
+	background:url('cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion') -532px 0 no-repeat;
 }
 #killsTable td.characterName a:hover, #deathsTable td.characterName a:hover, #timelineTable td a:hover{
 	color:#fff;
@@ -6663,13 +6663,13 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	float:left;
 	width:35px;
 	height:35px;
-	background:url("${cdnRoot}/images/global/battlerank-icons/rankicons-sm.png?v=${cdnVersion}") no-repeat scroll 0 0;
+	background:url("cdnRoot/images/global/battlerank-icons/rankicons-sm.png?v=cdnVersion") no-repeat scroll 0 0;
 }
 #timelineTable tr.death, #timelineTable tr.suicide, #timelineTable tr.unknownDeath{
 	background:rgba(0,0,0,0.4);
 }
 #timelineTable tr span.faction{
-	background:url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll 40px 40px transparent;
+	background:url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll 40px 40px transparent;
 	float:left;
 	width:40px;
 	height:40px;
@@ -6693,14 +6693,14 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	font-size:10px;
 }
 #timelineTable tr span.suicide{
-	background:url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll -436px 0px transparent;
+	background:url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll -436px 0px transparent;
 	width:40px;
 	height:40px;
 	margin-left:20px;
 	display:block;
 }
 #timelineTable tr span.unknown{
-	background:url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll -482px 0px transparent;
+	background:url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll -482px 0px transparent;
 	width:40px;
 	height:40px;
 	margin-left:20px;
@@ -6737,11 +6737,11 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	margin-right:10px;
 }
 #timelineTable td.headshot{
-	background:url("${cdnRoot}/images/killboard/killboard-headshot.png?v=${cdnVersion}") no-repeat scroll right center transparent;
+	background:url("cdnRoot/images/killboard/killboard-headshot.png?v=cdnVersion") no-repeat scroll right center transparent;
 }
 
 #kbTabContainer .kbTabButton{
-	background: url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll -160px 0 transparent;
+	background: url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll -160px 0 transparent;
 	cursor: pointer;
 	float: left;
 	height: 42px;
@@ -6767,7 +6767,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:80px;
 	position:relative;
 	top:-2px;
-	background:url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll 0 -52px transparent;
+	background:url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll 0 -52px transparent;
 }
 #tabEndCap{
 	clear:both;
@@ -6776,13 +6776,13 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:21px;
 	position:relative;
 	top:-2px;
-	background:url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll 0 -143px transparent;
+	background:url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll 0 -143px transparent;
 }
 #kbTabPaneContainer{
 	clear:both;
 	position:relative;
 	top:-2px;
-	background:url("${cdnRoot}/images/killboard/container-middle.png?v=${cdnVersion}") repeat-y scroll 0 0 transparent;
+	background:url("cdnRoot/images/killboard/container-middle.png?v=cdnVersion") repeat-y scroll 0 0 transparent;
 	padding:0 15px 15px 15px;
 	overflow:hidden;
 }
@@ -6808,7 +6808,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	float:left;
 }
 #timelineFilterBar ul li, #empireFilterBar ul li{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -861px -878px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -861px -878px transparent;
 	cursor: pointer;
 	display: inline-block;
 	float: left;
@@ -6830,21 +6830,21 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	font-family:'Exo';
 }
 #empireFilterBar ul li span.nc{
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -347px -234px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -347px -234px transparent;
 	width:25px;
 	height:23px;
 	margin-top:2px;
 	margin-left:32px;
 }
 #empireFilterBar ul li span.tr{
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -368px -234px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -368px -234px transparent;
 	width:25px;
 	height:23px;
 	margin-top:2px;
 	margin-left:30px;
 }
 #empireFilterBar ul li span.vs{
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -322px -234px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -322px -234px transparent;
 	width:25px;
 	height:23px;
 	margin-top:2px;
@@ -6855,26 +6855,26 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	float:right;
 	width:200px;
 	height:auto;
-	//background:url("${cdnRoot}/images/killboard/right-column-container.png?v=${cdnVersion}") no-repeat 0 0;
+	//background:url("cdnRoot/images/killboard/right-column-container.png?v=cdnVersion") no-repeat 0 0;
 	margin-right:0;
 }
 #killboardRightCap {
 	height:20px;
 	width:200px;
 	display:block;
-	background:url("${cdnRoot}/images/killboard/right-column-container.png?v=${cdnVersion}") no-repeat 0 top;
+	background:url("cdnRoot/images/killboard/right-column-container.png?v=cdnVersion") no-repeat 0 top;
 }
 #killboardRightContainer {
 	height:auto;
 	width:200px;
 	display:block;
-	background:url("${cdnRoot}/images/killboard/right-column-middle.png?v=${cdnVersion}") repeat-y 1px 0;
+	background:url("cdnRoot/images/killboard/right-column-middle.png?v=cdnVersion") repeat-y 1px 0;
 }
 #killboardRightBottom {
 	height:20px;
 	width:200px;
 	display:block;
-	background:url("${cdnRoot}/images/killboard/right-column-container.png?v=${cdnVersion}") no-repeat 0 bottom;
+	background:url("cdnRoot/images/killboard/right-column-container.png?v=cdnVersion") no-repeat 0 bottom;
 }
 #noKillboardData{
 	position:relative;
@@ -6883,7 +6883,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:200px;
 	text-align:center;
 	font-family:'Planetside2';
-	background: url("${cdnRoot}/images/player/weapons/hichartGraph.png") no-repeat scroll -160px 0 transparent;
+	background: url("cdnRoot/images/player/weapons/hichartGraph.png") no-repeat scroll -160px 0 transparent;
 	display:none;
 }
 #noKillboardData span{
@@ -6897,7 +6897,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 #deathsTable #killboardNoDataRow{
 	text-align:center;
 	height:201px;
-	background: url("${cdnRoot}/images/search/no-results.png") no-repeat scroll center center transparent;
+	background: url("cdnRoot/images/search/no-results.png") no-repeat scroll center center transparent;
 	color:#4099A2;
 	font-family:'Planetside2';
 }
@@ -6908,7 +6908,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 /* ============== Leaderboards ============== */
 #lbFilters{
 	width:987px;
-	background:url("${cdnRoot}/images/leaderboards/leaderboard-sprite.png?v=${cdnVersion}") no-repeat 0 0 transparent;
+	background:url("cdnRoot/images/leaderboards/leaderboard-sprite.png?v=cdnVersion") no-repeat 0 0 transparent;
 	height:116px;
 	float:left;
 }
@@ -6938,7 +6938,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 .s-lb .lbPagination{
 	width:987px;
 	height:60px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -739px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -739px;
 	float:left;
 }
 .s-lb .lbPagination .lbGridViewLink{
@@ -6960,7 +6960,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	line-height:28px;
 }
 .s-lb .paginationContainer #firstPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -293px -201px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -293px -201px;
 	display:block;
 	width:28px;
 	height:28px;
@@ -6968,7 +6968,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	margin-right:10px;
 }
 .s-lb .paginationContainer #prevPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -265px -201px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -265px -201px;
 	display:block;
 	width:28px;
 	height:28px;
@@ -6983,14 +6983,14 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	margin-top:2px;
 }
 .s-lb .paginationContainer #nextPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -265px -229px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -265px -229px;
 	display:block;
 	width:28px;
 	height:28px;
 	float:left;
 }
 .s-lb .paginationContainer #lastPage{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -293px -229px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -293px -229px;
 	display:block;
 	width:28px;
 	height:28px;
@@ -7010,11 +7010,11 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	cursor:pointer;
 }
 .lb-table tr.emptyLB:hover{
-	background:url("${cdnRoot}/images/search/no-results.png?v=${cdnVersion}") no-repeat scroll center center transparent;;
+	background:url("cdnRoot/images/search/no-results.png?v=cdnVersion") no-repeat scroll center center transparent;;
 	cursor:auto;
 }
 .lb-table tr.emptyLB{
-	background: url("${cdnRoot}/images/search/no-results.png?v=${cdnVersion}") no-repeat scroll center center transparent;
+	background: url("cdnRoot/images/search/no-results.png?v=cdnVersion") no-repeat scroll center center transparent;
 }
 .lb-table thead tr:hover{
 	background:none;
@@ -7048,21 +7048,21 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:28px;
 	float:left;
 	margin-right:10px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -293px -201px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -293px -201px transparent;
 	cursor:pointer;
 }
 #lbPagination #prevBtn{
 	width:28px;
 	height:28px;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -265px -201px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -265px -201px transparent;
 	cursor:pointer;
 }
 #lbPagination #nextBtn{
 	width:28px;
 	height:28px;
 	float:left;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -265px -229px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -265px -229px transparent;
 	cursor:pointer;
 }
 #lbPagination #lastBtn{
@@ -7070,7 +7070,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:28px;
 	float:left;
 	margin-left:10px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -293px -229px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -293px -229px transparent;
 	cursor:pointer;
 }
 #lbPagination #firstBtn.disabled,
@@ -7091,7 +7091,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	float:left;
 }
 .lbTopChar{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll 0 0 transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll 0 0 transparent;
 	width:294px;
 	height:80px;
 	margin:8px 0 0 9px;
@@ -7107,7 +7107,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	background-position: -7px -2863px;
 }
 .lbTopChar.lbTopEmpty{
-	background:url('${cdnRoot}/images/player/weapons/hichartGraph.png?v=${cdnVersion}') no-repeat scroll -160px 0 transparent;
+	background:url('cdnRoot/images/player/weapons/hichartGraph.png?v=cdnVersion') no-repeat scroll -160px 0 transparent;
 	color: #22EEEE;
 	height: 160px;
 	line-height: 165px;
@@ -7121,7 +7121,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	background-position:-7px -2773px;
 }
 .lbTopChar.noFaction {
-	background:url("${cdnRoot}/images/leaderboards/leaderboard-sprite.png?v=${cdnVersion}") no-repeat -645px -161px transparent;
+	background:url("cdnRoot/images/leaderboards/leaderboard-sprite.png?v=cdnVersion") no-repeat -645px -161px transparent;
 }
 .lbTopChar.noFaction:hover{
 	cursor:default;
@@ -7138,7 +7138,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	font-weight:bold;
 	font-size:22px;
 	line-height:29px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -707px -181px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -707px -181px transparent;
 }
 .lbTopChar:hover .rankContainer .rank{
 	color:#fff;
@@ -7146,7 +7146,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 .lbTopChar .rankContainer .factionIcon{
 	height:30px;
 	width:30px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -707px -181px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -707px -181px transparent;
 	margin:8px 0 0 0;
 	float:none;
 	position:static;
@@ -7168,7 +7168,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:72px;
 	float:left;
 	margin-top:5px;
-	background:url("${cdnRoot}/images/global/factionHeadshots.png?v=${cdnVersion}") no-repeat scroll 0 0 transparent
+	background:url("cdnRoot/images/global/factionHeadshots.png?v=cdnVersion") no-repeat scroll 0 0 transparent
 }
 .lbTopChar.tr .headshotContainer {
 	background-position:0 -80px;
@@ -7267,7 +7267,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:26px;
 	width:26px;
 	float:left;
-	background:url('${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}') no-repeat transparent;
+	background:url('cdnRoot/images/global/sprites-icon.png?v=cdnVersion') no-repeat transparent;
 }
 .lb-table thead tr th.kills em{
 	background-position:-168px -181px;
@@ -7305,13 +7305,13 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	border:none;
 	width:48px;
 	border-left:1px solid #094A4E;
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -350px -1342px rgba(6, 90, 97, 0.2);
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -350px -1342px rgba(6, 90, 97, 0.2);
 }
 .lb-table td.rank.first{
 	border-top:1px solid #094a4e;
 }
 .lb-table td.rank div{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -350px -1342px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -350px -1342px;
 	width:100%;
 	height:100%;
 	margin-bottom:-4px;
@@ -7326,7 +7326,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	width:100%;
 	height:100%;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat 0 0;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat 0 0;
 }
 .lb-table td.name a:hover{
 	color:#fff;
@@ -7350,7 +7350,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	height:30px;
 	float:left;
 	margin:4px 10px 0 10px;
-	background:url('${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}') no-repeat transparent;
+	background:url('cdnRoot/images/global/sprites-icon.png?v=cdnVersion') no-repeat transparent;
 }
 .lb-table td.name.tr a em{
 	background-position: -223px -245px;
@@ -7366,7 +7366,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 }
 .lb-table td.name div,
 .char-rank-tbl td.name div{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat;
 	width:100%;
 	height:100%;
 	overflow:hidden;
@@ -7375,7 +7375,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 .char-rank-tbl td.name div em{
 	width:30px;
 	height:30px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	display:block;
 	float:left;
 	margin:3px 5px 0;
@@ -7386,7 +7386,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	text-align:center;
 }
 .lb-table .hdrs .lb-tbl-header em{
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 	width:26px;
 	height:26px;
 	margin:3px 4px 0 0;
@@ -7473,7 +7473,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	width:86px;
 	text-align:center;
 	height:35px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -861px -878px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -861px -878px;
 	cursor:pointer;
 }
 #lbFilters ul li.disabled{
@@ -7497,7 +7497,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	width:2px;
 	height:28px;
 	margin:2px 18px 0;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -914px -1143px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -914px -1143px;
 }
 #lbFilters #perPageDropdown span,
 #lbFilters #selectFactionDropdown span,
@@ -7513,7 +7513,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	background-position:-207px -7488px;
 }
 #my_rank {
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -861px -878px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -861px -878px transparent;
 	cursor: pointer;
 	height: 30px;
 	text-align: center;
@@ -7556,7 +7556,7 @@ ul.tabs span.current, ul.tabs span.current:hover, ul.tabs li.current span{
 	width:160px;
 	height:300px;
 	margin:0 auto;
-	background:url("${cdnRoot}/images/player/weapons/hichartGraph.png?v=${cdnVersion}") no-repeat -160px 40px;
+	background:url("cdnRoot/images/player/weapons/hichartGraph.png?v=cdnVersion") no-repeat -160px 40px;
 }
 
 .no-data-list-lb .noDataText{
@@ -7576,7 +7576,7 @@ div.coming-soon-1{
 	height:525px;
 	display:block;
 	margin-top:30px;
-	background:url("${cdnRoot}/images/global/coming-soon-1.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/coming-soon-1.png?v=cdnVersion") no-repeat;
 }
 div.coming-soon-2{
 	width:100%;
@@ -7584,7 +7584,7 @@ div.coming-soon-2{
 	height: 463px;
 	margin:30px 0 0 32px;
 	padding-top: 25px;
-	background:url("${cdnRoot}/images/global/coming-soon-1.jpg?v=${cdnVersion}") no-repeat center left;
+	background:url("cdnRoot/images/global/coming-soon-1.jpg?v=cdnVersion") no-repeat center left;
 }
 div.coming-soon-3{
 	width:100%;
@@ -7592,7 +7592,7 @@ div.coming-soon-3{
 	height: 463px;
 	margin:20px 0 0 50px;
 	padding-top: 25px;
-	background:url("${cdnRoot}/images/global/coming-soon-3.jpg?v=${cdnVersion}") no-repeat center left;
+	background:url("cdnRoot/images/global/coming-soon-3.jpg?v=cdnVersion") no-repeat center left;
 }
 div.coming-soon-4{
 	width:100%;
@@ -7600,7 +7600,7 @@ div.coming-soon-4{
 	height: 463px;
 	margin:30px 0 0 32px;
 	padding-top: 25px;
-	background:url("${cdnRoot}/images/global/coming-soon-4.jpg?v=${cdnVersion}") no-repeat center left;
+	background:url("cdnRoot/images/global/coming-soon-4.jpg?v=cdnVersion") no-repeat center left;
 }
 .coming-soon-1 #comingSoon, .coming-soon-2 #comingSoon, .coming-soon-3 #comingSoon, .coming-soon-4 #comingSoon{
 	float:left;
@@ -7632,7 +7632,7 @@ div.coming-soon-4{
 	display:none !important;
 }
 .splash{
-	background:#000 url("${cdnRoot}/images/global/splashBg.jpg?v=${cdnVersion}") center 40px no-repeat;
+	background:#000 url("cdnRoot/images/global/splashBg.jpg?v=cdnVersion") center 40px no-repeat;
 }
 .splash header section.ctn-center h1{
 	margin-bottom:-25px;
@@ -7640,7 +7640,7 @@ div.coming-soon-4{
 .splash header section.ctn-center h1 a.logoPS2{
 	width:444px;
 	height:106px;
-	background:url("${cdnRoot}/images/global/en/logoPS2Beta.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/en/logoPS2Beta.png?v=cdnVersion") no-repeat;
 }
 .splash #splashContainer .section-center{
 	text-align:center;
@@ -7687,7 +7687,7 @@ div.coming-soon-4{
 	display:inline-block;
 	width:194px;
 	height:146px;
-	background:url("${cdnRoot}/images/global/splash-image-container-sprite.png?v=${cdnVersion}") no-repeat 0 0;
+	background:url("cdnRoot/images/global/splash-image-container-sprite.png?v=cdnVersion") no-repeat 0 0;
 	position:relative;
 }
 .splash #splashContainer .section-center #splashImageLinks .imageLink:hover{
@@ -7697,7 +7697,7 @@ div.coming-soon-4{
 	width:179px;
 	height:131px;
 	display:block;
-	background:url("${cdnRoot}/images/global/splash-images-sprite.jpg?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/splash-images-sprite.jpg?v=cdnVersion") no-repeat;
 	margin:8px 8px;
 }
 .splash #splashContainer .section-center #splashImageLinks .imageLink .imageLinkContainer.weapons{
@@ -7731,7 +7731,7 @@ div.coming-soon-4{
 	background-position:-543px -133px;
 }
 .splash #splashContainer .section-center #splashImageLinks .imageLinkText{
-	background:url("${cdnRoot}/images/global/splash-text-container-sprite.png?v=${cdnVersion}") no-repeat 0 0;
+	background:url("cdnRoot/images/global/splash-text-container-sprite.png?v=cdnVersion") no-repeat 0 0;
 	width:195px;
 	height:43px;
 	position:absolute;
@@ -7749,7 +7749,7 @@ div.coming-soon-4{
 }
 .splash #splashContainer .section-center #loginContainer{
 	width:358px;
-	background:url("${cdnRoot}/images/global/login-bg.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/login-bg.png?v=cdnVersion") no-repeat;
 	float:right;
 	margin:4px 20px 0 0;
 }
@@ -7764,7 +7764,7 @@ div.coming-soon-4{
 	height:57px;
 	display:block;
 	margin:295px auto 0;
-	background:url("${cdnRoot}/images/global/en/war-is-coming.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/en/war-is-coming.png?v=cdnVersion") no-repeat;
 }*/
 .splash #splashContainer .section-center #gameDescription{
 	width:100%;
@@ -7775,12 +7775,12 @@ div.coming-soon-4{
 	font-size:16px;
 	text-shadow:0 0 2px #00A8B7,0 0 2px #00A8B7,0 0 5px #00A8B7;
 }
-.loc-en.splash #splashContainer .section-center .war {background:url("${cdnRoot}/images/global/en/sizeMatters.png?v=${cdnVersion}") no-repeat;}
-.loc-de.splash #splashContainer .section-center .war {background:url("${cdnRoot}/images/global/de/sizeMatters.png?v=${cdnVersion}") no-repeat;}
-.loc-es.splash #splashContainer .section-center .war {background:url("${cdnRoot}/images/global/es/sizeMatters.png?v=${cdnVersion}") no-repeat;}
-.loc-fr.splash #splashContainer .section-center .war {background:url("${cdnRoot}/images/global/fr/sizeMatters.png?v=${cdnVersion}") no-repeat;}
-.loc-it.splash #splashContainer .section-center .war {background:url("${cdnRoot}/images/global/it/sizeMatters.png?v=${cdnVersion}") no-repeat;}
-.loc-tr.splash #splashContainer .section-center .war {background:url("${cdnRoot}/images/global/tr/sizeMatters.png?v=${cdnVersion}") no-repeat;}
+.loc-en.splash #splashContainer .section-center .war {background:url("cdnRoot/images/global/en/sizeMatters.png?v=cdnVersion") no-repeat;}
+.loc-de.splash #splashContainer .section-center .war {background:url("cdnRoot/images/global/de/sizeMatters.png?v=cdnVersion") no-repeat;}
+.loc-es.splash #splashContainer .section-center .war {background:url("cdnRoot/images/global/es/sizeMatters.png?v=cdnVersion") no-repeat;}
+.loc-fr.splash #splashContainer .section-center .war {background:url("cdnRoot/images/global/fr/sizeMatters.png?v=cdnVersion") no-repeat;}
+.loc-it.splash #splashContainer .section-center .war {background:url("cdnRoot/images/global/it/sizeMatters.png?v=cdnVersion") no-repeat;}
+.loc-tr.splash #splashContainer .section-center .war {background:url("cdnRoot/images/global/tr/sizeMatters.png?v=cdnVersion") no-repeat;}
 
 .splash #splashContainer .section-center .login-button{
 	height:78px;
@@ -7797,7 +7797,7 @@ div.coming-soon-4{
 	float:left;
 	color:#fff;
 	text-shadow:0 0 10px #ce5106;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -7px -275px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -7px -275px;
 }
 .splash #splashContainer .section-center .login-button a:hover{
 	color:#fff;
@@ -7818,7 +7818,7 @@ div.coming-soon-4{
 	height:7px;
 	margin:5px auto;
 	display:block;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -726px -257px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -726px -257px;
 }
 .splash #splashContainer .section-center .centered-text{
 	font-size:14px;
@@ -7860,7 +7860,7 @@ div.coming-soon-4{
 	color:#000;
 	margin:150px auto 150px auto;
 	display:none;
-	background:url('${cdnRoot}/images/player/profile/no-char-alert.png?v=${cdnVersion}')
+	background:url('cdnRoot/images/player/profile/no-char-alert.png?v=cdnVersion')
 }
 .splash #noCharAlert .notFound{
 	color:red;
@@ -7875,7 +7875,7 @@ div.coming-soon-4{
 	text-align:left;
 }
 .splash #noCharAlert button{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -861px -990px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -861px -990px transparent;
 	border:none;
 	color:#fff;
 	width:98px;
@@ -7884,7 +7884,7 @@ div.coming-soon-4{
 }
 /* ============== OVERVIEW TEMPORARY ============== */
 .overviewTemporary{
-	background:url('${cdnRoot}/images/player/profile/overview_temporary.png?v=${cdnVersion}');
+	background:url('cdnRoot/images/player/profile/overview_temporary.png?v=cdnVersion');
 	width:688px;
 	height:872px;
 	position:absolute;
@@ -7970,7 +7970,7 @@ div.coming-soon-4{
 	width:489px;
 	height:30px;
 	display:block;
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat -8px -230px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat -8px -230px transparent;
 	position:relative;
 }
 #updateHeader p{
@@ -7987,7 +7987,7 @@ div.coming-soon-4{
 	width:489px;
 	height:30px;
 	display:block;
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat 1px -195px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat 1px -195px transparent;
 	position:relative;
 	float:left;
 	margin-left:300px;
@@ -8013,7 +8013,7 @@ div.coming-soon-4{
 #updateArea #updateOffline{
 	width:100%;
 	height:385px;
-	background:url("${cdnRoot}/images/global/social-offline.png?v=${cdnVersion}") no-repeat scroll 0px -0px transparent;
+	background:url("cdnRoot/images/global/social-offline.png?v=cdnVersion") no-repeat scroll 0px -0px transparent;
 	margin-bottom:-15px;
 	line-height:310px;
 }
@@ -8045,13 +8045,13 @@ div.coming-soon-4{
 	height:20px;
 	width:100%;
 	float:right;
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -510px -269px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -510px -269px transparent;
 }
 #promos{
 	float:left;
 	width:687px;
 	height:135px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -8px -3140px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -8px -3140px transparent;
 	margin-bottom:10px;
 }
 #promos .promo-image{
@@ -8068,7 +8068,7 @@ div.coming-soon-4{
 .socialStats #friendsContainer,
 .socialStats #fanSiteContainer,
 .socialStats #testLaunchpadContainer{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -7px -196px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -7px -196px transparent;
 	width:165px;
 	height:310px;
 	padding:10px;
@@ -8111,7 +8111,7 @@ div.coming-soon-4{
 .socialStats #friendsContainer .sidebar-header em.friends-icon,
 .socialStats #fanSiteContainer .sidebar-header em.friends-icon,
 .socialStats #testLaunchpadContainer .sidebar-header em.wrench-icon  {
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat 0 -36px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat 0 -36px transparent;
 	width:30px;
 	height:20px;
 	float:left;
@@ -8124,14 +8124,14 @@ div.coming-soon-4{
 	height:58px;
 	margin-top:-5px;
 	display: block;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -807px -423px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -807px -423px transparent;
 }
 .socialStats #fanSiteContainer .sidebar-header em.friends-icon {
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -962px -139px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -962px -139px transparent;
 }
 .socialStats #fanSiteContainer{
 	height:auto;
-	background:url("${cdnRoot}/images/global/socialRightColGrad.png?v=${cdnVersion}") no-repeat 0 0 transparent;
+	background:url("cdnRoot/images/global/socialRightColGrad.png?v=cdnVersion") no-repeat 0 0 transparent;
 }
 .socialStats #fanSiteContainer .fanSite{
 	clear:both;
@@ -8157,7 +8157,7 @@ div.coming-soon-4{
 .socialStats #fanSiteContainer .fanSite .viewLink a em{
 	display:inline-block;
 	margin-left:4px;
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll -407px -235px transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll -407px -235px transparent;
 	float: right;
 	height: 14px;
 	margin-top: 1px;
@@ -8168,11 +8168,11 @@ div.coming-soon-4{
 	margin-bottom:10px;
 	clear:both;
 	height:2px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -7px -2953px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -7px -2953px;
 }
 .socialStats #testLaunchpadContainer .sidebar-header em.wrench-icon {
 	height:23px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat -962px -169px transparent;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat -962px -169px transparent;
 }
 .socialStats #friendsContainer .small-scroll-pane{
 	margin-top:5px;
@@ -8266,7 +8266,7 @@ div.coming-soon-4{
 	position:relative;
 }
 .socialStats .statsContainer .sidebar-header{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -8px -1246px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -8px -1246px transparent;
 	width:100%;
 	height:42px;
 }
@@ -8297,7 +8297,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	position:relative;
 	height:100px;
 	width:100%;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -8px -1246px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -8px -1246px transparent;
 }
 .socialStats .socialStatsOuter{
 	position:relative;
@@ -8312,7 +8312,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	line-height:22px;
 }
 .socialStats .statsContainer .outfitImage{
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -131px 0 transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -131px 0 transparent;
 	width:164px;
 	height:75px;
 	margin:0 auto 10px;
@@ -8324,13 +8324,13 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 .socialStats .statsContainer .statsIcon{
 	width:35px;
 	height:20px;
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -1px -6px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -1px -6px transparent;
 	display:inline-block;
 	float:left;
 	margin:7px 0 0 15px;
 }
 .socialStats .statsContainer button{
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -529px -180px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -529px -180px transparent;
 	border:none;
 	color:#fff;
 	width:98px;
@@ -8368,14 +8368,14 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	background-color: green;
 }
 .socialDivider{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -8px -3098px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -8px -3098px transparent;
 	display:block;
 	width:100%;
 	height:2px;
 	margin:5px 0;
 }
 #updateArea button{
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -654px -180px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -654px -180px transparent;
 	border:none;
 	color:#fff;
 	font-family:'Exo';
@@ -8387,7 +8387,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 }
 #updateArea .textInput{
 	border:none;
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -6px -185px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -6px -185px transparent;
 	margin:10px;
 	width:454px;
 	border-right:1px solid #2ee7f8;
@@ -8419,7 +8419,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	color:#00EAFF;
 }
 #updateArea #myStatusArea{
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -0px -223px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -0px -223px transparent;
 	width:430px;
 	height:50px;
 	float:left;
@@ -8466,7 +8466,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	width:50px;
 	height:51px;
 	float:left;
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -109px -86px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -109px -86px transparent;
 	margin:10px 0 0 10px;
 }
 #updateFeed .icon {
@@ -8494,7 +8494,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	background-position:-33px -86px;
 }
 #updateFeed .closeButton{
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -11px -122px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -11px -122px transparent;
 	width:7px;
 	height:7px;
 	position:absolute;
@@ -8502,7 +8502,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	right:8px;
 }
 #updateFeed .award{
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -85px -112px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -85px -112px transparent;
 	width:19px;
 	height:25px;
 	position:absolute;
@@ -8513,7 +8513,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	height:12px;
 	width:100%;
 	float:right;
-	background:url("${cdnRoot}/images/global/social-sprite.png?v=${cdnVersion}") no-repeat scroll -510px -244px transparent;
+	background:url("cdnRoot/images/global/social-sprite.png?v=cdnVersion") no-repeat scroll -510px -244px transparent;
 }
 #updateFeed .updateContainer{
 	padding:5px 10px;
@@ -8526,7 +8526,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	width:100%;
 	height:81px;
 	display:block;
-	background:url("${cdnRoot}/images/outfits/outfits-sprite.png?v=${cdnVersion}") no-repeat scroll 0px 0px transparent;
+	background:url("cdnRoot/images/outfits/outfits-sprite.png?v=cdnVersion") no-repeat scroll 0px 0px transparent;
 }
 #secOutfits #backToOutfits{
 	float:right;
@@ -8535,7 +8535,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	display:none;
 }
 #secOutfits #backToOutfits .goto-arrows {
-  background: url("${cdnRoot}/images/global/sprites-icon.png?v=1.4") no-repeat scroll -394px -235px transparent;
+  background: url("cdnRoot/images/global/sprites-icon.png?v=1.4") no-repeat scroll -394px -235px transparent;
   display: block;
   float: left;
   height: 14px;
@@ -8545,13 +8545,13 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 #secOutfits #outfits-middle{
 	width:100%;
 	display:block;
-	background:url("${cdnRoot}/images/killboard/container-middle.png?v=${cdnVersion}") repeat-y scroll 0px 0px transparent;
+	background:url("cdnRoot/images/killboard/container-middle.png?v=cdnVersion") repeat-y scroll 0px 0px transparent;
 }
 #secOutfits #outfits-bottom{
 	width:100%;
 	height:21px;
 	display:block;
-	background:url("${cdnRoot}/images/outfits/outfits-sprite.png?v=${cdnVersion}") no-repeat scroll 0px -91px transparent;
+	background:url("cdnRoot/images/outfits/outfits-sprite.png?v=cdnVersion") no-repeat scroll 0px -91px transparent;
 }
 #secOutfits #outfits-top .searchText{
 	float:left;
@@ -8560,7 +8560,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	font-size:12px;
 }
 #secOutfits #outfits-top input {
-	background: url("${cdnRoot}/images/outfits/outfits-sprite.png?v=${cdnVersion}") no-repeat scroll 0 -115px transparent;
+	background: url("cdnRoot/images/outfits/outfits-sprite.png?v=cdnVersion") no-repeat scroll 0 -115px transparent;
 	border: medium none;
 	color: #20A0A1;
 	font-size: 13px;
@@ -8592,14 +8592,14 @@ html.cssgradients .socialStats .statsContainer .grad-content{
   z-index: 6;
 }
 #secOutfits .outfitVertDivider{
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=1.4") no-repeat scroll -914px -1134px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=1.4") no-repeat scroll -914px -1134px transparent;
 	float: left;
 	height: 55px;
 	margin: 9px 15px 0 15px;
 	width: 2px;
 }
 #secOutfits #perPageDropdown {
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=1.4") no-repeat scroll -681px -1144px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=1.4") no-repeat scroll -681px -1144px transparent;
 	cursor: pointer;
 	float: left;
 	height: 26px;
@@ -8609,7 +8609,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	z-index: 1000;
 }
 #secOutfits #perPageDropdown.drop{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat -681px -1190px;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat -681px -1190px;
 }
 #secOutfits #perPageDropdown span {
 	color: #FFFFFF;
@@ -8636,16 +8636,16 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 #secOutfits #outfitRightColumnTop{
 	width:100%;
 	height:18px;
-	background:url("${cdnRoot}/images/outfits/outfits-sprite.png?v=${cdnVersion}") no-repeat scroll -247px -117px transparent;
+	background:url("cdnRoot/images/outfits/outfits-sprite.png?v=cdnVersion") no-repeat scroll -247px -117px transparent;
 }
 #secOutfits #outfitRightColumnMiddle{
 	padding: 0 15px;
-	background:url("${cdnRoot}/images/outfits/outfit-right-column-middle.png?v=${cdnVersion}") repeat-y scroll 0 -115px transparent;
+	background:url("cdnRoot/images/outfits/outfit-right-column-middle.png?v=cdnVersion") repeat-y scroll 0 -115px transparent;
 }
 #secOutfits #outfitRightColumnBottom{
 	width:100%;
 	height:18px;
-	background:url("${cdnRoot}/images/outfits/outfits-sprite.png?v=${cdnVersion}") no-repeat scroll -558px -117px transparent;
+	background:url("cdnRoot/images/outfits/outfits-sprite.png?v=cdnVersion") no-repeat scroll -558px -117px transparent;
 }
 #secOutfits #outfitRightColumn h1{
 	color:#2EE7F8;
@@ -8678,7 +8678,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 #secOutfits #outfitRightColumn .horzDivider{
 	height:2px;
 	margin: 7px 0;
-	background:url("${cdnRoot}/images/outfits/outfits-sprite.png?v=${cdnVersion}") no-repeat scroll -261px -141px transparent;
+	background:url("cdnRoot/images/outfits/outfits-sprite.png?v=cdnVersion") no-repeat scroll -261px -141px transparent;
 }
 #secOutfits #outfitListTable table,
 #secOutfits #outfitDetailContainer table{
@@ -8709,7 +8709,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 }
 #secOutfits #outfitListTable table thead th,
 #secOutfits #outfitDetailContainer table thead th{
-	background: url("${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}") no-repeat scroll left -174px transparent;
+	background: url("cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion") no-repeat scroll left -174px transparent;
 }
 #secOutfits #outfitListTable table td,
 #secOutfits #outfitListTable table th,
@@ -8753,13 +8753,13 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	background:rgba(6,90,97,0.15);
 }
 #secOutfits #outfitListTable table td.tr{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -825px -2772px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -825px -2772px transparent;
 }
 #secOutfits #outfitListTable table td.vs{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -825px -2868px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -825px -2868px transparent;
 }
 #secOutfits #outfitListTable table td.nc{
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -825px -2820px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -825px -2820px transparent;
 }
 #secOutfits #outfitListTable table td .nameText{
 	display:inline-block;
@@ -8771,7 +8771,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	white-space:nowrap;
 }
 #secOutfits #outfitListTable table td .empire {
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat scroll 0 0 transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat scroll 0 0 transparent;
 	height: 30px;
 	margin-right: 8px;
 	overflow: hidden;
@@ -8836,7 +8836,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	float:left;
 	width:28px;
 	height:28px;
-	background: url("${cdnRoot}/images/global/sprites-icon.png?v=1.4") no-repeat scroll 0 0 transparent;
+	background: url("cdnRoot/images/global/sprites-icon.png?v=1.4") no-repeat scroll 0 0 transparent;
 	cursor:pointer;
 }
 #secOutfits #first{
@@ -8876,7 +8876,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 }
 #secOutfits #pagContainer .loader{
 	display:none;
-	background:url("${cdnRoot}/images/global/loading_ani_small.gif?v=${cdnVersion}") no-repeat center center transparent;
+	background:url("cdnRoot/images/global/loading_ani_small.gif?v=cdnVersion") no-repeat center center transparent;
 	height:22px;
 }
 #secOutfits #outfitDetailContainer{
@@ -8886,7 +8886,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	display:block;
 	height:83px;
 	width:100%;
-	background:url("${cdnRoot}/images/outfits/outfits-sprite.png?v=${cdnVersion}") no-repeat scroll 0 -149px transparent;
+	background:url("cdnRoot/images/outfits/outfits-sprite.png?v=cdnVersion") no-repeat scroll 0 -149px transparent;
 }
 #secOutfits #outfitDetailHeader #outfitEmpire{
 	width:70px;
@@ -8896,13 +8896,13 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	margin:7px 16px;
 }
 #secOutfits #outfitDetailHeader #outfitEmpire.nc{
-	background:url('${cdnRoot}/images/global/factions/nc_70x70.png?v=${cdnVersion}') no-repeat scroll 0 0 transparent;
+	background:url('cdnRoot/images/global/factions/nc_70x70.png?v=cdnVersion') no-repeat scroll 0 0 transparent;
 }
 #secOutfits #outfitDetailHeader #outfitEmpire.vs{
-	background:url('${cdnRoot}/images/global/factions/vs_70x70.png?v=${cdnVersion}') no-repeat scroll 0 0 transparent;
+	background:url('cdnRoot/images/global/factions/vs_70x70.png?v=cdnVersion') no-repeat scroll 0 0 transparent;
 }
 #secOutfits #outfitDetailHeader #outfitEmpire.tr{
-	background:url('${cdnRoot}/images/global/factions/tr_56x68.png?v=${cdnVersion}') no-repeat scroll 7px 1px transparent;
+	background:url('cdnRoot/images/global/factions/tr_56x68.png?v=cdnVersion') no-repeat scroll 7px 1px transparent;
 }
 #secOutfits #outfitDetailHeader #outfitName{
 	background:#07282C;
@@ -8925,7 +8925,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	width:580px;
 	height:40px;
 	float:left;
-	background:url("${cdnRoot}/images/outfits/outfit-diag-lines.png?v=${cdnVersion}") no-repeat scroll 0 0 transparent;
+	background:url("cdnRoot/images/outfits/outfit-diag-lines.png?v=cdnVersion") no-repeat scroll 0 0 transparent;
 }
 #secOutfits #outfitDetailHeader #outfitCreateDate,
 #secOutfits #outfitDetailHeader #outfitTotalMembers{
@@ -8951,7 +8951,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	width:21px;
 	height:21px;
 	display:inline-block;
-	background:url('${cdnRoot}/images/killboard/killboard-sprite.png?v=${cdnVersion}') -532px 0 no-repeat;
+	background:url('cdnRoot/images/killboard/killboard-sprite.png?v=cdnVersion') -532px 0 no-repeat;
 }
 #secOutfits #outfitDetailTable .memberName .tooltip, #secOutfits #outfitListTable .leaderNameLink .tooltip{
 	white-space:normal;
@@ -8961,7 +8961,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	height:35px;
 	width:35px;
 	margin-right:5px;
-	background:url("${cdnRoot}/images/global/battlerank-icons/rankicons-sm.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/battlerank-icons/rankicons-sm.png?v=cdnVersion") no-repeat;
 }
 #secOutfits #outfitDetailTable .brText{
 	float:left;
@@ -8972,7 +8972,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	height:24px;
 	width:24px;
 	margin-right:15px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") 10px 10px;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") 10px 10px;
 }
 #secOutfits #outfitDetailTable .classIcon.engineer{
 	background-position:-505px -91px;
@@ -9391,7 +9391,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 
 /* MAP EVENT FEED */
 #mapFeedHeader{
-	background: url("${cdnRoot}/images/map/map-sprite.png?v=${cdnVersion}") no-repeat scroll -40px 0 transparent;
+	background: url("cdnRoot/images/map/map-sprite.png?v=cdnVersion") no-repeat scroll -40px 0 transparent;
     display: block;
     font-size: 18px;
     height: 28px;
@@ -9427,7 +9427,7 @@ html.cssgradients .socialStats .statsContainer .grad-content{
 	width:32px;
 	height:32px;
 	margin:7px;
-	background:url("${cdnRoot}/images/global/sprites-icon.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/global/sprites-icon.png?v=cdnVersion") no-repeat;
 }
 #mapFeed .event-image.f1{
 	background-position:-163px -211px;
@@ -9483,7 +9483,7 @@ ul.event-area li a.event-text {
 	font-family: PlanetSide2;
 }
 #wdsHeader{
-	background:url("${cdnRoot}/images/wds/page-header.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/wds/page-header.png?v=cdnVersion") no-repeat;
 	text-align: center;
 	color:#fff;
 	height:239px;
@@ -9509,7 +9509,7 @@ ul.event-area li a.event-text {
 	height:71px;
 	display:block;
 	margin:0 auto;
-	background:url("${cdnRoot}/images/wds/timer-background.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/wds/timer-background.png?v=cdnVersion") no-repeat;
 }
 #wdsHeader #clockContainer #clockTimes{
 	display:block;
@@ -9567,7 +9567,7 @@ ul.event-area li a.event-text {
 	margin-bottom:40px;
 }
 #wdsBody #seasonRewardBody{
-	background:url("${cdnRoot}/images/wds/season-reward-bg-grad.png?v=${cdnVersion}") repeat-x;
+	background:url("cdnRoot/images/wds/season-reward-bg-grad.png?v=cdnVersion") repeat-x;
 	padding:20px;
 	margin-top:10px;
 }
@@ -9593,7 +9593,7 @@ ul.event-area li a.event-text {
 }
 #wdsBody .wdsModalTrigger em{
 	display:inline-block;
-	background:url("${cdnRoot}/images/wds/modal-button.png?v=${cdnVersion}") 0 0 no-repeat;
+	background:url("cdnRoot/images/wds/modal-button.png?v=cdnVersion") 0 0 no-repeat;
 	width:15px;
 	height:15px;
 	margin-left:7px;
@@ -9609,12 +9609,12 @@ ul.event-area li a.event-text {
 }
 #wdsBody #simpleOverlay .simpleOverlayTop{
 	display:block;
-	background:url("${cdnRoot}/images/global/simple-modal-top-bottom.png?v=${cdnVersion}") 0 0 no-repeat;
+	background:url("cdnRoot/images/global/simple-modal-top-bottom.png?v=cdnVersion") 0 0 no-repeat;
 	height:26px;
 	width:620px;
 }
 #wdsBody #simpleOverlay .simpleOverlayTop h4 {
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -7px -2964px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -7px -2964px transparent;
 	font-size: 17px;
 	height: 31px;
 	line-height: 27px;
@@ -9628,7 +9628,7 @@ ul.event-area li a.event-text {
 }
 #wdsBody #simpleOverlay .simpleOverlayBody{
 	display:block;
-	background:url("${cdnRoot}/images/global/simple-modal-middle.png?v=${cdnVersion}") 0 0 repeat-y;
+	background:url("cdnRoot/images/global/simple-modal-middle.png?v=cdnVersion") 0 0 repeat-y;
 	height:350px;
 	width:620px;
 }
@@ -9643,7 +9643,7 @@ ul.event-area li a.event-text {
 }
 #wdsBody #simpleOverlay .simpleOverlayBottom{
 	display:block;
-	background:url("${cdnRoot}/images/global/simple-modal-top-bottom.png?v=${cdnVersion}") 0 bottom no-repeat;
+	background:url("cdnRoot/images/global/simple-modal-top-bottom.png?v=cdnVersion") 0 bottom no-repeat;
 	height:26px;
 	width:620px;
 }
@@ -9654,7 +9654,7 @@ ul.event-area li a.event-text {
 	cursor:pointer;
 	height:22px;
 	width:30px;
-	background:url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -386px -2020px transparent;
+	background:url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -386px -2020px transparent;
 }
 #wdsBody a{
 	color:#4CC5CF;
@@ -9685,7 +9685,7 @@ ul.event-area li a.event-text {
 	display:block;
 	width:26px;
 	height:25px;
-	background:url("${cdnRoot}/images/wds/accordion-open-sprite.png?v=${cdnVersion}") no-repeat scroll 0 0 transparent;
+	background:url("cdnRoot/images/wds/accordion-open-sprite.png?v=cdnVersion") no-repeat scroll 0 0 transparent;
 	border:1px solid rgba(11,54,59,0.5);
 	margin-right:10px;
 	text-align:center;
@@ -9726,7 +9726,7 @@ ul.event-area li a.event-text {
 }
 #wdsBody hr{
 	margin:3px 0 10px 0;
-	background: url("${cdnRoot}/images/global/sprites-bg.png?v=${cdnVersion}") no-repeat scroll -24px -181px transparent;
+	background: url("cdnRoot/images/global/sprites-bg.png?v=cdnVersion") no-repeat scroll -24px -181px transparent;
 	height:9px;
 	border:none;
 }
@@ -9738,7 +9738,7 @@ ul.event-area li a.event-text {
 	height:300px;
 	margin:0 auto;
 	float:left;
-	background: url("${cdnRoot}/images/wds/chart-bg.png?v=${cdnVersion}") no-repeat scroll 0 0 transparent;
+	background: url("cdnRoot/images/wds/chart-bg.png?v=cdnVersion") no-repeat scroll 0 0 transparent;
 }
 #wdsBody #wdsFactionScores{
 	float:right;
@@ -9797,13 +9797,13 @@ ul.event-area li a.event-text {
 
 }
 #wdsBody .wdsHeadshot.nc{
-	background:url("${cdnRoot}/images/wds/nc.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/wds/nc.png?v=cdnVersion") no-repeat;
 }
 #wdsBody .wdsHeadshot.tr{
-	background:url("${cdnRoot}/images/wds/tr.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/wds/tr.png?v=cdnVersion") no-repeat;
 }
 #wdsBody .wdsHeadshot.vs{
-	background:url("${cdnRoot}/images/wds/vs.png?v=${cdnVersion}") no-repeat;
+	background:url("cdnRoot/images/wds/vs.png?v=cdnVersion") no-repeat;
 }
 #wdsBody #wdsFilterBar{
 	height:35px;
@@ -9821,7 +9821,7 @@ ul.event-area li a.event-text {
 	text-align:center;
 	line-height:30px;
 	margin-left:2px;
-	background:url("${cdnRoot}/images/wds/filter-bar-sprite.png?v=${cdnVersion}") 0 0 transparent;
+	background:url("cdnRoot/images/wds/filter-bar-sprite.png?v=cdnVersion") 0 0 transparent;
 }
 #wdsBody .wdsFilterButton.active{
 	background-position:0 bottom;
@@ -9845,19 +9845,19 @@ ul.event-area li a.event-text {
 	display:block;
 	width:100%;
 	height:100%;
-	background:url("${cdnRoot}/images/global/factions/nc_32x32.png?v=${cdnVersion}") center center transparent no-repeat;
+	background:url("cdnRoot/images/global/factions/nc_32x32.png?v=cdnVersion") center center transparent no-repeat;
 }
 #wdsBody #wdsWorldStats #trHead{
 	display:block;
 	width:100%;
 	height:100%;
-	background:url("${cdnRoot}/images/global/factions/tr_32x32.png?v=${cdnVersion}") center center transparent no-repeat;
+	background:url("cdnRoot/images/global/factions/tr_32x32.png?v=cdnVersion") center center transparent no-repeat;
 }
 #wdsBody #wdsWorldStats #vsHead{
 	display:block;
 	width:100%;
 	height:100%;
-	background:url("${cdnRoot}/images/global/factions/vs_32x32.png?v=${cdnVersion}") center center transparent no-repeat;
+	background:url("cdnRoot/images/global/factions/vs_32x32.png?v=cdnVersion") center center transparent no-repeat;
 }
 #wdsBody #wdsWorldStats th{
 	background: rgb(17,89,97);
@@ -9890,7 +9890,7 @@ ul.event-area li a.event-text {
 	height: 52px;
 	margin: 20px 0 0 33px;
 	position: relative;
-	background: url("${cdnRoot}/images/ticker/ticker-container-alt.png?v=${cdnVersion}") no-repeat;
+	background: url("cdnRoot/images/ticker/ticker-container-alt.png?v=cdnVersion") no-repeat;
 }
 .ticker.fullscreen {
 	position:absolute;
