@@ -8,6 +8,7 @@ define([
 
 			return function() {
 				switch(this.status) {
+					case 0: // Successful HTTP status in PhantomJS
 					case 200:
 					case 302:
 						console.debug('File received correctly', name);
@@ -15,11 +16,11 @@ define([
 						break;
 					case 404:
 						console.debug('File was not found', name);
-						onload(new Processor());
+						onload(new Processor(3));
 						break;
 					default:
 						console.debug('Received unhandled status', name, this.status);
-						onload(new Processor());
+						onload(new Processor(4));
 				}
 			};
 		},
@@ -28,11 +29,11 @@ define([
 
 			return function() {
 				console.debug('Something goes wrong', name, this.status);
-				onload(new Processor());
+				onload(new Processor(5));
 			};
 		},
 		checkXMLHttpRequestSupport: function() {
-			return typeof(XMLHttpRequest) === 'function';
+			return typeof(XMLHttpRequest) === 'function' || typeof(XMLHttpRequest) === 'object';
 		},
 		createAjaxLoader: function(name, req, onload, extension) {
 			var request = new XMLHttpRequest();
@@ -47,12 +48,12 @@ define([
 			};
 		},
 		createDefaultLoader: function(name, req, onload) {
+			var Processor = this.Processor;
+
 			return {
 				load: function() {
 					req([name], function() {
-						onload({
-							status: 2
-						});
+						onload(new Processor(2));
 					});
 				}
 			};

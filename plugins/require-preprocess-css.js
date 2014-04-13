@@ -14,7 +14,7 @@ define('requirejs-preprocess-css', [
 	// Расширяем базовый функционал миксинами.
 	ProcessorConstructor.extend(prefixMixin, {
 		resolve: function(callback) {
-			var sourceCode = this.responseSourceCache[this.id],
+			var sourceCode = this._responseSourceCache[this.id],
 				styleNode = document.createElement('style');
 
 			// Добавялем стилевой ноде необходимые свойства.

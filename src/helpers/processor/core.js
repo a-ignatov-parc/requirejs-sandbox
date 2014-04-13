@@ -7,18 +7,41 @@ define([
 	return function(context) {
 		var target = context || window,
 			Processor = function(success, sourceCode) {
+				// Указываем уникальный `id` препроцессора.
+				this.id = this._responseSourceCache.push(sourceCode || '') - 1;
+
+				// Определяем текущий статус препроцессора.
+				// Список возможных статусов:
+				// 
+				// * `0` – Препроцессор создан успешно и загруженный ресурс может быть 
+				//         правильно обрабатан.
+				// 
+				// * `1` – Препроцессор создан успешно, но запрашиваемый ресурс не удалось 
+				//         загрузить.
+				// 
+				// * `2` – Браузер не поддерживает XMLHttpRequest с поддержкой CORS, 
+				//         а следовательно загрузка файла производилась в режиме фоллбека 
+				//         и препроцессинг файла не доступен.
+				// 
+				// * `3` – Запрашиваемый файл небыл найден.
+				// 
+				// * `4` – Запрашиваемый файл был загружен с необрабатываемым HTTP статусом.
+				// 
+				// * `5` – При загрузке запрашиваемого файла произошла ошибка.
+				// 
+				// * `6` – Неизвестный статус.
 				if (typeof(success) === 'boolean' || success === 1 || success === 0 || success === '1' || success === '0') {
 					if (typeof(success) === 'boolean') {
 						this.status = +!success;
 					} else {
 						this.status = +success;
 					}
-					this.id = this.responseSourceCache.push(sourceCode || '') - 1;
 					console.debug('Creating extended resource api with status: ' + this.status);
 				} else {
 					console.debug('Creating simple response with status: ' + success);
 					return {
-						status: success
+						id: this.id,
+						status: success || 6
 					};
 				}
 			};
@@ -30,15 +53,15 @@ define([
 		};
 
 		Processor.prototype = {
-			responseSourceCache: [],
+			_responseSourceCache: [],
 			replace: function(pattern, replace) {
 				console.debug('[replace] Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
-				this.responseSourceCache[this.id] = this.responseSourceCache[this.id].replace(pattern, replace);
-				console.debug('[replace] Executing result: ', this.responseSourceCache[this.id]);
+				this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(pattern, replace);
+				console.debug('[replace] Executing result: ', this._responseSourceCache[this.id]);
 				return this;
 			},
 			resolve: function(callback) {
-				var sourceCode = this.responseSourceCache[this.id],
+				var sourceCode = this._responseSourceCache[this.id],
 					moduleParts = moduleCheckRegex.exec(sourceCode),
 					resolvingResult,
 					moduleResolver,

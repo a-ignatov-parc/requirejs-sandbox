@@ -19,13 +19,13 @@ define([
 			//    Более подробно об этом описано тут: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face
 			// 4. Так как считается что элемент с префикс-селектором у нас будет корневым 
 			//    элементом, то все селекторы на html и body заменяем на селектор префикса.
-			this.responseSourceCache[this.id] = this.responseSourceCache[this.id]
+			this._responseSourceCache[this.id] = this._responseSourceCache[this.id]
 				.replace(commentsRegex, '')
 				.replace(selectorsRegex, '$1' + selector + ' $2$3')
 				.replace(new RegExp(selector + '\\s(@(charset|document|font-face|import|keyframes|media|page|supports))', 'g'), '$1')
 				.replace(new RegExp('(' + selector + ')\\s(html|body)', 'g'), '$1');
 
-			console.debug('[prefix] Executing result for selector "' + selector + '": ', this.responseSourceCache[this.id]);
+			console.debug('[prefix] Executing result for selector "' + selector + '": ', this._responseSourceCache[this.id]);
 
 			return this;
 		}

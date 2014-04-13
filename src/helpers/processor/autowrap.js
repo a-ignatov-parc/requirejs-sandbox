@@ -1,7 +1,7 @@
 define(function() {
 	return {
 		autoWrap: function() {
-			this.responseSourceCache[this.id] = ';with(window.sandboxApi.windowProxy || window) {;' + this.responseSourceCache[this.id] + ';};';
+			this._responseSourceCache[this.id] = ';with(window.sandboxApi.windowProxy || window) {;' + this._responseSourceCache[this.id] + ';};';
 			return this;
 		}
 	};
