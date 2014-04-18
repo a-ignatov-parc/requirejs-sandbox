@@ -16,10 +16,17 @@
 		"requirejs": true,
 		"test": true,
 		"QUnit": true,
+		"start": true,
+		"stop": true,
+		"ok": true,
+		"throws": true,
 		"equal": true,
 		"notEqual": true,
+		"deepEqual": true,
+		"notDeepEqual": true,
+		"propEqual": true,
+		"notPropEqual": true,
 		"strictEqual": true,
-		"start": true,
-		"stop": true
+		"notStrictEqual": true
 	}
 }

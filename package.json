@@ -1,7 +1,7 @@
 {
 	"name": "requirejs-sandbox",
 	"description": "Sandbox manager for require.js allows user to run multiple apps without scope intersection issues",
-	"version": "0.4.2-63",
+	"version": "0.4.2-68",
 	"author": {
 		"name": "Anton Ignatov",
 		"web": "https://github.com/a-ignatov-parc"
