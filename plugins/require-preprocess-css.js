@@ -30,13 +30,42 @@ define('requirejs-preprocess-css', [
 			}
 
 			// Вставляем ноду в секцию head страницы.
-			document.getElementsByTagName('head')[0].appendChild(styleNode);
+			appendStyleNode(styleNode);
 
+			// Отрабатываем колбек возвращая api такой же как и в случае с `require-css`.
+			// 
+			// [INFO] `require-css` и `requirejs-preprocess-css` должны быть идентичны по 
+			// возвращаемым api.
 			if (typeof(callback) === 'function') {
-				callback(styleNode);
+				callback({
+					cssNode: styleNode,
+					append: function() {
+						return appendStyleNode(this.cssNode);
+					},
+					remove: function() {
+						return removeStyleNode(this.cssNode);
+					}
+				});
 			}
 		}
 	});
+
+	function appendStyleNode(node) {
+		if (node) {
+			if (node.parentNode) {
+				removeStyleNode(node);
+			}
+			document.getElementsByTagName('head')[0].appendChild(node);
+		}
+		return node;
+	}
+
+	function removeStyleNode(node) {
+		if (node && node.parentNode && typeof(node.parentNode.removeChild) === 'function') {
+			node.parentNode.removeChild(node);
+		}
+		return node;
+	}
 
 	return {
 		name: 'preprocess-css',

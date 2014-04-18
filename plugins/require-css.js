@@ -11,13 +11,13 @@ define('requirejs-css', function() {
 					console.debug('Received css load exec for', name);
 
 					var url = req.toUrl(name),
-						link = window.document.createElement('link'),
-						hasStyleSheet = 'sheet' in link,
+						linkNode = window.document.createElement('link'),
+						hasStyleSheet = 'sheet' in linkNode,
 						loadHandler = function() {
 							// Вызываем колбек о завершении загрузки.
 							if (!cssHasLoaded) {
 								onload({
-									cssNode: link,
+									cssNode: linkNode,
 									append: function() {
 										return appendStyleNode(this.cssNode);
 									},
@@ -35,14 +35,14 @@ define('requirejs-css', function() {
 						loader;
 
 					// Устанавливаем необходимые атрибуты.
-					link.rel = 'stylesheet';
-					link.type = 'text/css';
-					link.href = url;
+					linkNode.rel = 'stylesheet';
+					linkNode.type = 'text/css';
+					linkNode.href = url;
 
 					// Добавляем обработчики события `onload`
 					// 
 					// Браузеры: Chromium 22+, Firefox 20+, IE10+
-					link.onload = link.onreadystatechange = loadHandler;
+					linkNode.onload = linkNode.onreadystatechange = loadHandler;
 
 					// Если браузер поддерживает свойство `sheet` у элемента link, то 
 					// запускаем рантайм ожидания загрузки.
@@ -53,7 +53,7 @@ define('requirejs-css', function() {
 							// Если css еще не загружен, то пытаемся получить доступ к сетке стилей. 
 							// Если попытка проваливается, то ждем 20мс и пробуем сново.
 							try {
-								link.sheet.cssRules;
+								linkNode.sheet.cssRules;
 							} catch (e) {
 								if (count++ < 1000) {
 									cssTimeout = setTimeout(arguments.callee, 20);
@@ -63,7 +63,7 @@ define('requirejs-css', function() {
 								return;
 							}
 
-							if (link.sheet.cssRules && link.sheet.cssRules.length === 0) {
+							if (linkNode.sheet.cssRules && linkNode.sheet.cssRules.length === 0) {
 								console.error('Load failed in Webkit for', name);
 							} else {
 								loadHandler();
@@ -72,9 +72,10 @@ define('requirejs-css', function() {
 					}
 
 					// Вставляем тег со стилями в тег `head`.
-					appendStyleNode(link);
+					appendStyleNode(linkNode);
 
-					// Если же браузер не поддерживает свойство `sheet`, то пытаемся загрузить через хак с элементов `img`
+					// Если же браузер не поддерживает свойство `sheet`, то пытаемся загрузить 
+					// через хак с элементов `img`.
 					// 
 					// Браузеры: Opera 12
 					if (!hasStyleSheet) {
