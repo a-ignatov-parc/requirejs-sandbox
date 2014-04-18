@@ -5,8 +5,8 @@ requirejs.config({
 requirejs(['css!style1'], function(style) {
 	test('Css loading without test', function() {
 		equal(typeof(style), 'object', 'Returned module object is not object');
-		notEqual(style.cssLink, null, 'Link to style DOM element was not found');
-		equal(style.cssLink.getAttribute('href'), 'app/style1.css', 'Link tag has wrong href value');
+		notEqual(style.cssNode, null, 'Link to style DOM element was not found');
+		equal(style.cssNode.getAttribute('href'), 'app/style1.css', 'Link tag has wrong href value');
 		equal(window.getComputedStyle(document.body).position, 'relative', 'Loaded styles was not applied before callback');
 	});
 });
@@ -45,10 +45,57 @@ requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requ
 				QUnit.start();
 
 				test('Css loading test', function() {
+					var styleNode;
+
 					equal(typeof(style), 'object', 'Returned module object is not object');
-					notEqual(style.cssLink, null, 'Link to style DOM element was not found');
-					equal(style.cssLink.getAttribute('href'), 'app/style2.css', 'Link tag has wrong href value');
+					equal(Object.keys(style).length, 3, 'Returned module object has wrong properties count');
+					equal(typeof(style.cssNode), 'object', 'Link to style DOM element is not object');
+					ok(style.cssNode instanceof HTMLElement, 'Link to style DOM element is not DOM node');
+					notEqual(style.cssNode.parentNode, null, 'Link node should be placed in DOM');
+					equal(typeof(style.append), 'function', 'Returned module does not have "append" method');
+					equal(typeof(style.remove), 'function', 'Returned module does not have "remove" method');
+					equal(style.cssNode.getAttribute('href'), 'app/style2.css', 'Link tag has wrong href value');
 					equal(window.getComputedStyle(document.body).zIndex, 1, 'Loaded styles was not applied before callback');
+
+					styleNode = document.getElementById('test-style');
+
+					equal(styleNode, null, 'There should be no elements with id "test-style"');
+
+					style.cssNode.id = 'test-style';
+					styleNode = document.getElementById('test-style');
+
+					notEqual(styleNode, null, 'There should be style elements with id "test-style"');
+
+					style.remove();
+					styleNode = document.getElementById('test-style');
+
+					equal(styleNode, null, 'There should be no elements with id "test-style" after executing "remove" method');
+					equal(typeof(style.cssNode), 'object', 'Link to style DOM element is not object');
+					ok(style.cssNode instanceof HTMLElement, 'Link to style DOM element is not DOM node');
+					equal(style.cssNode.parentNode, null, 'Link node should not be placed in DOM after executing "remove" method');
+
+					style.append();
+					styleNode = document.getElementById('test-style');
+
+					notEqual(styleNode, null, 'There should be elements with id "test-style" after executing "append" method');
+					equal(typeof(style.cssNode), 'object', 'Link to style DOM element is not object');
+					ok(style.cssNode instanceof HTMLElement, 'Link to style DOM element is not DOM node');
+					notEqual(style.cssNode.parentNode, null, 'Link node should be placed in DOM after executing "append" method');
+
+					style.append();
+					styleNode = document.getElementById('test-style');
+
+					notEqual(styleNode, null, 'There should be elements with id "test-style" after second execution of "append" method');
+					equal(typeof(style.cssNode), 'object', 'Link to style DOM element is not object');
+					ok(style.cssNode instanceof HTMLElement, 'Link to style DOM element is not DOM node');
+					notEqual(style.cssNode.parentNode, null, 'Link node should be placed in DOM after second execution of "append" method');
+				});
+			});
+
+			require(['css!style2.css'], function(style) {
+				test('Css loading test with extension', function() {
+					equal(typeof(style), 'object', 'Returned module object is not object');
+					equal(style.cssNode.getAttribute('href'), 'app/style2.css', 'Link tag has wrong href value');
 				});
 			});
 
