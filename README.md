@@ -304,3 +304,10 @@ grunt compile
 ```
 
 The built version of requirejs-sandbox will be put in the `build/` subdirectory, along with the minified copy.
+
+# Branch policy
+
+1. All new features are creating in branches.
+1. After finishing developing of the feature it must me be merged into `master`.
+1. When new tag should be created `master` merge into `release` branch.
+1. After merging `master` into `release` tag should be created and `release` branch should be merged into `gh-pages` branch to update code for public demos.

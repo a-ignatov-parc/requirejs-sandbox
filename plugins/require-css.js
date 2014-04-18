@@ -1,19 +1,29 @@
 define('requirejs-css', function() {
 	console.debug('Creating plugin for loading css');
 
-	var pluginHandler = function() {
+	var extensionRegex = /\.css$/,
+		pluginHandler = function() {
 			return {
 				load: function(name, req, onload) {
+					// Обрабатываем `id` модуля чтоб оно всегда ссылалось на правильный файл.
+					name = name.replace(extensionRegex, '') + '.css';
+
 					console.debug('Received css load exec for', name);
 
-					var url = req.toUrl(name + '.css'),
+					var url = req.toUrl(name),
 						link = window.document.createElement('link'),
 						hasStyleSheet = 'sheet' in link,
 						loadHandler = function() {
 							// Вызываем колбек о завершении загрузки.
 							if (!cssHasLoaded) {
 								onload({
-									cssLink: link
+									cssNode: link,
+									append: function() {
+										return appendStyleNode(this.cssNode);
+									},
+									remove: function() {
+										return removeStyleNode(this.cssNode);
+									}
 								});
 								cssTimeout && clearTimeout(cssTimeout);
 								cssHasLoaded = true;
@@ -61,8 +71,8 @@ define('requirejs-css', function() {
 						})();
 					}
 
-					// Вставляем тег со стилями в тег `head`
-					document.getElementsByTagName('head')[0].appendChild(link);
+					// Вставляем тег со стилями в тег `head`.
+					appendStyleNode(link);
 
 					// Если же браузер не поддерживает свойство `sheet`, то пытаемся загрузить через хак с элементов `img`
 					// 
@@ -80,6 +90,23 @@ define('requirejs-css', function() {
 				}
 			};
 		};
+
+	function appendStyleNode(node) {
+		if (node) {
+			if (node.parentNode) {
+				removeStyleNode(node);
+			}
+			document.getElementsByTagName('head')[0].appendChild(node);
+		}
+		return node;
+	}
+
+	function removeStyleNode(node) {
+		if (node && node.parentNode && typeof(node.parentNode.removeChild) === 'function') {
+			node.parentNode.removeChild(node);
+		}
+		return node;
+	}
 
 	return {
 		name: 'css',
