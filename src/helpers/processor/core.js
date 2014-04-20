@@ -3,7 +3,8 @@ define([
 	'helpers/utils'
 ], function(console, utils) {
 	var sourceCache = [],
-		moduleCheckRegex = /^\s*define\((['"][^'"]+['"])?,?\s*(?:\[([^\]]+)\])?,?\s*(function[^]+)\);*\s*$/;
+		moduleCheckRegex = /^\s*define\((['"][^'"]+['"])?,?\s*(?:\[([^\]]+)\])?,?\s*(function[^]+)\);*\s*$/,
+		moduleTrimRegex = /['"]*\s*/g;
 
 	return function(context) {
 		var target = context || window,
@@ -76,13 +77,27 @@ define([
 					moduleParts = moduleCheckRegex.exec(sourceCode),
 					resolvingResult,
 					moduleResolver,
-					evaledCode;
+					evaledCode,
+					name,
+					deps;
 
 				console.debug('Execution context', target);
 
 				if (moduleParts) {
-					console.debug('module name: "' + moduleParts[1] + '"');
-					console.debug('module deps: "' + moduleParts[2] + '"');
+					if (moduleParts[1]) {
+						name = moduleParts[1].replace(moduleTrimRegex, '');
+					}
+
+					if (moduleParts[2]) {
+						deps = moduleParts[2]
+							.replace(moduleTrimRegex, '')
+							.split(',');
+					} else {
+						deps = [];
+					}
+
+					console.debug('module name: "' + name + '"');
+					console.debug('module deps: [' + deps.join(', ') + ']');
 					console.debug('module handler: "' + moduleParts[3] + '"');
 
 					evaledCode = new target.Function('return ' + moduleParts[3]);
@@ -92,12 +107,26 @@ define([
 						console.error(e);
 					}
 
-					if (moduleParts[2]) {
-						var depsString = moduleParts[2].replace(/['"]*\s*/g, ''),
-							deps = depsString.split(',');
+					if (name) {
+						target.define(name, deps, function() {
+							try {
+								resolvingResult = moduleResolver.apply(this, arguments);
+							} catch(e) {
+								console.error(e);
+							}
 
-						console.debug('Dependencies resolved to: [' + deps.join(', ') + ']');
+							// Синхронизируем объекты.
+							updateWindowProxy();
 
+							return resolvingResult;
+						});
+
+						target.require([name], function(moduleResult) {
+							if (typeof(callback) === 'function') {
+								callback(moduleResult);
+							}
+						});
+					} else if (deps.length) {
 						target.require(deps, function() {
 							try {
 								resolvingResult = moduleResolver.apply(this, arguments);

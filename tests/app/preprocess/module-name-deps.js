@@ -1,1 +1,1 @@
-define('name-dep', ['requirejs-css'], function(requirejsCss) { testResultNoWindow = location.href; window.testResultWithWindow = window.location.href; });
+define('name-dep', ['module', 'preprocess/dependency'], function(module, dependency) { return { id: module.id, success: true, deps: [dependency] } });

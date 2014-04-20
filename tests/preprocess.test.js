@@ -11,11 +11,19 @@ requirejs([
 		success: function(require) {
 			var sandboxApi = this;
 
-			require(['sandbox', 'preprocess!preprocess/main', 'preprocess-css!preprocess/style'], function(sandbox, mainProcessor, styleProcessor) {
+			require([
+				'sandbox',
+				'preprocess!preprocess/main',
+				'preprocess!preprocess/module-noname-nodeps',
+				'preprocess!preprocess/module-noname-deps',
+				'preprocess!preprocess/module-name-nodeps',
+				'preprocess!preprocess/module-name-deps',
+				'preprocess-css!preprocess/style'
+			], function(sandbox, mainProcessor, amdNoNameNoDepProcessor, amdNoNameDepProcessor, amdNameNoDepProcessor, amdNameDepProcessor, styleProcessor) {
 				QUnit.start();
 
 				test('Resource preprocessing test', function() {
-					// JS Preprocessor part.
+					// Simple JS Preprocessor part.
 					var jsSourceCode,
 						clearVariables = function() {
 							delete window.testResultNoWindow;
@@ -100,6 +108,63 @@ requirejs([
 					equal(typeof(styleProcessor.prefix), 'function', 'CSS Processor must have "prefix" method');
 					equal(typeof(styleProcessor.replace), 'function', 'CSS Processor must have "replace" method');
 					equal(typeof(styleProcessor.resolve), 'function', 'CSS Processor must have "resolve" method');
+
+					// AMD JS Preprocessor part.
+					stop();
+
+					amdNoNameNoDepProcessor.resolve(function(result) {
+						start();
+
+						equal(typeof(result), 'object', 'Module resolving result should be object');
+						equal(Object.keys(result).length, 2, 'Module resolving result should have 2 properties');
+						equal(result.success, true, 'Module resolving result "success" property should be "true"');
+						equal(result.deps.length, 0, 'Module should have no dependecies');
+
+						stop();
+						amdNoNameDepProcessor.resolve(function(result) {
+							start();
+
+							equal(typeof(result), 'object', 'Module resolving result should be object');
+							equal(Object.keys(result).length, 2, 'Module resolving result should have 2 properties');
+							equal(result.success, true, 'Module resolving result "success" property should be "true"');
+							equal(result.deps.length, 1, 'Module should have 1 dependecy');
+							equal(typeof(result.deps[0]), 'object', 'Module dependecy should be object');
+							equal(result.deps[0].hello, 'world', 'Module dependecy "hello" property should be "world"');
+
+							stop();
+
+							amdNameNoDepProcessor.resolve(function(result) {
+								start();
+
+								equal(typeof(result), 'object', 'Module resolving result should be object');
+								equal(Object.keys(result).length, 2, 'Module resolving result should have 2 properties');
+								equal(result.success, true, 'Module resolving result "success" property should be "true"');
+								equal(result.deps.length, 0, 'Module should have no dependecies');
+
+								stop();
+
+								amdNameDepProcessor.resolve(function(result) {
+									start();
+
+									equal(typeof(result), 'object', 'Module resolving result should be object');
+									equal(Object.keys(result).length, 3, 'Module resolving result should have 3 properties');
+									equal(result.id, 'name-dep', 'Module name should be resolved as "name-dep"');
+									equal(result.success, true, 'Module resolving result "success" property should be "true"');
+									equal(result.deps.length, 1, 'Module should have 1 dependecy');
+									equal(typeof(result.deps[0]), 'object', 'Module dependecy should be object');
+									equal(result.deps[0].hello, 'world', 'Module dependecy "hello" property should be "world"');
+
+									stop();
+
+									require([result.id], function(module) {
+										start();
+
+										equal(module, result, 'Module resolving object should be equal');
+									});
+								});
+							});
+						});
+					});
 				});
 			});
 		}

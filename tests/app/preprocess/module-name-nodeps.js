@@ -1,1 +1,1 @@
-define('name-nodep', function() { testResultNoWindow = location.href; window.testResultWithWindow = window.location.href; });
+define('name-nodep', function() { return { success: true, deps: arguments } });
