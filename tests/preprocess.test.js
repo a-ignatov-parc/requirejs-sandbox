@@ -25,6 +25,7 @@ requirejs([
 				test('Resource preprocessing test', function() {
 					// Simple JS Preprocessor part.
 					var jsSourceCode,
+						cssSourceCode,
 						clearVariables = function() {
 							delete window.testResultNoWindow;
 							delete window.testResultWithWindow;
@@ -33,7 +34,15 @@ requirejs([
 							delete sandbox.sandboxApi.windowProxy.testResultNoWindow;
 							delete sandbox.sandboxApi.windowProxy.testResultWithWindow;
 							mainProcessor._responseSourceCache[mainProcessor.id] = jsSourceCode;
-						};
+						},
+						setCssSourceCode = function(sourceCode) {
+							return styleProcessor._responseSourceCache[styleProcessor.id] = sourceCode;
+						},
+						getCssSourceCode = function() {
+							return styleProcessor._responseSourceCache[styleProcessor.id];
+						},
+						testQueue = [],
+						testStylesString = '{ position: relative; }';
 
 					equal(typeof(mainProcessor), 'object', 'Returned processor object is not object');
 					equal(Object.keys(mainProcessor).length, 2, 'Processor properties has wrong count');
@@ -105,9 +114,64 @@ requirejs([
 					equal(styleProcessor._responseSourceCache.length > 0, true, 'Processor\'s source cache is empty.');
 					equal(typeof(styleProcessor._responseSourceCache[styleProcessor.id]), 'string', 'Processor source code must be string');
 
+					cssSourceCode = styleProcessor._responseSourceCache[styleProcessor.id];
+
 					equal(typeof(styleProcessor.prefix), 'function', 'CSS Processor must have "prefix" method');
 					equal(typeof(styleProcessor.replace), 'function', 'CSS Processor must have "replace" method');
 					equal(typeof(styleProcessor.resolve), 'function', 'CSS Processor must have "resolve" method');
+
+					equal(getCssSourceCode(), 'body { position: relative; }', 'Source code has wrong value');
+
+					styleProcessor.replace('body', 'html');
+
+					equal(getCssSourceCode(), 'html { position: relative; }', 'Source code has wrong value');
+
+					styleProcessor.prefix('.container');
+
+					equal(getCssSourceCode(), '.container { position: relative; }', 'Source code has wrong value');
+
+					testQueue.push({
+						source: 'html, body {$1}',
+						result: '.container, .container {$1}'
+					}, {
+						source: 'h1, article, #id-name,.button, [href] {$1}',
+						result: '.container h1, .container article, .container #id-name,.container .button, .container [href] {$1}'
+					}, {
+						source: '@import url(https://fonts.googleapis.com/css?family=Electrolize);',
+						result: '@import url(https://fonts.googleapis.com/css?family=Electrolize);'
+					}, {
+						source: 'svg:not(:root) {$1}',
+						result: '.container svg:not(:root) {$1}'
+					}, {
+						source: '::-moz-selection {$1}',
+						result: '.container ::-moz-selection {$1}'
+					}, {
+						source: 'button,input[type="button"],input[type="reset"],input[type="submit"]{$1}',
+						result: '.container button,.container input[type="button"],.container input[type="reset"],.container input[type="submit"]{$1}'
+					}, {
+						source: 'button::-moz-focus-inner, input::-moz-focus-inner{$1}',
+						result: '.container button::-moz-focus-inner, .container input::-moz-focus-inner{$1}'
+					}, {
+						source: 'header .external .auth a {$1}',
+						result: '.container header .external .auth a {$1}'
+					});
+
+					for (var i = 0, length = testQueue.length; i < length; i++) {
+						setCssSourceCode(testQueue[i].source.replace('{$1}', testStylesString));
+						styleProcessor.prefix('.container');
+
+						equal(getCssSourceCode(), testQueue[i].result.replace('{$1}', testStylesString), 'Source code has wrong value');
+					}
+
+					styleProcessor.resolve(function(style) {
+						equal(typeof(style), 'object', 'Returned module object is not object');
+						equal(Object.keys(style).length, 3, 'Returned module object has wrong properties count');
+						equal(typeof(style.cssNode), 'object', 'Link to style DOM element is not object');
+						ok(style.cssNode instanceof HTMLElement, 'Link to style DOM element is not DOM node');
+						notEqual(style.cssNode.parentNode, null, 'Link node should be placed in DOM');
+						equal(typeof(style.append), 'function', 'Returned module does not have "append" method');
+						equal(typeof(style.remove), 'function', 'Returned module does not have "remove" method');
+					});
 
 					// AMD JS Preprocessor part.
 					stop();

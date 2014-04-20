@@ -3,7 +3,7 @@ define([
 ], function(console) {
 	// Регулярное выражение для поиска селекторов и разбивание на группы для последующего 
 	// проставления префикса.
-	var selectorsRegex = /(^|\s+|}\s*)([@*.#\w\d\s-:\[\]\(\)="']+)(,|{[^}]+})/g,
+	var selectorsRegex = /(^|}\s*|\s*)([@*.#\w\d\s-:\[\]\(\)="']+)(,|{[^}]+})/g,
 		commentsRegex = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g; // http://ostermiller.org/findcomment.html
 
 	return {
