@@ -60,7 +60,7 @@ define([
 			};
 
 			this.createSandbox(function(sandbox) {
-				var windowProxy;
+				var windowProxy = {};
 
 				console.debug('Sandbox with name "' + this.options.name + '" is created!', sandbox, sandbox.document.body);
 
@@ -71,22 +71,26 @@ define([
 					}
 				}
 
-				// Создаем прокси объект, который собирает в себе все публичные свойства песочницы
-				// с переопределением ключевых объектов, таких как document, location и метод 
-				// getComputedStyle на случай если кто-то любит работать со стилями DOM объектов 
-				// на прямую.
-				windowProxy = utils.extend({}, sandbox, {
-					location: window.location,
-					document: window.document,
-					getComputedStyle: window.getComputedStyle
-				});
-				windowProxy.window = windowProxy;
-
 				// Добавляем публичное api в песочницу.
 				this.sandbox.sandboxApi = utils.extend({}, this.api, {
 					parentWindow: window,
-					windowProxy: windowProxy
+					windowProxy: windowProxy,
+					updateWindowProxy: function() {
+						// Создаем прокси объект, который собирает в себе все публичные свойства песочницы
+						// с переопределением ключевых объектов, таких как document, location и метод 
+						// getComputedStyle на случай если кто-то любит работать со стилями DOM объектов 
+						// на прямую.
+						utils.extend(windowProxy, sandbox, {
+							window: windowProxy,
+							location: window.location,
+							document: window.document,
+							getComputedStyle: window.getComputedStyle
+						});
+					}
 				});
+
+				// Так как изначально `windowProxy` пустой, то мы запускаем метод синхронизации.
+				this.sandbox.sandboxApi.updateWindowProxy();
 
 				// Резолвим ссылку на require.js для песочницы.
 				requireResolver.resolve(

@@ -3,6 +3,7 @@ define([
 ], function(console) {
 	return {
 		Processor: null,
+
 		loadHandler: function(name, onload) {
 			var Processor = this.Processor;
 
@@ -24,6 +25,7 @@ define([
 				}
 			};
 		},
+
 		errorHandler: function(name, onload) {
 			var Processor = this.Processor;
 
@@ -32,9 +34,11 @@ define([
 				onload(new Processor(5));
 			};
 		},
+
 		checkXMLHttpRequestSupport: function() {
 			return typeof(XMLHttpRequest) === 'function' || typeof(XMLHttpRequest) === 'object';
 		},
+
 		createAjaxLoader: function(name, req, onload, extension) {
 			var request = new XMLHttpRequest();
 
@@ -47,6 +51,7 @@ define([
 				}
 			};
 		},
+
 		createDefaultLoader: function(name, req, onload) {
 			var Processor = this.Processor;
 

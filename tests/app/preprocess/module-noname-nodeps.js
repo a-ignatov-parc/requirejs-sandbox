@@ -1,0 +1,1 @@
+define(function() { testResultNoWindow = location.href; window.testResultWithWindow = window.location.href; });

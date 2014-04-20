@@ -2,7 +2,8 @@ define([
 	'logger/logger',
 	'helpers/utils'
 ], function(console, utils) {
-	var moduleCheckRegex = /^\s*define\((['"][^'"]+['"])?,?\s*(?:\[([^\]]+)\])?,?\s*(function[^]+)\);*\s*$/;
+	var sourceCache = [],
+		moduleCheckRegex = /^\s*define\((['"][^'"]+['"])?,?\s*(?:\[([^\]]+)\])?,?\s*(function[^]+)\);*\s*$/;
 
 	return function(context) {
 		var target = context || window,
@@ -44,6 +45,14 @@ define([
 						status: success || 6
 					};
 				}
+			},
+			updateWindowProxy = function() {
+				// Так как после выполнения скриптов в глобальный скоуп могли добавится какие-то 
+				// переменные, то мы запускаем механизм синхронизации `windowProxy` с объектом 
+				// `window` песочницы.
+				if (target.sandboxApi && typeof(target.sandboxApi.updateWindowProxy) === 'function') {
+					target.sandboxApi.updateWindowProxy();
+				}
 			};
 
 		Processor.extend = function() {
@@ -53,13 +62,15 @@ define([
 		};
 
 		Processor.prototype = {
-			_responseSourceCache: [],
+			_responseSourceCache: sourceCache,
+
 			replace: function(pattern, replace) {
 				console.debug('[replace] Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
 				this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(pattern, replace);
 				console.debug('[replace] Executing result: ', this._responseSourceCache[this.id]);
 				return this;
 			},
+
 			resolve: function(callback) {
 				var sourceCode = this._responseSourceCache[this.id],
 					moduleParts = moduleCheckRegex.exec(sourceCode),
@@ -94,6 +105,9 @@ define([
 								console.error(e);
 							}
 
+							// Синхронизируем объекты.
+							updateWindowProxy();
+
 							if (typeof(callback) === 'function') {
 								callback(resolvingResult);
 							}
@@ -104,6 +118,9 @@ define([
 						} catch(e) {
 							console.error(e);
 						}
+
+						// Синхронизируем объекты.
+						updateWindowProxy();
 
 						if (typeof(callback) === 'function') {
 							callback(resolvingResult);
@@ -116,6 +133,9 @@ define([
 					} catch(e) {
 						console.error(e);
 					}
+
+					// Синхронизируем объекты.
+					updateWindowProxy();
 
 					if (typeof(callback) === 'function') {
 						callback(resolvingResult);

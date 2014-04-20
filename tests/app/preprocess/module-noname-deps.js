@@ -1,0 +1,1 @@
+define(['requirejs-css'], function(requirejsCss) { testResultNoWindow = location.href; window.testResultWithWindow = window.location.href; });
