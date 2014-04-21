@@ -42,7 +42,9 @@ requirejs([
 							return styleProcessor._responseSourceCache[styleProcessor.id];
 						},
 						testQueue = [],
-						testStylesString = '{ position: relative; }';
+						testStylesString = '{ position: relative; }',
+						amdNameNoDepResult,
+						amdNameDepResult;
 
 					equal(typeof(mainProcessor), 'object', 'Returned processor object is not object');
 					equal(Object.keys(mainProcessor).length, 2, 'Processor properties has wrong count');
@@ -199,6 +201,7 @@ requirejs([
 
 							amdNameNoDepProcessor.resolve(function(result) {
 								start();
+								amdNameNoDepResult = result;
 
 								equal(typeof(result), 'object', 'Module resolving result should be object');
 								equal(Object.keys(result).length, 2, 'Module resolving result should have 2 properties');
@@ -209,6 +212,7 @@ requirejs([
 
 								amdNameDepProcessor.resolve(function(result) {
 									start();
+									amdNameDepResult = result;
 
 									equal(typeof(result), 'object', 'Module resolving result should be object');
 									equal(Object.keys(result).length, 3, 'Module resolving result should have 3 properties');
@@ -220,10 +224,11 @@ requirejs([
 
 									stop();
 
-									require([result.id], function(module) {
+									require(['name-dep', 'name-nodep'], function(nameDep, nameNoDep) {
 										start();
 
-										equal(module, result, 'Module resolving object should be equal');
+										equal(nameDep, amdNameDepResult, 'Module resolving object should be equal');
+										equal(nameNoDep, amdNameNoDepResult, 'Module resolving object should be equal');
 									});
 								});
 							});
