@@ -133,36 +133,48 @@ requirejs([
 					equal(getCssSourceCode(), '.container { position: relative; }', 'Source code has wrong value');
 
 					testQueue.push({
-						source: 'html, body {$1}',
-						result: '.container, .container {$1}'
+						source: 'html, body {styles}',
+						result: '.container, .container {styles}'
 					}, {
-						source: 'h1, article, #id-name,.button, [href] {$1}',
-						result: '.container h1, .container article, .container #id-name,.container .button, .container [href] {$1}'
+						source: 'h1, article, #id-name,.button, [href] {styles}',
+						result: '.container h1, .container article, .container #id-name,.container .button, .container [href] {styles}'
 					}, {
 						source: '@import url(https://fonts.googleapis.com/css?family=Electrolize);',
 						result: '@import url(https://fonts.googleapis.com/css?family=Electrolize);'
 					}, {
-						source: 'svg:not(:root) {$1}',
-						result: '.container svg:not(:root) {$1}'
+						source: 'svg:not(:root) {styles}',
+						result: '.container svg:not(:root) {styles}'
 					}, {
-						source: '::-moz-selection {$1}',
-						result: '.container ::-moz-selection {$1}'
+						source: '::-moz-selection {styles}::selection{styles}',
+						result: '.container ::-moz-selection {styles}.container ::selection{styles}'
 					}, {
-						source: 'button,input[type="button"],input[type="reset"],input[type="submit"]{$1}',
-						result: '.container button,.container input[type="button"],.container input[type="reset"],.container input[type="submit"]{$1}'
+						source: 'button,input[type="button"],input[type="reset"],input[type="submit"]{styles}',
+						result: '.container button,.container input[type="button"],.container input[type="reset"],.container input[type="submit"]{styles}'
 					}, {
-						source: 'button::-moz-focus-inner, input::-moz-focus-inner{$1}',
-						result: '.container button::-moz-focus-inner, .container input::-moz-focus-inner{$1}'
+						source: 'button::-moz-focus-inner, input::-moz-focus-inner{styles}',
+						result: '.container button::-moz-focus-inner, .container input::-moz-focus-inner{styles}'
 					}, {
-						source: 'header .external .auth a {$1}',
-						result: '.container header .external .auth a {$1}'
+						source: 'header .external .auth a {styles}',
+						result: '.container header .external .auth a {styles}'
+					}, {
+						source: 'div.className {styles} td#some-id {styles}',
+						result: '.container div.className {styles} .container td#some-id {styles}'
+					}, {
+						source: '@font-face{font-family:\'Planetside2\';src:url(\'/styles/fonts/planetside2-webfont.eot\');src:url(\'/styles/fonts/planetside2-webfont.eot&#iefix\')format(\'embedded-opentype\'),url(\'/styles/fonts/planetside2-webfont.woff\')format(\'woff\'),url(\'/styles/fonts/planetside2-webfont.ttf\')format(\'truetype\'),url(\'/styles/fonts/planetside2-webfont.svg#webfont\')format(\'svg\');}',
+						result: '@font-face{font-family:\'Planetside2\';src:url(\'/styles/fonts/planetside2-webfont.eot\');src:url(\'/styles/fonts/planetside2-webfont.eot&#iefix\')format(\'embedded-opentype\'),url(\'/styles/fonts/planetside2-webfont.woff\')format(\'woff\'),url(\'/styles/fonts/planetside2-webfont.ttf\')format(\'truetype\'),url(\'/styles/fonts/planetside2-webfont.svg#webfont\')format(\'svg\');}'
+					}, {
+						source: 'header .auth #loginLink:hover #bgHighlight{styles}',
+						result: '.container header .auth #loginLink:hover #bgHighlight{styles}'
+					}, {
+						source: 'header #myAcctDropdown li, header #loginDropdown li{styles}',
+						result: '.container header #myAcctDropdown li, .container header #loginDropdown li{styles}'
 					});
 
 					for (var i = 0, length = testQueue.length; i < length; i++) {
-						setCssSourceCode(testQueue[i].source.replace('{$1}', testStylesString));
+						setCssSourceCode(testQueue[i].source.replace('{styles}', testStylesString));
 						styleProcessor.prefix('.container');
 
-						equal(getCssSourceCode(), testQueue[i].result.replace('{$1}', testStylesString), 'Source code has wrong value');
+						equal(getCssSourceCode(), testQueue[i].result.replace('{styles}', testStylesString), 'Source code has wrong value');
 					}
 
 					styleProcessor.resolve(function(style) {
