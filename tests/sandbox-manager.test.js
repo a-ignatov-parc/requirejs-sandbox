@@ -7,7 +7,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		equal(typeof(requrejsSandbox.get), 'function', 'get method is undefined');
 		equal(typeof(requrejsSandbox.set), 'function', 'set method is undefined');
 		equal(typeof(requrejsSandbox.destroy), 'function', 'destroy method is undefined');
-		equal(typeof(requrejsSandbox._getSandboxConstructor), 'function', '_getSandboxConstructor private method is undefined');
+		equal(typeof(requrejsSandbox._getSandboxInternalInterface), 'function', '_getSandboxInternalInterface private method is undefined');
 	});
 
 	test('Creating sandbox with name: Test', function() {

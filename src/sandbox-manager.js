@@ -434,7 +434,7 @@ define([
 	console.setNamespace('requirejs-sandbox');
 
 	return {
-		_getSandboxConstructor: function() {
+		_getSandboxInternalInterface: function() {
 			return Sandbox.prototype;
 		},
 

@@ -40,15 +40,15 @@ The module has a public api:
 
 ###.get( name )
 
+> Returns sandbox instance with the requested name if it was created. Otherwise returns `undefined`
+
 * **name** *Type: String*
 	
 	> Name of the early created sandbox.
 
----
-
-Returns sandbox instance with the requested name if it was created. Otherwise returns `undefined`
-
 ###.set( name, params )
+
+> Create and returns sandbox with the specified name and params.
 
 * **name** *Type: String*
 	
@@ -257,19 +257,69 @@ Returns sandbox instance with the requested name if it was created. Otherwise re
 
 		`this` will be an api object same as in `success` handler.
 
----
-
-Create and returns sandbox with the specified name and params.
-
 ###.destroy( name )
+
+> Destroys the sandbox instance and frees all used resources.
 
 * **name** *Type: String*
 	
 	> Name of the early created sandbox to be destroyed.
-	
----
 
-Destroys the sandbox instance and frees all used resources.
+# Built-in modules
+
+There are list of built-in modules that you can use in developing widgets. This modules available only in sanbox's require.js
+
+1. `sandbox` – return link to sandbox's `window` object.
+
+	```javascript
+	sandbox.define('someModule', ['sandbox'], function(sandbox) {
+		alert(sandbox.jQuery)
+	});
+	```
+
+# Plugins
+
+There are list of built-in and plugable plugins for [require.js](http://requirejs.org/) that are available in sandbox.
+
+> [Here](http://requirejs.org/docs/plugins.html) you can find more information about how plugins work in require.js.
+
+## Built-in plugins
+
+Built-in plugins are avalable only in sandbox [require.js](http://requirejs.org/) instance.
+
+1. `preprocess` - Plugin that downloads js module or script and return additional api to preprocess source code before executing. This plugin downloads files via XMLHttpRequest and request CORS to be available for cross-domain downloads or plugin will fail to default download mechanism via `script` tag.
+	
+	`preprocess` plugin will return object with next properties and methods:
+	
+	* **id** *Type: Number* – Unique id across all processed scripts.
+
+	* **status** *Type: Number* – Status number. Can be in range from 0 to 6.
+		* `0` – File was loaded successful and preprocessor was created correctly.
+		* `1` – Preprocessor was created correctly but requested resorce was not loaded.
+		* `2` – CORS is not supported. Fallback to default loader. No preprocessing available.
+		* `3` – Requested files was not found. 404 response status.
+		* `4` – Requested file was loaded with unsupported response status.
+		* `5` – There was error on file download.
+		* `6` – Unknown error.
+
+	* **replace( pattern, replacement )** *Type: Function* – Method that allows replacement of any part of source code. Pattern can be string and regexp. This method is chainable.
+
+	* **resolve( [callback] )** *Type: Function* – Method that resolve and execute processed source code. Can accept callback function as argument. This method is chainable.
+
+	* **autoWrap()** *Type: Function* – Method that wraps source code in special construction that helps fixing problems with global and local variables and accessing parent `window` properties such as:
+		* `window`
+		* `location`
+		* `document`
+		* `getComputedStyle`
+
+		This method is chainable.
+	
+## Plugable plugins
+
+Plugable plugins placed in external files so you can use them only when you need them.
+
+1. `css` – 
+1. `preprocess-css` – 
 
 # How to build your own requirejs-sandbox
 
