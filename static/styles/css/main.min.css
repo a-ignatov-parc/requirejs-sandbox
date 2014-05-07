@@ -1,0 +1,16 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-family:inherit;font-size:100%;vertical-align:baseline}
+body{line-height:1;color:#000;background:#fff}
+ol,ul{list-style:none}
+table{border-collapse:separate;border-spacing:0;vertical-align:middle}
+caption,th,td{text-align:left;font-weight:normal;vertical-align:middle}
+a img{border:none}
+html{font-size:100.01%}
+body{font:.9375em Arial,Helvetica,sans-serif;color:#000}
+.b-content{font-size:12px;padding:10px}
+.b-jquery{display:block;}
+.b-jquery-block{line-height:1.666em;-webkit-border-radius:5px;border-radius:5px;border:1px #ccc solid;padding:10px;margin:2px;display:inline-block;vertical-align:top;}
+.b-jquery-block-title{margin-bottom:10px}
+.b-code{font:12px Consolas,"Liberation Mono",Courier,monospace;margin:0 2px;padding:1px 5px;border:1px solid #eaeaea;background-color:#f8f8f8;-webkit-border-radius:.25em;border-radius:.25em}
+.b-label{display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;-webkit-border-radius:.25em;border-radius:.25em;}
+.b-label-success{background-color:#5cb85c}
+.b-label-error{background-color:#d9534f}

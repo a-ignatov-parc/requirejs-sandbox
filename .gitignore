@@ -3,8 +3,5 @@
 *.DS_Store
 ._*.*
 
-#Project temp data
-static/styles/css/
-
 #grunt.js packages
 node_modules/
