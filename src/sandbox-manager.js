@@ -228,7 +228,32 @@ define([
 
 		createLoader: function(target) {
 			var loadHandler = function(script, sandbox) {
-					var patchList = this.options.patch;
+					var patchList = this.options.patch,
+						patchModule = function(module, patch) {
+							patch.enable(window, sandbox, module);
+							console.debug('Patch for module "' + patch.name + '" applied correctly');
+						},
+						success = utils.bind(function() {
+							console.debug('Executing module callback');
+
+							// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
+							// качестве аргументов ссылку на функцию `require` их песочницы.
+							this.options.success.call(this.api, this.api.require, this.api.define);
+						}, this),
+						resolvePatch = function(patch) {
+							for (var i = 0, length = patchList.length; i < length; i++) {
+								if (typeof(patchList[i]) === 'string' && patch.name === patchList[i]) {
+									patchList[i] = patch;
+									console.debug('Patch "' + patch.name + '" is resolved.');
+									break;
+								}
+							}
+
+							if (!--unresolvedPatchesCount) {
+								success();
+							}
+						},
+						unresolvedPatchesCount = 0;
 
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = this.sandbox.sandboxApi.require = sandbox.require;
@@ -252,95 +277,6 @@ define([
 						console.error('Can not gain access to require.js inside sandbox');
 						return;
 					}
-
-					console.debug('require.js has loaded! Patching "load" method...');
-
-					// Переопределяем загрузчик чтоб можно было легко применять патчи.
-					this.api.require.load = (function(load) {
-						return function(context) {
-							if (!context.completeLoad.isOverided) {
-								context.completeLoad = (function(completeLoad) {
-									return function(moduleName) {
-										var fnContext = this,
-											fnArgs = arguments,
-											patchIsResolved,
-											patchName,
-											registry,
-											module,
-											patchModule = function(module, patch) {
-												patch.enable(window, sandbox, module);
-												console.debug('Patch for module "' + moduleName + '" applied correctly');
-											},
-											applyPatch = function(patch) {
-												console.debug('Found patch for loaded module: "' + moduleName + '"! Applying...');
-
-												// Если патч для данного модуля существует, то инициализируем его.
-												if (patch) {
-													try {
-														registry = fnContext.registry[moduleName];
-														module = registry && registry.shim && registry.shim.exportsFn() || sandbox[patch.shimName];
-
-														if (module == null) {
-															if (registry && registry.events.defined && typeof(registry.events.defined.push) === 'function') {
-																registry.events.defined.push(function(module) {
-																	patchModule(module, patch);
-																});
-
-																// Резолвим загрузку модуля.
-																completeLoad.apply(fnContext, fnArgs);
-															} else {
-																throw 'Module registry does not have defined event';
-															}
-														} else {
-															patchModule(module, patch);
-
-															// Резолвим загрузку модуля.
-															completeLoad.apply(fnContext, fnArgs);
-														}
-													} catch(e) {
-														console.debug('Patch for module "' + moduleName + '" did not applied correctly! Look into debug info for more details');
-														console.error(moduleName, e);
-													}
-												}
-											};
-
-										// Проверяем имя модуля и делаем его патч если необходимо.
-										for (var i = 0, length = patchList.length; i < length; i++) {
-											if (typeof(patchList[i]) === 'string') {
-												patchName = patchList[i];
-												patchIsResolved = false;
-											} else if (typeof(patchList[i]) === 'object' && typeof(patchList[i].enable) === 'function') {
-												patchName = patchList[i].name;
-												patchIsResolved = true;
-											} else {
-												patchName = false;
-												patchIsResolved = false;
-											}
-
-											if (patchName == moduleName) {
-												if (patchIsResolved) {
-													applyPatch(patchList[i]);
-												} else {
-													window.require([['requirejs-sandbox', 'patches', moduleName].join('/')], applyPatch);
-												}
-												return;
-											}
-										}
-										return completeLoad.apply(fnContext, fnArgs);
-									};
-								})(context.completeLoad);
-
-								// Высталяем флаг о том что мы переопределили хендлер и делать это 
-								// повторно не нужно.
-								context.completeLoad.isOverided = true;
-							}
-
-							// Запускаем загрузку модулей.
-							load.apply(this, arguments);
-						};
-					})(this.api.require.load);
-
-					console.debug('require.js "load" method has been patched! Configuring...');
 
 					// Конфигурируем загрузчик на основе переданных параметров.
 					this.api.require.config(this.options.requireConfig);
@@ -377,11 +313,49 @@ define([
 						return sandbox;
 					});
 
-					console.debug('Executing module callback');
+					console.debug('Creating handler for amd modules load');
 
-					// Если в модуль был передана функция-обработчик, то вызываем ее, передавая в 
-					// качестве аргументов ссылку на функцию `require` их песочницы.
-					this.options.success.call(this.api, this.api.require, this.api.define);
+					// Для того чтоб пропатчить модули до того как они будут зарезолвлены 
+					// пользователю создаем обработчик который будет отлавливать момент 
+					// загрузки + резолвинга и отслеживать нужные модули.
+					this.api.require.onResourceLoad = function(context, map) {
+						var module = context.defined[map.id],
+							moduleName = map.name,
+							patch;
+
+						// Проверяем имя модуля и делаем его патч если необходимо.
+						for (var i = 0, length = patchList.length; i < length; i++) {
+							patch = patchList[i];
+
+							if (patch.name == moduleName) {
+								patchModule(module || sandbox[patch.shimName], patchList[i]);
+							}
+						}
+					};
+
+					console.debug('Checking for unresolved patches');
+
+					// Так как при резолвинге нельзя делать отложенный патч модуля нужно 
+					// разрезолвить все модули до окончательной инициализации песочницы.
+					for (i = 0, length = patchList.length; i < length; i++) {
+						if (typeof(patchList[i]) === 'string') {
+							var patchName = ['requirejs-sandbox', 'patches', patchList[i]].join('/');
+
+							if (window.require.defined(patchName)) {
+								console.debug('Patch "' + patchName + '" is resolved in parent page. Linking with patch list...');
+								patchList[i] = window.require(patchName);
+							} else {
+								unresolvedPatchesCount++;
+								console.debug('Patch "' + patchName + '" is unresolved. Resolving...');
+								window.require([patchName], resolvePatch);
+							}
+						}
+					}
+
+					// Если нет не зарезолвленных патчей то окончательно инициализируем песочницу.
+					if (!unresolvedPatchesCount) {
+						success();
+					}
 				};
 
 			// Вставляем с песочницу скрипт reuqire.js.
