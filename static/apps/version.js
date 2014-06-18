@@ -3,7 +3,7 @@ requirejs(['requirejs-sandbox', 'requirejs-css', 'requirejs-sandbox/patches/jque
 		requireConfig: {
 			paths: {
 				'css': '../../static/styles/css',
-				'jquery': '../../../bower_components/jquery/jquery'
+				'jquery': '../../bower_components/jquery/jquery'
 			}
 		},
 		patch: ['jquery'],
