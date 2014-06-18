@@ -1,10 +1,9 @@
 define([
 	'logger/logger',
 	'helpers/utils',
-	'helpers/patch',
 	'helpers/require',
 	'helpers/preprocess/plugin'
-], function(console, utils, patchAbstract, requireResolver, PreprocessPlugin) {
+], function(console, utils, requireResolver, PreprocessPlugin) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
