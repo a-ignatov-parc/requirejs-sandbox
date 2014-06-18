@@ -71,11 +71,11 @@ var fileSystem = require('fs'),
 		watch: {
 			styles: {
 				files: pkg.stylusPath + '**/*.styl',
-				tasks: ['stylus:dev']
+				tasks: ['stylus']
 			},
 			js: {
 				files: pkg.srcPath + '**/*.js',
-				tasks: ['requirejs:dev']
+				tasks: ['requirejs']
 			}
 		},
 		stylus: {
@@ -91,6 +91,13 @@ var fileSystem = require('fs'),
 			prod: {
 				src: pkg.stylusPath + 'main.styl',
 				dest: pkg.cssPath + 'main.min.css',
+				options: {
+					urlfunc: 'embedurl'
+				}
+			},
+			label: {
+				src: pkg.stylusPath + 'label.styl',
+				dest: pkg.cssPath + 'label.css',
 				options: {
 					urlfunc: 'embedurl'
 				}
@@ -243,6 +250,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('tests', 'qunit');
 	grunt.registerTask('bower', ['requirejs', 'uglify', 'usebanner']);
 	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'usebanner', 'qunit']);
-	grunt.registerTask('build', ['stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner']);
-	grunt.registerTask('compile', ['jshint', 'stylus:dev', 'stylus:prod', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
+	grunt.registerTask('build', ['stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner']);
+	grunt.registerTask('compile', ['jshint', 'stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
 };
