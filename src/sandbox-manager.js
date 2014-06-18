@@ -249,7 +249,7 @@ define([
 								}
 							}
 
-							if (--unresolvedPatchesCount) {
+							if (!--unresolvedPatchesCount) {
 								success();
 							}
 						},
@@ -320,12 +320,15 @@ define([
 					// загрузки + резолвинга и отслеживать нужные модули.
 					this.api.require.onResourceLoad = function(context, map) {
 						var module = context.defined[map.id],
-							moduleName = map.name;
+							moduleName = map.name,
+							patch;
 
 						// Проверяем имя модуля и делаем его патч если необходимо.
 						for (var i = 0, length = patchList.length; i < length; i++) {
-							if (patchList[i].name == moduleName) {
-								patchModule(module, patchList[i]);
+							patch = patchList[i];
+
+							if (patch.name == moduleName) {
+								patchModule(module || sandbox[patch.shimName], patchList[i]);
 							}
 						}
 					};
