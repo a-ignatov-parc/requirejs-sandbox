@@ -153,20 +153,26 @@ html {
 body {
   font: 0.9375em Arial, Helvetica, sans-serif;
   color: #000;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -ms-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000315}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000321}}
 .b-content {
   font-size: 12px;
   padding: 10px;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000320}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000326}}
 .b-jquery {
   display: block;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000323}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000329}}
 .b-jquery-block {
   line-height: 1.666em;
   -webkit-border-radius: 5px;
@@ -178,12 +184,12 @@ body {
   vertical-align: top;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000332}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000338}}
 .b-jquery-block-title {
   margin-bottom: 10px;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000338}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000344}}
 .b-code {
   font: 12px Consolas, "Liberation Mono", Courier, monospace;
   margin: 0 2px;
@@ -194,27 +200,43 @@ body {
   border-radius: 0.25em;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000347}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/label\.styl}line{font-family:\0000329}}
+
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/label\.styl}line{font-family:\000031}}
 .b-label {
   display: inline;
   padding: 0.2em 0.6em 0.3em;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 75%;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.1;
   color: #fff;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
   -webkit-border-radius: 0.25em;
   border-radius: 0.25em;
+  background-color: #999;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000359}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/label\.styl}line{font-family:\0000315}}
 .b-label-success {
   background-color: #5cb85c;
 }
 
-@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/main\.styl}line{font-family:\0000363}}
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/label\.styl}line{font-family:\0000319}}
 .b-label-error {
   background-color: #d9534f;
+}
+
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/label\.styl}line{font-family:\0000323}}
+.b-label-info {
+  background-color: #428bca;
+}
+
+@media -stylus-debug-info{filename{font-family:file\:\/\/\/Users\/antonignatov\/Sites\/requirejs-sandbox\/static\/styles\/stylus\/label\.styl}line{font-family:\0000327}}
+.b-label__version {
+  top: 10px;
+  right: 10px;
+  position: absolute;
 }
