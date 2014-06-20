@@ -142,6 +142,9 @@ requirejs([
 						source: '@import url(https://fonts.googleapis.com/css?family=Electrolize);',
 						result: '@import url(https://fonts.googleapis.com/css?family=Electrolize);'
 					}, {
+						source: '@import url(https://fonts.googleapis.com/css?family=Exo:400,500,600,700);',
+						result: '@import url(https://fonts.googleapis.com/css?family=Exo:400,500,600,700);'
+					}, {
 						source: 'svg:not(:root) {styles}',
 						result: '.container svg:not(:root) {styles}'
 					}, {
