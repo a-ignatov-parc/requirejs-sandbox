@@ -171,6 +171,24 @@ requirejs([
 					}, {
 						source: 'header #myAcctDropdown li, header #loginDropdown li{styles}',
 						result: '.container header #myAcctDropdown li, .container header #loginDropdown li{styles}'
+					}, {
+						source: '@import url("fineprint.css") print;',
+						result: '@import url("fineprint.css") print;'
+					}, {
+						source: '@import url("bluish.css") projection, tv;',
+						result: '@import url("bluish.css") projection, tv;'
+					}, {
+						source: '@import \'custom.css\';',
+						result: '@import \'custom.css\';'
+					}, {
+						source: '@import url("chrome://communicator/skin/");',
+						result: '@import url("chrome://communicator/skin/");'
+					}, {
+						source: '@import "common.css" screen, projection;',
+						result: '@import "common.css" screen, projection;'
+					}, {
+						source: '@import url(\'landscape.css\') screen and (orientation:landscape);',
+						result: '@import url(\'landscape.css\') screen and (orientation:landscape);'
 					});
 
 					for (var i = 0, length = testQueue.length; i < length; i++) {
