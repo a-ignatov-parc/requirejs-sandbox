@@ -116,7 +116,7 @@ var fileSystem = require('fs'),
 				options: {
 					baseUrl: pkg.srcPath,
 					name: 'sandbox-manager',
-					include: ['helpers/patch'],
+					include: ['helpers/patch', 'helpers/processor/prefix'],
 					optimize: 'none',
 					out: pkg.buildPath + 'requirejs-sandbox.js',
 					onBuildWrite: getModulePreprocessor()
@@ -126,7 +126,7 @@ var fileSystem = require('fs'),
 				options: {
 					baseUrl: pkg.srcPath,
 					name: 'sandbox-manager',
-					include: ['helpers/patch'],
+					include: ['helpers/patch', 'helpers/processor/prefix'],
 					optimize: 'uglify2',
 					out: pkg.buildPath + 'requirejs-sandbox.min.js',
 					onBuildRead: getModulePreprocessor(true),

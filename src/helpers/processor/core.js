@@ -101,6 +101,11 @@ define([
 					console.debug('module handler: "' + moduleParts[3] + '"');
 
 					evaledCode = new target.Function('return ' + moduleParts[3]);
+					
+					// Синхронизируем объекты до компиляции скриптов, чтоб прокинуть в проксю 
+					// объекты которые появились не через препроцессоры (обычная загрузка).
+					updateWindowProxy();
+
 					try {
 						moduleResolver = evaledCode();
 					} catch(e) {
@@ -109,6 +114,9 @@ define([
 
 					if (name) {
 						target.define(name, deps, function() {
+							// Синхронизируем объекты до компиляции скриптов.
+							updateWindowProxy();
+
 							try {
 								resolvingResult = moduleResolver.apply(this, arguments);
 							} catch(e) {
@@ -128,6 +136,9 @@ define([
 						});
 					} else if (deps.length) {
 						target.require(deps, function() {
+							// Синхронизируем объекты до компиляции скриптов.
+							updateWindowProxy();
+
 							try {
 								resolvingResult = moduleResolver.apply(this, arguments);
 							} catch(e) {
@@ -142,6 +153,9 @@ define([
 							}
 						});
 					} else {
+						// Синхронизируем объекты до компиляции скриптов.
+						updateWindowProxy();
+
 						try {
 							resolvingResult = moduleResolver();
 						} catch(e) {
@@ -157,6 +171,10 @@ define([
 					}
 				} else {
 					evaledCode = new target.Function(sourceCode);
+
+					// Синхронизируем объекты до компиляции скриптов.
+					updateWindowProxy();
+
 					try {
 						resolvingResult = evaledCode();
 					} catch(e) {
