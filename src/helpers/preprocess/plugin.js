@@ -3,9 +3,8 @@ define([
 	'helpers/utils',
 	'helpers/preprocess/abstract',
 	'helpers/processor/core',
-	'helpers/processor/autowrap',
 	'helpers/processor/autofix'
-], function(console, utils, preprocessAbstract, ProcessorCore, autowrapMixin, autofixMixin) {
+], function(console, utils, preprocessAbstract, ProcessorCore, autofixMixin) {
 	console.debug('Creating plugin for loading and preprocessing resources');
 
 	return function(context) {
@@ -15,7 +14,7 @@ define([
 			});
 
 		// Расширяем базовый функционал миксинами.
-		ProcessorConstructor.extend(autowrapMixin, autofixMixin);
+		ProcessorConstructor.extend(autofixMixin);
 
 		return {
 			name: 'preprocess',

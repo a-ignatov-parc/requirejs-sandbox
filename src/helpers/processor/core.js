@@ -12,6 +12,10 @@ define([
 				// Указываем уникальный `id` препроцессора.
 				this.id = this._responseSourceCache.push(sourceCode || '') - 1;
 
+				// Записываем ссылку на `target`, на случай если он кому-то из миксинов может 
+				// понадобиться.
+				this.target = target;
+
 				// Определяем текущий статус препроцессора.
 				// Список возможных статусов:
 				// 
@@ -46,14 +50,6 @@ define([
 						status: success || 6
 					};
 				}
-			},
-			updateWindowProxy = function() {
-				// Так как после выполнения скриптов в глобальный скоуп могли добавится какие-то 
-				// переменные, то мы запускаем механизм синхронизации `windowProxy` с объектом 
-				// `window` песочницы.
-				if (target.sandboxApi && typeof(target.sandboxApi.updateWindowProxy) === 'function') {
-					target.sandboxApi.updateWindowProxy();
-				}
 			};
 
 		Processor.extend = function() {
@@ -68,7 +64,7 @@ define([
 			replace: function(pattern, replace) {
 				console.debug('[replace] Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
 				this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(pattern, replace);
-				console.debug('[replace] Executing result: ', this._responseSourceCache[this.id]);
+				console.debug('[replace] Executing result: ' + this._responseSourceCache[this.id]);
 				return this;
 			},
 
@@ -101,10 +97,6 @@ define([
 					console.debug('module handler: "' + moduleParts[3] + '"');
 
 					evaledCode = new target.Function('return ' + moduleParts[3]);
-					
-					// Синхронизируем объекты до компиляции скриптов, чтоб прокинуть в проксю 
-					// объекты которые появились не через препроцессоры (обычная загрузка).
-					updateWindowProxy();
 
 					try {
 						moduleResolver = evaledCode();
@@ -114,18 +106,11 @@ define([
 
 					if (name) {
 						target.define(name, deps, function() {
-							// Синхронизируем объекты до компиляции скриптов.
-							updateWindowProxy();
-
 							try {
 								resolvingResult = moduleResolver.apply(this, arguments);
 							} catch(e) {
 								console.error(e);
 							}
-
-							// Синхронизируем объекты.
-							updateWindowProxy();
-
 							return resolvingResult;
 						});
 
@@ -136,34 +121,22 @@ define([
 						});
 					} else if (deps.length) {
 						target.require(deps, function() {
-							// Синхронизируем объекты до компиляции скриптов.
-							updateWindowProxy();
-
 							try {
 								resolvingResult = moduleResolver.apply(this, arguments);
 							} catch(e) {
 								console.error(e);
 							}
 
-							// Синхронизируем объекты.
-							updateWindowProxy();
-
 							if (typeof(callback) === 'function') {
 								callback(resolvingResult);
 							}
 						});
 					} else {
-						// Синхронизируем объекты до компиляции скриптов.
-						updateWindowProxy();
-
 						try {
 							resolvingResult = moduleResolver();
 						} catch(e) {
 							console.error(e);
 						}
-
-						// Синхронизируем объекты.
-						updateWindowProxy();
 
 						if (typeof(callback) === 'function') {
 							callback(resolvingResult);
@@ -172,17 +145,11 @@ define([
 				} else {
 					evaledCode = new target.Function(sourceCode);
 
-					// Синхронизируем объекты до компиляции скриптов.
-					updateWindowProxy();
-
 					try {
 						resolvingResult = evaledCode();
 					} catch(e) {
 						console.error(e);
 					}
-
-					// Синхронизируем объекты.
-					updateWindowProxy();
 
 					if (typeof(callback) === 'function') {
 						callback(resolvingResult);
