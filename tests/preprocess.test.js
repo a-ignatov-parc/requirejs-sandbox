@@ -130,6 +130,9 @@ requirejs([
 						source: 'html, body {styles}',
 						result: '.container, .container {styles}'
 					}, {
+						source: ' .test {styles}',
+						result: ' .container .test {styles}'
+					}, {
 						source: 'h1, article, #id-name,.button, [href] {styles}',
 						result: '.container h1, .container article, .container #id-name,.container .button, .container [href] {styles}'
 					}, {

@@ -3,11 +3,13 @@ define([
 ], function(console) {
 	// Регулярное выражение для поиска селекторов и разбивание на группы для последующего 
 	// проставления префикса.
-	var selectorsRegex = /(^|}\s*|\s*)([@*.#\w\d\s-:\[\]\(\)="']+)(,|{[^}]+})/g,
+	var selectorsRegex = /(^\s*|}\s*|\s*)([@*.#\w\d\s-:\[\]\(\)="']+)(,|{[^}]+})/g,
 		commentsRegex = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g; // http://ostermiller.org/findcomment.html
 
 	return {
 		prefix: function(selector) {
+			var prefixRegex = new RegExp(selector + '\\s', 'g');
+
 			// Так как префикс проставляется абсолютно всему у чего имеется следующая 
 			// кострукция `aaa[, bbb] {}` для полного и правильного проставления префиксов 
 			// операция разбивается на несколько шагов:
@@ -15,14 +17,19 @@ define([
 			// 1. Удаляем коментарии из исходного кода. Для работы стилей это не важно, но сильно 
 			//    поможет избежать проблем с неправильным срабатыванием префиксера.
 			// 2. Проставляем префиксы.
-			// 3. Обрабатываем кейс когда у at-селекторов не может быть никаких префиксов. 
+			// 3. Обрабатываем кейс, когда у at-селекторов не может быть никаких префиксов. 
 			//    Более подробно об этом описано тут: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face
-			// 4. Так как считается что элемент с префикс-селектором у нас будет корневым 
+			// 4. Обрабатываем кейс, когда первая регулярка могла заменить путь 
+			//    в конструкции `url()` востанавливая его в первоначальное значение.
+			// 5. Так как считается что элемент с префикс-селектором у нас будет корневым 
 			//    элементом, то все селекторы на html и body заменяем на селектор префикса.
 			this._responseSourceCache[this.id] = this._responseSourceCache[this.id]
 				.replace(commentsRegex, '')
 				.replace(selectorsRegex, '$1' + selector + ' $2$3')
 				.replace(new RegExp(selector + '\\s(@(charset|document|font-face|import|keyframes|media|page|supports))', 'g'), '$1')
+				.replace(/url\([^)]+\)/g, function(match) {
+					return match.replace(prefixRegex, '');
+				})
 				.replace(new RegExp('(' + selector + ')\\s(html|body)', 'g'), '$1');
 
 			console.debug('[prefix] Executing result for selector "' + selector + '": ', this._responseSourceCache[this.id]);

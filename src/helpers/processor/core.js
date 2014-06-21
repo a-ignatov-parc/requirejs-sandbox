@@ -63,8 +63,11 @@ define([
 
 			replace: function(pattern, replace) {
 				console.debug('[replace] Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
+
 				this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(pattern, replace);
+
 				console.debug('[replace] Executing result: ' + this._responseSourceCache[this.id]);
+
 				return this;
 			},
 

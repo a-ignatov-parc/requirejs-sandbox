@@ -26,7 +26,9 @@ define([
 				originalSourceCode = originalSourceCode.replace('window.' + targetProp, prop);
 			}
 			this._responseSourceCache[this.id] = fixedSourceCode + originalSourceCode;
+
 			console.debug('[autoFix] Executing result: ' + this._responseSourceCache[this.id]);
+
 			return this;
 		}
 	};
