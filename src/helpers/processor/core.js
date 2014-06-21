@@ -146,16 +146,14 @@ define([
 						}
 					}
 				} else {
-					evaledCode = new target.Function(sourceCode);
+					var scriptNode = target.document.createElement('script');
 
-					try {
-						resolvingResult = evaledCode();
-					} catch(e) {
-						console.error(e);
-					}
+					scriptNode.type = 'text/javascript';
+					scriptNode.text = sourceCode;
+					target.document.getElementsByTagName('head')[0].appendChild(scriptNode);
 
 					if (typeof(callback) === 'function') {
-						callback(resolvingResult);
+						callback();
 					}
 				}
 				return this;

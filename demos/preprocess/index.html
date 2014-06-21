@@ -50,19 +50,11 @@
 									// Делаем простую замену строк для отличия от обычного кода
 									.replace('Current', 'Current page')
 
-									// Делаем замену jquery domReady на обычный return всей функции.
-									// Это позволит получить эту функцию в колбеке метода `resolve`
-									.replace('$(fu', 'return (fu')
-
 									// Делаем автоматический врапинг кода чтоб при обращении к 
 									// приватным свойствам объекта `window` он автоматически 
 									// ссылался на свойства родительского объекта `window`.
 									.autoFix()
-									.resolve(function(codeProcessedFn) {
-										// Получаем и исполняем функцию, которую мы загрузили и 
-										// отпроцессили до этого.
-										codeProcessedFn();
-
+									.resolve(function() {
 										require(['preprocess-css!styles'], function(stylesProcessor) {
 											// Резолвим процессор и вставляем стили в страницу.
 											stylesProcessor

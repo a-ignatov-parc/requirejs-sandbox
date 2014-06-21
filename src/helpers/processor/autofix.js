@@ -3,8 +3,7 @@ define([
 ], function(console) {
 	return {
 		autoFix: function(customPropList) {
-			var fixedSourceCode = ';',
-				propertyList = [
+			var propertyList = [
 					'location',
 					'document',
 					'getComputedStyle',
@@ -13,7 +12,7 @@ define([
 					'attachEvent',
 					'detachEvent'
 				].concat(customPropList || []),
-				originalSourceCode = this._responseSourceCache[this.id];
+				processedProps = {};
 
 			for (var i = 0, length = propertyList.length; i < length; i++) {
 				var targetProp = propertyList[i]
@@ -21,14 +20,15 @@ define([
 						.pop(),
 					prop = '__window_' + targetProp.toLowerCase();
 
-				fixedSourceCode += 'var ' + targetProp + ' = ' + prop + ';';
-				this.target[prop] = this.target.sandboxApi && this.target.sandboxApi.parentWindow[targetProp] || this.target[targetProp];
-				originalSourceCode = originalSourceCode.replace('window.' + targetProp, prop);
+				if (!processedProps[propertyList[i]]) {
+					processedProps[propertyList[i]] = true;
+					this.target[prop] = this.target.sandboxApi && this.target.sandboxApi.parentWindow[targetProp] || this.target[targetProp];
+					this._responseSourceCache[this.id] = this._responseSourceCache[this.id]
+						.replace(targetProp, prop)
+						.replace('window.' + targetProp, prop);
+				}
 			}
-			this._responseSourceCache[this.id] = fixedSourceCode + originalSourceCode;
-
 			console.debug('[autoFix] Executing result: ' + this._responseSourceCache[this.id]);
-
 			return this;
 		}
 	};

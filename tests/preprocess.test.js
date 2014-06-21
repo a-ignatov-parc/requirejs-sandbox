@@ -92,11 +92,6 @@ requirejs([
 					// Обнуляем прошлый результат и исходный код тестового скрипты в процессоре.
 					clearVariables();
 
-					mainProcessor.replace(/$/, 'return true;');
-					mainProcessor.resolve(function(result) {
-						equal(result, true, 'Resolving result after replacing for test script should be equal "true"');
-					});
-
 					// CSS Preprocessor part.
 					equal(typeof(styleProcessor), 'object', 'Returned processor object is not object');
 					equal(Object.keys(styleProcessor).length, 3, 'Processor properties has wrong count');
