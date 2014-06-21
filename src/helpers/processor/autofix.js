@@ -23,9 +23,7 @@ define([
 				if (!processedProps[propertyList[i]]) {
 					processedProps[propertyList[i]] = true;
 					this.target[prop] = this.target.sandboxApi && this.target.sandboxApi.parentWindow[targetProp] || this.target[targetProp];
-					this._responseSourceCache[this.id] = this._responseSourceCache[this.id]
-						.replace(targetProp, prop)
-						.replace('window.' + targetProp, prop);
+					this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(new RegExp('(\\W)' + targetProp + '(\\W)', 'g'), '$1' + prop + '$2');
 				}
 			}
 			console.debug('[autoFix] Executing result: ' + this._responseSourceCache[this.id]);
