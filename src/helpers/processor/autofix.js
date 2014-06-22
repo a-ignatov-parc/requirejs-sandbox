@@ -5,12 +5,7 @@ define([
 		autoFix: function(customPropList) {
 			var propertyList = [
 					'location',
-					'document',
-					'getComputedStyle',
-					'addEventListener',
-					'removeEventListener',
-					'attachEvent',
-					'detachEvent'
+					'document'
 				].concat(customPropList || []),
 				processedProps = {};
 
