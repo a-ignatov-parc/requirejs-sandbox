@@ -1,0 +1,1 @@
+define(['preprocess/dependency'], function() { return { success: true, deps: arguments } });

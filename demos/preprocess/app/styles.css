@@ -1,0 +1,15 @@
+.b-content-title {
+	font-weight: normal;
+}
+
+.b-content-list {
+	font-style: italic;
+}
+
+.b-content-list li:first-child {
+	font-style: normal;
+}
+
+.b-content-list li:last-child {
+	font-weight: bold;
+}

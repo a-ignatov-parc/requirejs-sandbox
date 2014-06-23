@@ -1,7 +1,7 @@
 {
 	"name": "requirejs-sandbox",
 	"description": "Sandbox manager for require.js allows user to run multiple apps without scope intersection issues",
-	"version": "0.4.2-88",
+	"version": "0.5.0-8",
 	"author": {
 		"name": "Anton Ignatov",
 		"web": "https://github.com/a-ignatov-parc"
@@ -33,25 +33,27 @@
 		"install": "bower install"
 	},
 	"dependencies": {
-		"grunt-banner": "0.2.x",
-		"grunt-contrib-uglify": "0.2.x",
-		"grunt-contrib-requirejs": "0.4.x"
+		"grunt-banner": "~0.2.0",
+		"grunt-contrib-uglify": "~0.4.0",
+		"grunt-contrib-requirejs": "~0.4.0"
 	},
 	"devDependencies": {
-		"grunt": "0.4.x",
-		"bower": "1.2.x",
-		"grunt-cli": "0.1.x",
-		"grunt-bumpup": "0.2.x",
-		"grunt-contrib-jshint": "0.6.x",
-		"grunt-contrib-watch": "0.5.x",
-		"grunt-contrib-qunit": "0.2.x",
-		"grunt-contrib-stylus": "0.7.x"
+		"grunt": "~0.4.0",
+		"bower": "~1.3.0",
+		"grunt-cli": "~0.1.0",
+		"grunt-bumpup": "~0.5.0",
+		"grunt-contrib-jshint": "~0.10.0",
+		"grunt-contrib-watch": "~0.6.1",
+		"grunt-contrib-qunit": "~0.4.0",
+		"grunt-contrib-stylus": "~0.14.0"
 	},
-	"srcPath": "src/",
-	"testPath": "tests/",
-	"buildPath": "build/",
-	"pluginsPath": "plugins/",
-	"patchesPath": "patches/",
-	"cssPath": "static/styles/css/",
-	"stylusPath": "static/styles/stylus/"
+	"config": {
+		"srcDir": "src",
+		"testDir": "tests",
+		"buildDir": "build",
+		"pluginsDir": "plugins",
+		"patchesDir": "patches",
+		"cssDir": "static/styles/css",
+		"stylusDir": "static/styles/stylus"
+	}
 }

@@ -5,7 +5,8 @@ define(function() {
 		hasOwnProperty = ObjProto.hasOwnProperty,
 		nativeForEach = ArrayProto.forEach,
 		slice = ArrayProto.slice,
-		breaker = {};
+		breaker = {},
+		link = document.createElement('a');
 
 	return {
 		// Метод `has` позаимствованный из `underscore.js`
@@ -76,6 +77,22 @@ define(function() {
 
 		scripts: function() {
 			return Array.prototype.slice.call(document.getElementsByTagName('script'), 0);
+		},
+
+		urlToLocation: function(url) {
+			link.href = url;
+
+			return {
+				href: link.href,
+				host: link.host,
+				port: link.port,
+				hash: link.hash,
+				origin: link.origin,
+				search: link.search,
+				protocol: link.protocol,
+				hostname: link.hostname,
+				pathname: link.pathname
+			};
 		}
 	};
 });

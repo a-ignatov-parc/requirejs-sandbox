@@ -65,23 +65,30 @@ var fileSystem = require('fs'),
 	},
 	gruntConfig = {
 		pkg: pkg,
+		srcDir: '<%= pkg.config.srcDir %>',
+		testDir: '<%= pkg.config.testDir %>',
+		buildDir: '<%= pkg.config.buildDir %>',
+		pluginsDir: '<%= pkg.config.pluginsDir %>',
+		patchesDir: '<%= pkg.config.patchesDir %>',
+		cssDir: '<%= pkg.config.cssDir %>',
+		stylusDir: '<%= pkg.config.stylusDir %>',
 		bumpup: {
 			file: 'package.json'
 		},
 		watch: {
 			styles: {
-				files: pkg.stylusPath + '**/*.styl',
+				files: '<%= stylusDir %>/**/*.styl',
 				tasks: ['stylus']
 			},
 			js: {
-				files: pkg.srcPath + '**/*.js',
+				files: '<%= srcDir %>/**/*.js',
 				tasks: ['requirejs']
 			}
 		},
 		stylus: {
 			dev: {
-				src: pkg.stylusPath + 'main.styl',
-				dest: pkg.cssPath + 'main.css',
+				src: '<%= stylusDir %>/main.styl',
+				dest: '<%= cssDir %>/main.css',
 				options: {
 					firebug: true,
 					compress: false,
@@ -89,15 +96,15 @@ var fileSystem = require('fs'),
 				}
 			},
 			prod: {
-				src: pkg.stylusPath + 'main.styl',
-				dest: pkg.cssPath + 'main.min.css',
+				src: '<%= stylusDir %>/main.styl',
+				dest: '<%= cssDir %>/main.min.css',
 				options: {
 					urlfunc: 'embedurl'
 				}
 			},
 			label: {
-				src: pkg.stylusPath + 'label.styl',
-				dest: pkg.cssPath + 'label.css',
+				src: '<%= stylusDir %>/label.styl',
+				dest: '<%= cssDir %>/label.css',
 				options: {
 					urlfunc: 'embedurl'
 				}
@@ -109,24 +116,26 @@ var fileSystem = require('fs'),
 			}
 		},
 		qunit: {
-			files: [pkg.testPath + '**/*.html']
+			all: ['<%= testDir %>/**/*.html']
 		},
 		requirejs: {
 			dev: {
 				options: {
-					baseUrl: pkg.srcPath,
+					baseUrl: '<%= srcDir %>',
 					name: 'sandbox-manager',
+					include: ['helpers/patch', 'helpers/processor/prefix'],
 					optimize: 'none',
-					out: pkg.buildPath + 'requirejs-sandbox.js',
+					out: '<%= buildDir %>/requirejs-sandbox.js',
 					onBuildWrite: getModulePreprocessor()
 				}
 			},
 			prod: {
 				options: {
-					baseUrl: pkg.srcPath,
+					baseUrl: '<%= srcDir %>',
 					name: 'sandbox-manager',
+					include: ['helpers/patch', 'helpers/processor/prefix'],
 					optimize: 'uglify2',
-					out: pkg.buildPath + 'requirejs-sandbox.min.js',
+					out: '<%= buildDir %>/requirejs-sandbox.min.js',
 					onBuildRead: getModulePreprocessor(true),
 					onBuildWrite: getModulePreprocessor()
 				}
@@ -139,7 +148,7 @@ var fileSystem = require('fs'),
 					banner: bannerTemplate
 				},
 				files: {
-					src: [pkg.buildPath + 'requirejs-sandbox.js', pkg.buildPath + 'requirejs-sandbox.min.js']
+					src: ['<%= buildDir %>/requirejs-sandbox.js', '<%= buildDir %>/requirejs-sandbox.min.js']
 				}
 			}
 		},
@@ -151,27 +160,27 @@ var fileSystem = require('fs'),
 				}
 			},
 			src: {
-				src: pkg.srcPath + '**/*.js',
+				src: '<%= srcDir %>/**/*.js',
 				options: {
-					jshintrc: pkg.srcPath + '.jshintrc'
+					jshintrc: '<%= srcDir %>/.jshintrc'
 				}
 			},
 			plugins: {
-				src: pkg.pluginsPath + '**/*.js',
+				src: '<%= pluginsDir %>/**/*.js',
 				options: {
-					jshintrc: pkg.pluginsPath + '.jshintrc'
+					jshintrc: '<%= pluginsDir %>/.jshintrc'
 				}
 			},
 			patches: {
-				src: pkg.patchesPath + '**/*.js',
+				src: '<%= patchesDir %>/**/*.js',
 				options: {
-					jshintrc: pkg.patchesPath + '.jshintrc'
+					jshintrc: '<%= patchesDir %>/.jshintrc'
 				}
 			},
 			tests: {
-				src: pkg.testPath + '*.js',
+				src: '<%= testDir %>/*.js',
 				options: {
-					jshintrc: pkg.testPath + '.jshintrc'
+					jshintrc: '<%= testDir %>/.jshintrc'
 				}
 			}
 		}
@@ -179,23 +188,23 @@ var fileSystem = require('fs'),
 
 // Создаем список плугинов для их минификации.
 fileSystem
-	.readdirSync(pkg.pluginsPath)
+	.readdirSync(pkg.config.pluginsDir)
 	.forEach(function(file) {
-		var path = pkg.pluginsPath + file,
+		var path = pkg.config.pluginsDir + '/' + file,
 			rawFileName = file.split('.'),
 			fileExtension = rawFileName.pop(),
 			fileName = rawFileName.join('');
 
 		if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
-			gruntConfig.uglify.plugins.files[pkg.buildPath + 'plugins/' + fileName + '.min.' + fileExtension] = path;
+			gruntConfig.uglify.plugins.files['<%= buildDir %>/plugins/' + fileName + '.min.' + fileExtension] = path;
 		}
 	});
 
 // Создаем список патчей для их процессинга.
 fileSystem
-	.readdirSync(pkg.patchesPath)
+	.readdirSync(pkg.config.patchesDir)
 	.forEach(function(file) {
-		var path = pkg.patchesPath + file,
+		var path = pkg.config.patchesDir + '/' + file,
 			rawFileName = file.split('.'),
 			fileExtension = rawFileName.pop(),
 			fileName = rawFileName.join('');
@@ -203,20 +212,20 @@ fileSystem
 		if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
 			gruntConfig.requirejs[fileName + '_patch'] = {
 				options: {
-					baseUrl: pkg.patchesPath,
+					baseUrl: '<%= patchesDir %>',
 					name: fileName,
 					optimize: 'none',
-					out: pkg.buildPath + 'patches/' + fileName + '.' + fileExtension,
+					out: '<%= buildDir %>/patches/' + fileName + '.' + fileExtension,
 					onBuildRead: getModulePreprocessor(false, true)
 				}
 			};
 
 			gruntConfig.requirejs[fileName + '_patch_min'] = {
 				options: {
-					baseUrl: pkg.patchesPath,
+					baseUrl: '<%= patchesDir %>',
 					name: fileName,
 					optimize: 'uglify2',
-					out: pkg.buildPath + 'patches/' + fileName + '.min.' + fileExtension,
+					out: '<%= buildDir %>/patches/' + fileName + '.min.' + fileExtension,
 					onBuildRead: getModulePreprocessor(false, true)
 				}
 			};
@@ -228,14 +237,14 @@ module.exports = function(grunt) {
 	grunt.initConfig(gruntConfig);
 
 	// Подключаем таски
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-qunit');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-bumpup');
-	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-banner');
+	grunt.loadNpmTasks('grunt-contrib-qunit');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-stylus');
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
 
 	// Регистрируем кастомные таски
 	grunt.registerTask('updatepkg', 'Update pkg version after bumpup.', function() {
@@ -249,5 +258,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('bower', ['requirejs', 'uglify', 'usebanner']);
 	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'usebanner', 'qunit']);
 	grunt.registerTask('build', ['stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner']);
-	grunt.registerTask('compile', ['jshint', 'stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
+	grunt.registerTask('compile', ['jshint', 'stylus', 'bumpup:prerelease', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
 };

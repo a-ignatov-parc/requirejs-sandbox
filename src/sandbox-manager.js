@@ -1,9 +1,9 @@
 define([
 	'logger/logger',
 	'helpers/utils',
-	'helpers/patch',
-	'helpers/require'
-], function(console, utils, patchAbstract, requireResolver) {
+	'helpers/require',
+	'helpers/preprocess/plugin'
+], function(console, utils, requireResolver, PreprocessPlugin) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -253,7 +253,8 @@ define([
 								success();
 							}
 						},
-						unresolvedPatchesCount = 0;
+						unresolvedPatchesCount = 0,
+						preprocessPlugin;
 
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = this.sandbox.sandboxApi.require = sandbox.require;
@@ -312,6 +313,14 @@ define([
 					this.api.define('sandbox', function() {
 						return sandbox;
 					});
+
+					console.debug('Creating "preprocess" plugin for sandbox require.js');
+
+					// Создаем инстанс плагина, с переданным контекстом.
+					preprocessPlugin = new PreprocessPlugin(sandbox);
+
+					// Регистрируем плагин загрузки и препроцессинга ресурсов.
+					this.api.define(preprocessPlugin.name, preprocessPlugin.handler);
 
 					console.debug('Creating handler for amd modules load');
 
@@ -380,7 +389,7 @@ define([
 	console.setNamespace('requirejs-sandbox');
 
 	return {
-		_getSandboxConstructor: function() {
+		_getSandboxInternalInterface: function() {
 			return Sandbox.prototype;
 		},
 
