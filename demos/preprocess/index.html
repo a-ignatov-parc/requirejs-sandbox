@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>requrejs-sandbox demo</title>
+		<link rel="stylesheet" type="text/css" href="../../static/styles/css/main.css" />
+		<script src="../../bower_components/requirejs/require.js"></script>
+		<script src="../../build/patches/jquery.min.js"></script>
+		<script src="../../build/plugins/require-css.min.js"></script>
+		<script src="../../build/plugins/require-preprocess-css.min.js"></script>
+		<script src="../../build/requirejs-sandbox.js"></script>
+		<script src="../../static/apps/version.js"></script>
+		<script>
+			requirejs([
+				'requirejs-sandbox',
+				'requirejs-css',
+				'requirejs-preprocess-css',
+				'requirejs-sandbox/patches/jquery'
+			], function(requrejsSandbox, requirejsCss, requirejsPreprocessCss, jqueryPatch) {
+				requrejsSandbox.set('PreprocessDemoApp', {
+					requireConfig: {
+						baseUrl: 'app',
+						paths: {
+							'jquery': '../../../bower_components/jquery/jquery'
+						},
+					},
+					patch: [jqueryPatch.setOptions({
+						rootEl: document.getElementById('content')
+					})],
+					plugins: [requirejsCss, requirejsPreprocessCss],
+					success: function(require) {
+						// Загружаем в песочницу виджет как обычным способом, так и альтернативным 
+						// загрузчиком осуществляя препроцессинг кода.
+						require(['widget', 'preprocess!widget'], function(widget, widgetProcessor) {
+							// Запускаем оригинальный код.
+							widget.run();
+
+							// Делаем препроцессинг и резолвим полученный код.
+							widgetProcessor
+								.replace(/(li>)[^<]+/i, '$1Script was preprocessed')
+								.resolve(function(widget) {
+									// Запускаем измененный код.
+									widget.run();
+								});
+
+							// Делаем загрузку простого скрипта, который пытается получить текущий url
+							require(['preprocess!code', 'code'], function(codeProcessor) {
+								codeProcessor
+									// Делаем простую замену строк для отличия от обычного кода
+									.replace('Current', 'Current page')
+
+									// Делаем автоматический врапинг кода чтоб при обращении к 
+									// приватным свойствам объекта `window` он автоматически 
+									// ссылался на свойства родительского объекта `window`.
+									.autoFix()
+									.resolve(function() {
+										require(['preprocess-css!styles'], function(stylesProcessor) {
+											// Резолвим процессор и вставляем стили в страницу.
+											stylesProcessor
+												.replace(/(font-weight:\s*)normal/, '$1bold')
+												.prefix('#style-content')
+												.resolve();
+										});
+									});
+							});
+						});
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="style-content" class="b-content">
+			<h1 class="b-content-title">Test list:</h1>
+			<ol class="b-content-list">
+				<li>Item 1</li>
+				<li>Item 2</li>
+				<li>Item 3</li>
+			</ol>
+		</div>
+		<div class="b-content">
+			<h1 class="b-content-title">Execution logs:</h1>
+			<ol id="content" class="b-content-list"></ol>
+		</div>
+	</body>
+</html>

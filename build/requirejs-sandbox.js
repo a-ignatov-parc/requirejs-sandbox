@@ -1,5 +1,5 @@
 /**
- * requirejs-sandbox - v0.4.2-89 (build date: 18/06/2014)
+ * requirejs-sandbox - v0.5.0-9 (build date: 23/06/2014)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for require.js allows user to run multiple apps without scope intersection issues
  * Copyright (c) 2014 Anton Ignatov
@@ -92,7 +92,8 @@ define('requirejs-sandbox/helpers/utils',function() {
 		hasOwnProperty = ObjProto.hasOwnProperty,
 		nativeForEach = ArrayProto.forEach,
 		slice = ArrayProto.slice,
-		breaker = {};
+		breaker = {},
+		link = document.createElement('a');
 
 	return {
 		// Метод `has` позаимствованный из `underscore.js`
@@ -163,40 +164,22 @@ define('requirejs-sandbox/helpers/utils',function() {
 
 		scripts: function() {
 			return Array.prototype.slice.call(document.getElementsByTagName('script'), 0);
-		}
-	};
-});
+		},
 
-define('requirejs-sandbox/helpers/patch',['requirejs-sandbox/logger/logger','requirejs-sandbox/helpers/utils'],function(console, utils) {
-	var defaults = {
-			_options: {},
+		urlToLocation: function(url) {
+			link.href = url;
 
-			name: 'default',
-
-			shimName: 'default',
-
-			// Метод инициализации патча.
-			enable: function() {
-				console.warn('Method is not implemented');
-			},
-
-			disable: function() {
-				console.warn('Method is not implemented');
-			},
-
-			setOptions: function(options) {
-				var Wrapper = function(options) {
-						this._options = utils.extend({}, this._options, options);
-					};
-
-				Wrapper.prototype = this;
-				return new Wrapper(options);
-			}
-		};
-
-	return {
-		init: function(obj) {
-			return utils.defaults(obj || {}, defaults);
+			return {
+				href: link.href,
+				host: link.host,
+				port: link.port,
+				hash: link.hash,
+				origin: link.origin,
+				search: link.search,
+				protocol: link.protocol,
+				hostname: link.hostname,
+				pathname: link.pathname
+			};
 		}
 	};
 });
@@ -352,7 +335,7 @@ define('requirejs-sandbox/helpers/resolvers/iframeResolver',['requirejs-sandbox/
 					this._state = this.STATE_RESOLVING;
 
 					if (!sandboxContructor) {
-						sandboxContructor = window.require('requirejs-sandbox')._getSandboxConstructor();
+						sandboxContructor = window.require('requirejs-sandbox')._getSandboxInternalInterface();
 					}
 
 					// Создаем песочницу для поиска require.js среди скриптов загруженных на 
@@ -517,7 +500,296 @@ define('requirejs-sandbox/helpers/require',['requirejs-sandbox/logger/logger','r
 	};
 });
 
-define('requirejs-sandbox',['requirejs-sandbox/logger/logger','requirejs-sandbox/helpers/utils','requirejs-sandbox/helpers/patch','requirejs-sandbox/helpers/require'],function(console, utils, patchAbstract, requireResolver) {
+define('requirejs-sandbox/helpers/preprocess/abstract',['requirejs-sandbox/logger/logger'],function(console) {
+	return {
+		Processor: null,
+
+		loadHandler: function(name, onload) {
+			var Processor = this.Processor;
+
+			return function() {
+				switch(this.status) {
+					case 0: // Successful HTTP status in PhantomJS
+					case 200:
+					case 302:
+						console.debug('File received correctly', name);
+						onload(new Processor(true, this.response));
+						break;
+					case 404:
+						console.debug('File was not found', name);
+						onload(new Processor(3));
+						break;
+					default:
+						console.debug('Received unhandled status', name, this.status);
+						onload(new Processor(4));
+				}
+			};
+		},
+
+		errorHandler: function(name, onload) {
+			var Processor = this.Processor;
+
+			return function() {
+				console.debug('Something goes wrong', name, this.status);
+				onload(new Processor(5));
+			};
+		},
+
+		checkXMLHttpRequestSupport: function() {
+			return typeof(XMLHttpRequest) === 'function' || typeof(XMLHttpRequest) === 'object';
+		},
+
+		createAjaxLoader: function(name, req, onload, extension) {
+			var request = new XMLHttpRequest();
+
+			request.open('GET', req.toUrl(name) + (extension || '.js'), true);
+			request.onload = this.loadHandler(name, onload);
+			request.onerror = this.errorHandler(name, onload);
+			return {
+				load: function() {
+					request.send();
+				}
+			};
+		},
+
+		createDefaultLoader: function(name, req, onload) {
+			var Processor = this.Processor;
+
+			return {
+				load: function() {
+					req([name], function() {
+						onload(new Processor(2));
+					});
+				}
+			};
+		}
+	};
+});
+
+define('requirejs-sandbox/helpers/processor/core',['requirejs-sandbox/logger/logger','requirejs-sandbox/helpers/utils'],function(console, utils) {
+	var sourceCache = [],
+		moduleCheckRegex = /^\s*define\((['"][^'"]+['"])?,?\s*(?:\[([^\]]+)\])?,?\s*(function[^]+)\);*\s*$/,
+		moduleTrimRegex = /['"]*\s*/g;
+
+	return function(context) {
+		var target = context || window,
+			Processor = function(success, sourceCode) {
+				// Указываем уникальный `id` препроцессора.
+				this.id = this._responseSourceCache.push(sourceCode || '') - 1;
+
+				// Записываем ссылку на `target`, на случай если он кому-то из миксинов может 
+				// понадобиться.
+				this.target = target;
+
+				// Определяем текущий статус препроцессора.
+				// Список возможных статусов:
+				// 
+				// * `0` – Препроцессор создан успешно и загруженный ресурс может быть 
+				//         правильно обрабатан.
+				// 
+				// * `1` – Препроцессор создан успешно, но запрашиваемый ресурс не удалось 
+				//         загрузить.
+				// 
+				// * `2` – Браузер не поддерживает XMLHttpRequest с поддержкой CORS, 
+				//         а следовательно загрузка файла производилась в режиме фоллбека 
+				//         и препроцессинг файла не доступен.
+				// 
+				// * `3` – Запрашиваемый файл небыл найден.
+				// 
+				// * `4` – Запрашиваемый файл был загружен с необрабатываемым HTTP статусом.
+				// 
+				// * `5` – При загрузке запрашиваемого файла произошла ошибка.
+				// 
+				// * `6` – Неизвестный статус.
+				if (typeof(success) === 'boolean' || success === 1 || success === 0 || success === '1' || success === '0') {
+					if (typeof(success) === 'boolean') {
+						this.status = +!success;
+					} else {
+						this.status = +success;
+					}
+					console.debug('Creating extended resource api with status: ' + this.status);
+				} else {
+					console.debug('Creating simple response with status: ' + success);
+					return {
+						id: this.id,
+						status: success || 6
+					};
+				}
+			};
+
+		Processor.extend = function() {
+			for (var i = 0, length = arguments.length; i < length; i++) {
+				utils.extend(Processor.prototype, arguments[i]);
+			}
+		};
+
+		Processor.prototype = {
+			_responseSourceCache: sourceCache,
+
+			replace: function(pattern, replace) {
+				console.debug('[replace] Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
+
+				this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(pattern, replace);
+
+				console.debug('[replace] Executing result: ' + this._responseSourceCache[this.id]);
+
+				return this;
+			},
+
+			resolve: function(callback) {
+				var sourceCode = this._responseSourceCache[this.id],
+					moduleParts = moduleCheckRegex.exec(sourceCode),
+					resolvingResult,
+					moduleResolver,
+					evaledCode,
+					name,
+					deps;
+
+				console.debug('Execution context', target);
+
+				if (moduleParts) {
+					if (moduleParts[1]) {
+						name = moduleParts[1].replace(moduleTrimRegex, '');
+					}
+
+					if (moduleParts[2]) {
+						deps = moduleParts[2]
+							.replace(moduleTrimRegex, '')
+							.split(',');
+					} else {
+						deps = [];
+					}
+
+					console.debug('module name: "' + name + '"');
+					console.debug('module deps: [' + deps.join(', ') + ']');
+					console.debug('module handler: "' + moduleParts[3] + '"');
+
+					evaledCode = new target.Function('return ' + moduleParts[3]);
+
+					try {
+						moduleResolver = evaledCode();
+					} catch(e) {
+						console.error(e);
+					}
+
+					if (name) {
+						target.define(name, deps, function() {
+							try {
+								resolvingResult = moduleResolver.apply(this, arguments);
+							} catch(e) {
+								console.error(e);
+							}
+							return resolvingResult;
+						});
+
+						target.require([name], function(moduleResult) {
+							if (typeof(callback) === 'function') {
+								callback(moduleResult);
+							}
+						});
+					} else if (deps.length) {
+						target.require(deps, function() {
+							try {
+								resolvingResult = moduleResolver.apply(this, arguments);
+							} catch(e) {
+								console.error(e);
+							}
+
+							if (typeof(callback) === 'function') {
+								callback(resolvingResult);
+							}
+						});
+					} else {
+						try {
+							resolvingResult = moduleResolver();
+						} catch(e) {
+							console.error(e);
+						}
+
+						if (typeof(callback) === 'function') {
+							callback(resolvingResult);
+						}
+					}
+				} else {
+					var scriptNode = target.document.createElement('script');
+
+					scriptNode.type = 'text/javascript';
+					scriptNode.text = sourceCode;
+					target.document.getElementsByTagName('head')[0].appendChild(scriptNode);
+
+					if (typeof(callback) === 'function') {
+						callback();
+					}
+				}
+				return this;
+			}
+		};
+		return Processor;
+	};
+});
+
+define('requirejs-sandbox/helpers/processor/autofix',['requirejs-sandbox/logger/logger'],function(console) {
+	return {
+		autoFix: function(customPropList) {
+			var propertyList = [
+					'location',
+					'document'
+				].concat(customPropList || []),
+				processedProps = {};
+
+			for (var i = 0, length = propertyList.length; i < length; i++) {
+				var targetProp = propertyList[i]
+						.split('.')
+						.pop(),
+					prop = '__window_' + targetProp.toLowerCase();
+
+				if (!processedProps[propertyList[i]]) {
+					processedProps[propertyList[i]] = true;
+					this.target[prop] = this.target.sandboxApi && this.target.sandboxApi.parentWindow[targetProp] || this.target[targetProp];
+					this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(new RegExp('(\\W)' + targetProp + '(\\W)', 'g'), '$1' + prop + '$2');
+				}
+			}
+			console.debug('[autoFix] Executing result: ' + this._responseSourceCache[this.id]);
+			return this;
+		}
+	};
+});
+
+define('requirejs-sandbox/helpers/preprocess/plugin',['requirejs-sandbox/logger/logger','requirejs-sandbox/helpers/utils','requirejs-sandbox/helpers/preprocess/abstract','requirejs-sandbox/helpers/processor/core','requirejs-sandbox/helpers/processor/autofix'],function(console, utils, preprocessAbstract, ProcessorCore, autofixMixin) {
+	console.debug('Creating plugin for loading and preprocessing resources');
+
+	return function(context) {
+		var ProcessorConstructor = new ProcessorCore(context),
+			module = utils.extend({}, preprocessAbstract, {
+				Processor: ProcessorConstructor
+			});
+
+		// Расширяем базовый функционал миксинами.
+		ProcessorConstructor.extend(autofixMixin);
+
+		return {
+			name: 'preprocess',
+			handler: function() {
+				return {
+					load: function(name, req, onload) {
+						var loader;
+
+						console.debug('Received resource load exec for', name);
+
+						if (module.checkXMLHttpRequestSupport()) {
+							loader = module.createAjaxLoader(name, req, onload);
+						} else {
+							loader = module.createDefaultLoader(name, req, onload);
+						}
+						loader.load();
+					}
+				};
+			}
+		};
+	};
+});
+
+define('requirejs-sandbox',['requirejs-sandbox/logger/logger','requirejs-sandbox/helpers/utils','requirejs-sandbox/helpers/require','requirejs-sandbox/helpers/preprocess/plugin'],function(console, utils, requireResolver, PreprocessPlugin) {
 	var createdSandboxes = {},
 		Sandbox = function(options) {
 			// Создаем объект параметром на основе дефолтных значений и значений переданных при 
@@ -767,7 +1039,8 @@ define('requirejs-sandbox',['requirejs-sandbox/logger/logger','requirejs-sandbox
 								success();
 							}
 						},
-						unresolvedPatchesCount = 0;
+						unresolvedPatchesCount = 0,
+						preprocessPlugin;
 
 					// Создаем ссылку на `require.js` в api песочницы для дальнейшей работы с ним
 					this.api.require = this.sandbox.sandboxApi.require = sandbox.require;
@@ -826,6 +1099,14 @@ define('requirejs-sandbox',['requirejs-sandbox/logger/logger','requirejs-sandbox
 					this.api.define('sandbox', function() {
 						return sandbox;
 					});
+
+					console.debug('Creating "preprocess" plugin for sandbox require.js');
+
+					// Создаем инстанс плагина, с переданным контекстом.
+					preprocessPlugin = new PreprocessPlugin(sandbox);
+
+					// Регистрируем плагин загрузки и препроцессинга ресурсов.
+					this.api.define(preprocessPlugin.name, preprocessPlugin.handler);
 
 					console.debug('Creating handler for amd modules load');
 
@@ -894,7 +1175,7 @@ define('requirejs-sandbox',['requirejs-sandbox/logger/logger','requirejs-sandbox
 	console.setNamespace('requirejs-sandbox');
 
 	return {
-		_getSandboxConstructor: function() {
+		_getSandboxInternalInterface: function() {
 			return Sandbox.prototype;
 		},
 
@@ -929,6 +1210,79 @@ define('requirejs-sandbox',['requirejs-sandbox/logger/logger','requirejs-sandbox
 			} else {
 				console.warn('Sandbox with name: "' + name + '" was not found');
 			}
+		}
+	};
+});
+
+define('requirejs-sandbox/helpers/patch',['requirejs-sandbox/logger/logger','requirejs-sandbox/helpers/utils'],function(console, utils) {
+	var defaults = {
+			_options: {},
+
+			name: 'default',
+
+			shimName: 'default',
+
+			// Метод инициализации патча.
+			enable: function() {
+				console.warn('Method is not implemented');
+			},
+
+			disable: function() {
+				console.warn('Method is not implemented');
+			},
+
+			setOptions: function(options) {
+				var Wrapper = function(options) {
+						this._options = utils.extend({}, this._options, options);
+					};
+
+				Wrapper.prototype = this;
+				return new Wrapper(options);
+			}
+		};
+
+	return {
+		init: function(obj) {
+			return utils.defaults(obj || {}, defaults);
+		}
+	};
+});
+
+define('requirejs-sandbox/helpers/processor/prefix',['requirejs-sandbox/logger/logger'],function(console) {
+	// Регулярное выражение для поиска селекторов и разбивание на группы для последующего 
+	// проставления префикса.
+	var selectorsRegex = /(^\s*|}\s*|\s*)([@*.#\w\d\s-:\[\]\(\)="']+)(,|{[^}]+})/g,
+		commentsRegex = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g; // http://ostermiller.org/findcomment.html
+
+	return {
+		prefix: function(selector) {
+			var prefixRegex = new RegExp(selector + '\\s', 'g');
+
+			// Так как префикс проставляется абсолютно всему у чего имеется следующая 
+			// кострукция `aaa[, bbb] {}` для полного и правильного проставления префиксов 
+			// операция разбивается на несколько шагов:
+			// 
+			// 1. Удаляем коментарии из исходного кода. Для работы стилей это не важно, но сильно 
+			//    поможет избежать проблем с неправильным срабатыванием префиксера.
+			// 2. Проставляем префиксы.
+			// 3. Обрабатываем кейс, когда у at-селекторов не может быть никаких префиксов. 
+			//    Более подробно об этом описано тут: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face
+			// 4. Обрабатываем кейс, когда первая регулярка могла заменить путь 
+			//    в конструкции `url()` востанавливая его в первоначальное значение.
+			// 5. Так как считается что элемент с префикс-селектором у нас будет корневым 
+			//    элементом, то все селекторы на html и body заменяем на селектор префикса.
+			this._responseSourceCache[this.id] = this._responseSourceCache[this.id]
+				.replace(commentsRegex, '')
+				.replace(selectorsRegex, '$1' + selector + ' $2$3')
+				.replace(new RegExp(selector + '\\s(@(charset|document|font-face|import|keyframes|media|page|supports))', 'g'), '$1')
+				.replace(/url\([^)]+\)/g, function(match) {
+					return match.replace(prefixRegex, '');
+				})
+				.replace(new RegExp('(' + selector + ')\\s(html|body)', 'g'), '$1');
+
+			console.debug('[prefix] Executing result for selector "' + selector + '": ', this._responseSourceCache[this.id]);
+
+			return this;
 		}
 	};
 });

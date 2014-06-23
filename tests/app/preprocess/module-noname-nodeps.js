@@ -1,0 +1,1 @@
+define(function() { return { success: true, deps: arguments } });
