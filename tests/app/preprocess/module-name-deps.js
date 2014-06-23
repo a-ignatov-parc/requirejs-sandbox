@@ -1,0 +1,1 @@
+define('name-dep', ['module', 'preprocess/dependency'], function(module, dependency) { return { id: module.id, success: true, deps: [dependency] } });
