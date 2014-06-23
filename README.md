@@ -25,6 +25,7 @@ Sandbox manager for [require.js](http://requirejs.org/) allows user to run multi
 1. [Multiple sandboxes demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/multiple-jquery/) – loading multiple [jQuery](http://jquery.com/) versions in different sandboxes with code execution without intercepting main page scope.
 1. [Twitter bootstrap sandboxing demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/bootstrap/) – trying to lunch [bootstrap](http://getbootstrap.com/) components on page with old [jQuery](http://jquery.com/) and in sandbox with new version.
 1. [Multiple webapps demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/todomvc/) – trying to lunch two [todomvc](http://todomvc.com/) webapps. One created with [angular.js](http://angularjs.org/) and another with [backbone.js](http://backbonejs.org/). All apps running without any changes in source code.
+1. [Preprocess demo](http://a-ignatov-parc.github.io/requirejs-sandbox/demos/preprocess/) – Examples of how app code can be changed with built-in preprocessors. js and css preprocessor used in this demo.
 
 # API
 
@@ -287,7 +288,7 @@ There are list of built-in and plugable plugins for [require.js](http://requirej
 
 Built-in plugins are avalable only in sandbox [require.js](http://requirejs.org/) instance.
 
-1. `preprocess` - Plugin that downloads js module or script and return additional api to preprocess source code before executing. This plugin downloads files via XMLHttpRequest and request CORS to be available for cross-domain downloads or plugin will fail to default download mechanism via `script` tag.
+1. `preprocess` - Plugin that loads js module or script and return additional api to preprocess source code before executing. This plugin downloads files via XMLHttpRequest and request CORS to be available for cross-domain downloads or plugin will fail to default download mechanism via `script` tag.
 	
 	`preprocess` plugin will return object with next properties and methods:
 	
@@ -302,24 +303,69 @@ Built-in plugins are avalable only in sandbox [require.js](http://requirejs.org/
 		* `5` – There was error on file download.
 		* `6` – Unknown error.
 
-	* **replace( pattern, replacement )** *Type: Function* – Method that allows replacement of any part of source code. Pattern can be string and regexp. This method is chainable.
+	* **replace( pattern, replacement )** *Type: Function* – Method that allows replacement of any part of source code.
+	
+		`pattern` can be string and regexp. 
+	
+		> This method is chainable.
 
-	* **resolve( [callback] )** *Type: Function* – Method that resolve and execute processed source code. Can accept callback function as argument. This method is chainable.
+		> Will be available only on preprocessor's success status.
 
-	* **autoWrap()** *Type: Function* – Method that wraps source code in special construction that helps fixing problems with global and local variables and accessing parent `window` properties such as:
-		* `window`
-		* `location`
-		* `document`
-		* `getComputedStyle`
+	* **resolve( [callback] )** *Type: Function* – Method that resolve and execute processed source code. Can accept callback function as argument. 
+	
+		> This method is chainable.
+		
+		> Will be available only on preprocessor's success status.
 
-		This method is chainable.
+	* **autoFix( [customPropList] )** *Type: Function* – Method that replace addressing to global variables such as `window.document` and `window.location` to custom varables that links to parent variables. 
+	
+		`customPropList` – array of names of properties or methods that should be replaced with custom variables that links to same vars in parent page.
+		
+		> Be careful with adding custom properties! This can break your code in unexpected way.
+	
+		List of replaceable variables:
+	
+		1. `__window_location` – replace `window.location` and `location`.
+		1. `__window_document` – replace `window.document` and `document`.
+
+		> This method is chainable.
+		
+		> Will be available only on preprocessor's success status.
 	
 ## Plugable plugins
 
 Plugable plugins placed in external files so you can use them only when you need them.
 
-1. `css` – 
-1. `preprocess-css` – 
+1. `css` – Plugin that allows to treat resource as css and load it as normal amd module.
+1. `preprocess-css` – Plugin that allows to treat resource as css and load it with `preprocess` plugin providing extra api to process recource's source code.
+
+	`preprocess-css` plugin will return object with next properties and methods:
+	
+	* **id** *Type: Number* – Unique id across all processed scripts and styles.
+
+	* **status** *Type: Number* – Status number. Can be in range from 0 to 6.
+		* `0` – File was loaded successful and preprocessor was created correctly.
+		* `1` – Preprocessor was created correctly but requested resorce was not loaded.
+		* `2` – CORS is not supported. Fallback to default loader. No preprocessing available.
+		* `3` – Requested files was not found. 404 response status.
+		* `4` – Requested file was loaded with unsupported response status.
+		* `5` – There was error on file download.
+		* `6` – Unknown error.
+
+	* **replace( pattern, replacement )** *Type: Function* – Method that allows replacement of any part of source code. 
+	
+		`pattern` can be string and regexp. 
+	
+		> This method is chainable.
+
+		> Will be available only on preprocessor's success status.
+	
+	* **prefix( selector )** *Type: Function* – Method that prefix all selectors with given selector.
+	
+		> This method is chainable.
+
+		> Will be available only on preprocessor's success status.
+
 
 # How to build your own requirejs-sandbox
 
