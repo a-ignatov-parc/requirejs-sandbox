@@ -2,13 +2,13 @@
 	"name": "requirejs-sandbox",
 	"main": "build/requirejs-sandbox.min.js",
 	"main-debug": "build/requirejs-sandbox.js",
-	"dependencies": {
-		"jquery": "~2.0.0",
-		"requirejs": "~2.1.5"
-	},
+	"dependencies": {},
 	"devDependencies": {
+		"qunit": "~1.14.0",
+		"jquery": "~2.0.0",
 		"angular": "~1.2.8",
 		"backbone": "~1.1.0",
+		"requirejs": "~2.1.5",
 		"bootstrap": "~3.1.0",
 		"underscore": "~1.5.0",
 		"requirejs-text": "~2.0.5",
