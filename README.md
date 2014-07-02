@@ -5,6 +5,7 @@ Sandbox manager for [require.js](http://requirejs.org/) allows user to run multi
 ---
 
 [![Build Status](https://travis-ci.org/a-ignatov-parc/requirejs-sandbox.png?branch=master)](https://travis-ci.org/a-ignatov-parc/requirejs-sandbox)
+[![Code Climate](https://codeclimate.com/github/a-ignatov-parc/requirejs-sandbox.png)](https://codeclimate.com/github/a-ignatov-parc/requirejs-sandbox)
 
 # Use cases
 
