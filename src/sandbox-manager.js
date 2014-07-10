@@ -1,5 +1,5 @@
 define([
-	'logger/logger',
+	'console',
 	'helpers/utils',
 	'helpers/require',
 	'helpers/preprocess/plugin'
