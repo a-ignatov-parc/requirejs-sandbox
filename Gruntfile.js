@@ -155,7 +155,7 @@ var buildOptions = {
 		}
 	};
 
-// Создаем список патчей для их процессинга.
+// Создаем список патчей для процессинга.
 fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 	var path = pkg.config.patchesDir + '/' + file,
 		rawFileName = file.split('.'),
@@ -204,6 +204,7 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 	}
 });
 
+// Создаем список плагинов для процессинга.
 fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 	var path = pkg.config.pluginsDir + '/' + file,
 		rawFileName = file.split('.'),
@@ -221,7 +222,8 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 						globalName: fileName
 					}),
 					end: wrapEnd({
-						exportName: 'plugins/' + fileName
+						exportName: 'plugins/' + fileName,
+						exportPlugin: true
 					})
 				},
 				out: '<%= buildDir %>/plugins/' + fileName + '.' + fileExtension
@@ -241,7 +243,8 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 						globalName: fileName
 					}),
 					end: wrapEnd({
-						exportName: 'plugins/' + fileName
+						exportName: 'plugins/' + fileName,
+						exportPlugin: true
 					})
 				},
 				optimize: 'uglify2',
