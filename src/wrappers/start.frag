@@ -3,6 +3,6 @@
 		define('<%= moduleName %>', [], factory);
 	} else {
 		root.requirejsSandbox || (root.requirejsSandbox = {});
-		root.requirejsSandbox.<%= globalName %> = factory();
+		root.requirejsSandbox<% if (typeof(globalNamespace) !== 'undefined') { %>['<%= globalNamespace %>']<% } %>['<%= globalName %>'] = factory();
 	}
 }(this, function () {

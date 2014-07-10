@@ -1,8 +1,8 @@
-define('requirejs-preprocess-css', [
-	'requirejs-sandbox/helpers/utils',
-	'requirejs-sandbox/helpers/preprocess/abstract',
-	'requirejs-sandbox/helpers/processor/core',
-	'requirejs-sandbox/helpers/processor/prefix'
+define([
+	'helpers/utils',
+	'helpers/preprocess/abstract',
+	'helpers/processor/core',
+	'helpers/processor/prefix'
 ], function(utils, preprocessAbstract, ProcessorCore, prefixMixin) {
 	console.debug('Creating plugin for loading css with code preprocessing');
 
@@ -90,9 +90,4 @@ define('requirejs-preprocess-css', [
 			};
 		}
 	};
-});
-
-// Регистрируем основной плагин.
-require(['requirejs-preprocess-css'], function(requirejsCss) {
-	define(requirejsCss.name, requirejsCss.handler);
 });

@@ -17,12 +17,11 @@ var buildOptions = {
 		name: '../<%= packagesDir %>/almond/almond',
 		paths: {
 			console: 'console/log',
-			patches: '../<%= patchesDir %>'
+			patches: '../<%= patchesDir %>',
+			plugins: '../<%= pluginsDir %>'
 		},
 		include: [
-			'sandbox-manager'/*,
-			'helpers/patch',
-			'helpers/processor/prefix'*/
+			'sandbox-manager'
 		],
 		almond: true,
 		wrap: {
@@ -102,12 +101,6 @@ var buildOptions = {
 			}
 		},
 
-		uglify: {
-			plugins: {
-				files : {}
-			}
-		},
-
 		qunit: {
 			all: ['<%= testDir %>/**/*.html']
 		},
@@ -162,18 +155,6 @@ var buildOptions = {
 		}
 	};
 
-// Создаем список плугинов для их минификации.
-fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
-	var path = pkg.config.pluginsDir + '/' + file,
-		rawFileName = file.split('.'),
-		fileExtension = rawFileName.pop(),
-		fileName = rawFileName.join('');
-
-	if (file.indexOf('.') !== 0 && !fs.statSync(path).isDirectory()) {
-		gruntConfig.uglify.plugins.files['<%= buildDir %>/plugins/' + fileName + '.min.' + fileExtension] = path;
-	}
-});
-
 // Создаем список патчей для их процессинга.
 fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 	var path = pkg.config.patchesDir + '/' + file,
@@ -188,7 +169,8 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 				wrap: {
 					start: wrapStart({
 						moduleName: 'requirejs-sandbox/patches/' + fileName,
-						globalName: 'patches.' + fileName
+						globalNamespace: 'patches',
+						globalName: fileName
 					}),
 					end: wrapEnd({
 						exportName: 'patches/' + fileName
@@ -207,7 +189,8 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 				wrap: {
 					start: wrapStart({
 						moduleName: 'requirejs-sandbox/patches/' + fileName,
-						globalName: 'patches.' + fileName
+						globalNamespace: 'patches',
+						globalName: fileName
 					}),
 					end: wrapEnd({
 						exportName: 'patches/' + fileName
@@ -216,6 +199,54 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 				optimize: 'uglify2',
 				preserveLicenseComments: false,
 				out: '<%= buildDir %>/patches/' + fileName + '.min.' + fileExtension
+			})
+		};
+	}
+});
+
+fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
+	var path = pkg.config.pluginsDir + '/' + file,
+		rawFileName = file.split('.'),
+		fileExtension = rawFileName.pop(),
+		fileName = rawFileName.join('');
+
+	if (file.indexOf('.') !== 0 && !fs.statSync(path).isDirectory()) {
+		gruntConfig.requirejs[fileName + '-plugin-dev'] = {
+			options: _.extend({}, buildOptions, {
+				include: ['plugins/' + fileName],
+				wrap: {
+					start: wrapStart({
+						moduleName: fileName,
+						globalNamespace: 'plugins',
+						globalName: fileName
+					}),
+					end: wrapEnd({
+						exportName: 'plugins/' + fileName
+					})
+				},
+				out: '<%= buildDir %>/plugins/' + fileName + '.' + fileExtension
+			})
+		};
+
+		gruntConfig.requirejs[fileName + '-plugin-prod'] = {
+			options: _.extend({}, buildOptions, {
+				include: ['plugins/' + fileName],
+				paths: _.extend({}, buildOptions.paths, {
+					console: 'console/fake'
+				}),
+				wrap: {
+					start: wrapStart({
+						moduleName: fileName,
+						globalNamespace: 'plugins',
+						globalName: fileName
+					}),
+					end: wrapEnd({
+						exportName: 'plugins/' + fileName
+					})
+				},
+				optimize: 'uglify2',
+				preserveLicenseComments: false,
+				out: '<%= buildDir %>/plugins/' + fileName + '.min.' + fileExtension
 			})
 		};
 	}
@@ -230,7 +261,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-banner');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -244,8 +274,8 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
-	grunt.registerTask('bower', ['requirejs', 'uglify', 'usebanner']);
-	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'usebanner', 'qunit']);
-	grunt.registerTask('build', ['stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner']);
-	grunt.registerTask('compile', ['jshint', 'stylus', 'bumpup:prerelease', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
+	grunt.registerTask('bower', ['requirejs', 'usebanner']);
+	grunt.registerTask('travis', ['jshint', 'requirejs', 'usebanner', 'qunit']);
+	grunt.registerTask('build', ['stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'usebanner']);
+	grunt.registerTask('compile', ['jshint', 'stylus', 'bumpup:prerelease', 'updatepkg', 'requirejs', 'usebanner', 'qunit']);
 };
