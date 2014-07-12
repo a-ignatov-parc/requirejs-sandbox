@@ -1,9 +1,9 @@
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd) {
-		define('requirejs-sandbox/patches/jquery', [], factory);
+		define('requirejs-preprocess-css', [], factory);
 	} else {
 		root.requirejsSandbox || (root.requirejsSandbox = {});
-		root.requirejsSandbox['patches']['jquery'] = factory();
+		root.requirejsSandbox['plugins']['requirejs-preprocess-css'] = factory();
 	}
 }(this, function () {
 /**
@@ -430,87 +430,6 @@ var requirejs, require, define;
 
 define("../bower_components/almond/almond", function(){});
 
-define('console',[],function() {
-	var Logger = function() {
-		var levels = {
-				debug: 1,
-				info: 2,
-				warn: 4,
-				error: 8,
-				off: 100
-			},
-			logLevel = levels.warn,
-			namespace = 'logger',
-			console = {
-				log: function() {},
-				info: function() {},
-				warn: function() {},
-				error: function() {}
-			};
-
-		// для корректной работы в ie9
-		if (Function.prototype.bind && window.console && typeof window.console.log === 'object') {
-			['log', 'info', 'warn', 'error'].forEach(function(method) {
-				console[method] = this.bind(window.console[method], window.console);
-			}, Function.prototype.call);
-		} else if (window.console) {
-			console = window.console;
-		}
-
-		var log = function(data, level) {
-			data = Array.prototype.slice.call(data);
-
-			if (level >= logLevel) {
-				var hdlr = console.log,
-					prefix = '[' + namespace + ']';
-
-				if (level === levels.warn && console.warn) {
-					hdlr = console.warn;
-					prefix += '[warn]';
-				} else if (level === levels.error && console.error) {
-					hdlr = console.error;
-					prefix += '[ERR]';
-				} else if (level === levels.info && console.info) {
-					hdlr = console.info;
-				}
-				data.unshift(prefix);
-				hdlr.apply(console, data);
-			}
-		};
-
-		return {
-			setLogLevel: function(level) {
-				if (!levels[level]) {
-					throw 'unknown log level: ' + level;
-				}
-				logLevel = levels[level];
-			},
-			setNamespace: function(ns) {
-				namespace = ns;
-			},
-			log: function() {
-				this.debug.apply(this, arguments);
-			},
-			debug: function() {
-				log(arguments, levels.debug);
-			},
-			info: function() {
-				log(arguments, levels.info);
-			},
-			warn: function() {
-				log(arguments, levels.warn);
-			},
-			error: function() {
-				log(arguments, levels.error);
-			},
-			off: function() {
-				logLevel = levels.OFF;
-			}
-		};
-	};
-	return new Logger();
-});
-
 /* jshint -W089 */
 define('helpers/utils',[],function() {
 	var ArrayProto = Array.prototype,
@@ -610,167 +529,459 @@ define('helpers/utils',[],function() {
 	};
 });
 
-define('helpers/patch',[
-	'console',
-	'helpers/utils'
-], function(console, utils) {
-	var defaults = {
-			_options: {},
-
-			name: 'default',
-
-			shimName: 'default',
-
-			// Метод инициализации патча.
-			enable: function() {
-				console.warn('Method is not implemented');
+define('console',[],function() {
+	var Logger = function() {
+		var levels = {
+				debug: 1,
+				info: 2,
+				warn: 4,
+				error: 8,
+				off: 100
 			},
+			logLevel = levels.warn,
+			namespace = 'logger',
+			console = {
+				log: function() {},
+				info: function() {},
+				warn: function() {},
+				error: function() {}
+			};
 
-			disable: function() {
-				console.warn('Method is not implemented');
-			},
+		// для корректной работы в ie9
+		if (Function.prototype.bind && window.console && typeof window.console.log === 'object') {
+			['log', 'info', 'warn', 'error'].forEach(function(method) {
+				console[method] = this.bind(window.console[method], window.console);
+			}, Function.prototype.call);
+		} else if (window.console) {
+			console = window.console;
+		}
 
-			setOptions: function(options) {
-				var Wrapper = function(options) {
-						this._options = utils.extend({}, this._options, options);
-					};
+		var log = function(data, level) {
+			data = Array.prototype.slice.call(data);
 
-				Wrapper.prototype = this;
-				return new Wrapper(options);
+			if (level >= logLevel) {
+				var hdlr = console.log,
+					prefix = '[' + namespace + ']';
+
+				if (level === levels.warn && console.warn) {
+					hdlr = console.warn;
+					prefix += '[warn]';
+				} else if (level === levels.error && console.error) {
+					hdlr = console.error;
+					prefix += '[ERR]';
+				} else if (level === levels.info && console.info) {
+					hdlr = console.info;
+				}
+				data.unshift(prefix);
+				hdlr.apply(console, data);
 			}
 		};
 
+		return {
+			setLogLevel: function(level) {
+				if (!levels[level]) {
+					throw 'unknown log level: ' + level;
+				}
+				logLevel = levels[level];
+			},
+			setNamespace: function(ns) {
+				namespace = ns;
+			},
+			log: function() {
+				this.debug.apply(this, arguments);
+			},
+			debug: function() {
+				log(arguments, levels.debug);
+			},
+			info: function() {
+				log(arguments, levels.info);
+			},
+			warn: function() {
+				log(arguments, levels.warn);
+			},
+			error: function() {
+				log(arguments, levels.error);
+			},
+			off: function() {
+				logLevel = levels.OFF;
+			}
+		};
+	};
+	return new Logger();
+});
+
+define('helpers/preprocess/abstract',[
+	'console'
+], function(console) {
 	return {
-		init: function(obj) {
-			return utils.defaults(obj || {}, defaults);
+		Processor: null,
+
+		loadHandler: function(name, onload) {
+			var Processor = this.Processor;
+
+			return function() {
+				switch(this.status) {
+					case 0: // Successful HTTP status in PhantomJS
+					case 200:
+					case 302:
+						console.debug('File received correctly', name);
+						onload(new Processor(true, this.response));
+						break;
+					case 404:
+						console.debug('File was not found', name);
+						onload(new Processor(3));
+						break;
+					default:
+						console.debug('Received unhandled status', name, this.status);
+						onload(new Processor(4));
+				}
+			};
+		},
+
+		errorHandler: function(name, onload) {
+			var Processor = this.Processor;
+
+			return function() {
+				console.debug('Something goes wrong', name, this.status);
+				onload(new Processor(5));
+			};
+		},
+
+		checkXMLHttpRequestSupport: function() {
+			return typeof(XMLHttpRequest) === 'function' || typeof(XMLHttpRequest) === 'object';
+		},
+
+		createAjaxLoader: function(name, req, onload, extension) {
+			var request = new XMLHttpRequest();
+
+			request.open('GET', req.toUrl(name) + (extension || '.js'), true);
+			request.onload = this.loadHandler(name, onload);
+			request.onerror = this.errorHandler(name, onload);
+			return {
+				load: function() {
+					request.send();
+				}
+			};
+		},
+
+		createDefaultLoader: function(name, req, onload) {
+			var Processor = this.Processor;
+
+			return {
+				load: function() {
+					req([name], function() {
+						onload(new Processor(2));
+					});
+				}
+			};
 		}
 	};
 });
 
-define('patches/jquery',[
+define('helpers/processor/core',[
 	'console',
-	'helpers/patch'
-], function(console, patchAbstract) {
-	return patchAbstract.init({
-		// Имя модуля используемое в require.js.
-		name: 'jquery',
+	'helpers/utils'
+], function(console, utils) {
+	var sourceCache = [],
+		moduleCheckRegex = /^\s*define\((['"][^'"]+['"])?,?\s*(?:\[([^\]]+)\])?,?\s*(function[^]+)\);*\s*$/,
+		moduleTrimRegex = /['"]*\s*/g;
 
-		// Имя по которому необходимо искать библиотеку в песочнице, в случае не срабатывания 
-		// резолва по require.shim.exportsFn().
-		shimName: 'jQuery',
+	return function(context) {
+		var target = context || window,
+			Processor = function(success, sourceCode) {
+				// Указываем уникальный `id` препроцессора.
+				this.id = this._responseSourceCache.push(sourceCode || '') - 1;
 
-		// Метод инициализации патча.
-		enable: function(window, sandbox, jQuery) {
-			var options = this._options,
-				rootEl;
+				// Записываем ссылку на `target`, на случай если он кому-то из миксинов может 
+				// понадобиться.
+				this.target = target;
 
-			if (options.rootEl && options.rootEl.nodeType && options.rootEl.nodeType === 1) {
-				rootEl = options.rootEl;
-			}
-
-			// Проверка на существование `jQuery`
-			if (typeof(jQuery) !== 'function') {
-				console.error('This patch require jQuery to be defined!');
-				return;
-			}
-
-			// Переопределяем метод `getComputedStyle` в песочнице чтоб он ссылался на соответсвующий метод в 
-			// основном документе иначе в jquery версии 1.8.x и старше будут не правильно определятся 
-			// видимость элементов и некоторые другие стили.
-			if (sandbox.getComputedStyle && window.getComputedStyle) {
-				sandbox.getComputedStyle = function() {
-					return window.getComputedStyle.apply(window, arguments);
-				};
-			}
-
-			// Проверяем не сделан ли уже патч `jQuery`, если сделан, то выходим.
-			if (jQuery.fn.__patchedInit) {
-				console.debug('jQuery already patched. Skipping...');
-				return;
-			}
-
-			// Делаем обертку над `jQuery.fn.init` для возможносит прозрачного переброса селекторов на 
-			// основную страницу.
-			// 
-			// Возможен небольшой хак чтоб получить `jQuery` объект для песочницы. Необходимо в качестве 
-			// селектора передать объект `window` песочница, так же этот же `window` передать в качестве 
-			// контекста.
-			// 
-			// __Пример:__  
-			// 
-			//         $sandbox = $(sandbox, sandbox);
-			jQuery.fn.init = (function(Fn, proto) {
-				// Запоминаем изначальный метод `init` для последующего его востановления в 
-				// исходное состояние, если потребуется.
-				if (!proto.__originalInit) {
-					proto.__originalInit = Fn;
-				}
-
-				// Создаем новый, пропатченный, метод `init`.
-				proto.__patchedInit = function(selector, context, rootjQuery) {
-					if (typeof(selector) === 'string' && !context) {
-						switch (selector) {
-							case 'html':
-								return new Fn(selector, window.document, rootjQuery);
-							case 'body':
-								return new Fn(rootEl || window.document.body, context, rootjQuery);
-							default:
-								return new Fn(selector, rootEl || window.document, rootjQuery);
-						}
-					} else if (selector == sandbox && context != sandbox) {
-						return new Fn(window, context, rootjQuery);
-					} else if (selector == sandbox.document) {
-						return new Fn(window.document, context, rootjQuery);
-					} else if (selector == sandbox.document.head) {
-						return new Fn(window.document.head, context, rootjQuery);
-					} else if (selector == sandbox.document.body) {
-						return new Fn(rootEl || window.document.body, context, rootjQuery);
+				// Определяем текущий статус препроцессора.
+				// Список возможных статусов:
+				// 
+				// * `0` – Препроцессор создан успешно и загруженный ресурс может быть 
+				//         правильно обрабатан.
+				// 
+				// * `1` – Препроцессор создан успешно, но запрашиваемый ресурс не удалось 
+				//         загрузить.
+				// 
+				// * `2` – Браузер не поддерживает XMLHttpRequest с поддержкой CORS, 
+				//         а следовательно загрузка файла производилась в режиме фоллбека 
+				//         и препроцессинг файла не доступен.
+				// 
+				// * `3` – Запрашиваемый файл небыл найден.
+				// 
+				// * `4` – Запрашиваемый файл был загружен с необрабатываемым HTTP статусом.
+				// 
+				// * `5` – При загрузке запрашиваемого файла произошла ошибка.
+				// 
+				// * `6` – Неизвестный статус.
+				if (typeof(success) === 'boolean' || success === 1 || success === 0 || success === '1' || success === '0') {
+					if (typeof(success) === 'boolean') {
+						this.status = +!success;
 					} else {
-						if (rootEl) {
-							var container = rootEl,
-								contained = context;
+						this.status = +success;
+					}
+					console.debug('Creating extended resource api with status: ' + this.status);
+				} else {
+					console.debug('Creating simple response with status: ' + success);
+					return {
+						id: this.id,
+						status: success || 6
+					};
+				}
+			};
 
-							// Так как для проверки на вложенность одного элемента в другой 
-							// необходимы DOM элементы, то мы делаем проверку и получаем их.
-							if (container instanceof jQuery) {
-								container = container[0];
+		Processor.extend = function() {
+			for (var i = 0, length = arguments.length; i < length; i++) {
+				utils.extend(Processor.prototype, arguments[i]);
+			}
+		};
+
+		Processor.prototype = {
+			_responseSourceCache: sourceCache,
+
+			replace: function(pattern, replace) {
+				console.debug('[replace] Executing replace with pattern: "' + pattern + '" and replace: "' + replace + '"');
+
+				this._responseSourceCache[this.id] = this._responseSourceCache[this.id].replace(pattern, replace);
+
+				console.debug('[replace] Executing result: ' + this._responseSourceCache[this.id]);
+
+				return this;
+			},
+
+			resolve: function(callback) {
+				var sourceCode = this._responseSourceCache[this.id],
+					moduleParts = moduleCheckRegex.exec(sourceCode),
+					resolvingResult,
+					moduleResolver,
+					evaledCode,
+					name,
+					deps;
+
+				console.debug('Execution context', target);
+
+				if (moduleParts) {
+					if (moduleParts[1]) {
+						name = moduleParts[1].replace(moduleTrimRegex, '');
+					}
+
+					if (moduleParts[2]) {
+						deps = moduleParts[2]
+							.replace(moduleTrimRegex, '')
+							.split(',');
+					} else {
+						deps = [];
+					}
+
+					console.debug('module name: "' + name + '"');
+					console.debug('module deps: [' + deps.join(', ') + ']');
+					console.debug('module handler: "' + moduleParts[3] + '"');
+
+					evaledCode = new target.Function('return ' + moduleParts[3]);
+
+					try {
+						moduleResolver = evaledCode();
+					} catch(e) {
+						console.error(e);
+					}
+
+					if (name) {
+						target.define(name, deps, function() {
+							try {
+								resolvingResult = moduleResolver.apply(this, arguments);
+							} catch(e) {
+								console.error(e);
+							}
+							return resolvingResult;
+						});
+
+						target.require([name], function(moduleResult) {
+							if (typeof(callback) === 'function') {
+								callback(moduleResult);
+							}
+						});
+					} else if (deps.length) {
+						target.require(deps, function() {
+							try {
+								resolvingResult = moduleResolver.apply(this, arguments);
+							} catch(e) {
+								console.error(e);
 							}
 
-							if (contained instanceof jQuery) {
-								contained = contained[0];
+							if (typeof(callback) === 'function') {
+								callback(resolvingResult);
 							}
+						});
+					} else {
+						try {
+							resolvingResult = moduleResolver();
+						} catch(e) {
+							console.error(e);
+						}
 
-							if (jQuery.contains(container, contained) || !jQuery.contains(document.body, contained)) {
-								return new Fn(selector, context, rootjQuery);
-							} else {
-								return new Fn(selector, rootEl, rootjQuery);
-							}
-						} else {
-							return new Fn(selector, context, rootjQuery);
+						if (typeof(callback) === 'function') {
+							callback(resolvingResult);
 						}
 					}
-				};
+				} else {
+					var scriptNode = target.document.createElement('script');
 
-				// Проставляем у нашей функции-оболочки в качестве прототипа прототип jQuery
-				proto.__patchedInit.prototype = proto;
-				return proto.__patchedInit;
-			})(jQuery.fn.init, jQuery.fn);
-		},
+					scriptNode.type = 'text/javascript';
+					scriptNode.text = sourceCode;
+					target.document.getElementsByTagName('head')[0].appendChild(scriptNode);
 
-		// Метод отката патча.
-		disable: function(window, sandbox, jQuery) {
-			if (jQuery.fn.__originalInit) {
-				console.debug('Restoring original jQuery instance');
+					if (typeof(callback) === 'function') {
+						callback();
+					}
+				}
+				return this;
+			}
+		};
+		return Processor;
+	};
+});
 
-				jQuery.fn.init = jQuery.fn.__originalInit;
-				delete jQuery.fn.__originalInit;
-				delete jQuery.fn.__patchedInit;
+define('helpers/processor/prefix',[
+	'console'
+], function(console) {
+	// Регулярное выражение для поиска селекторов и разбивание на группы для последующего 
+	// проставления префикса.
+	var selectorsRegex = /(^\s*|}\s*|\s*)([@*.#\w\d\s-:\[\]\(\)="']+)(,|{[^}]+})/g,
+		commentsRegex = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g; // http://ostermiller.org/findcomment.html
+
+	return {
+		prefix: function(selector) {
+			var prefixRegex = new RegExp(selector + '\\s', 'g');
+
+			// Так как префикс проставляется абсолютно всему у чего имеется следующая 
+			// кострукция `aaa[, bbb] {}` для полного и правильного проставления префиксов 
+			// операция разбивается на несколько шагов:
+			// 
+			// 1. Удаляем коментарии из исходного кода. Для работы стилей это не важно, но сильно 
+			//    поможет избежать проблем с неправильным срабатыванием префиксера.
+			// 2. Проставляем префиксы.
+			// 3. Обрабатываем кейс, когда у at-селекторов не может быть никаких префиксов. 
+			//    Более подробно об этом описано тут: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face
+			// 4. Обрабатываем кейс, когда первая регулярка могла заменить путь 
+			//    в конструкции `url()` востанавливая его в первоначальное значение.
+			// 5. Так как считается что элемент с префикс-селектором у нас будет корневым 
+			//    элементом, то все селекторы на html и body заменяем на селектор префикса.
+			this._responseSourceCache[this.id] = this._responseSourceCache[this.id]
+				.replace(commentsRegex, '')
+				.replace(selectorsRegex, '$1' + selector + ' $2$3')
+				.replace(new RegExp(selector + '\\s(@(charset|document|font-face|import|keyframes|media|page|supports))', 'g'), '$1')
+				.replace(/url\([^)]+\)/g, function(match) {
+					return match.replace(prefixRegex, '');
+				})
+				.replace(new RegExp('(' + selector + ')\\s(html|body)', 'g'), '$1');
+
+			console.debug('[prefix] Executing result for selector "' + selector + '": ', this._responseSourceCache[this.id]);
+
+			return this;
+		}
+	};
+});
+
+define('plugins/requirejs-preprocess-css',[
+	'helpers/utils',
+	'helpers/preprocess/abstract',
+	'helpers/processor/core',
+	'helpers/processor/prefix'
+], function(utils, preprocessAbstract, ProcessorCore, prefixMixin) {
+	console.debug('Creating plugin for loading css with code preprocessing');
+
+	var ProcessorConstructor = new ProcessorCore(),
+		module = utils.extend({}, preprocessAbstract, {
+			Processor: ProcessorConstructor
+		});
+
+	// Расширяем базовый функционал миксинами.
+	ProcessorConstructor.extend(prefixMixin, {
+		resolve: function(callback) {
+			var sourceCode = this._responseSourceCache[this.id],
+				styleNode = document.createElement('style');
+
+			// Добавялем стилевой ноде необходимые свойства.
+			styleNode.media = 'all';
+			styleNode.type = 'text/css';
+
+			// Пытаемся определить поддерживается ли свойство `styleSheet`.
+			// Если да, то это IE и вставка стилей делаем по другому механизму.
+			if (styleNode.styleSheet != null && styleNode.styleSheet.cssText != null) {
+				styleNode.styleSheet.cssText = sourceCode;
 			} else {
-				console.warn('jQuery wasn\'t patched. Skipping...');
+				styleNode.appendChild(document.createTextNode(sourceCode));
+			}
+
+			// Вставляем ноду в секцию head страницы.
+			appendStyleNode(styleNode);
+
+			// Отрабатываем колбек возвращая api такой же как и в случае с `require-css`.
+			// 
+			// [INFO] `require-css` и `requirejs-preprocess-css` должны быть идентичны по 
+			// возвращаемым api.
+			if (typeof(callback) === 'function') {
+				callback({
+					cssNode: styleNode,
+					append: function() {
+						return appendStyleNode(this.cssNode);
+					},
+					remove: function() {
+						return removeStyleNode(this.cssNode);
+					}
+				});
 			}
 		}
 	});
-});
 
-	return require('patches/jquery');
+	function appendStyleNode(node) {
+		if (node) {
+			if (node.parentNode) {
+				removeStyleNode(node);
+			}
+			document.getElementsByTagName('head')[0].appendChild(node);
+		}
+		return node;
+	}
+
+	function removeStyleNode(node) {
+		if (node && node.parentNode && typeof(node.parentNode.removeChild) === 'function') {
+			node.parentNode.removeChild(node);
+		}
+		return node;
+	}
+
+	return {
+		name: 'preprocess-css',
+		handler: function() {
+			return {
+				load: function(name, req, onload) {
+					var loader;
+
+					console.debug('Received css load exec for', name);
+
+					if (module.checkXMLHttpRequestSupport()) {
+						loader = module.createAjaxLoader(name, req, onload, '.css');
+						loader.load();
+					} else {
+						require(['css!' + name], function() {
+							onload({
+								status: 2
+							});
+						});
+					}
+				}
+			};
+		}
+	};
+});
+	return require('plugins/requirejs-preprocess-css');
 }));
+
+	if (typeof define === 'function' && define.amd) {
+		require(['requirejs-preprocess-css'], function(plugin) {
+			define(plugin.name, [], plugin.handler);
+		});
+	}

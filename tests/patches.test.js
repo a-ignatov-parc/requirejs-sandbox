@@ -1,4 +1,7 @@
-requirejs(['requirejs-sandbox', 'requirejs-sandbox/helpers/patch'], function(requrejsSandbox, patchAbstract) {
+requirejs([
+	'requirejs-sandbox',
+	'helpers/patch'
+], function(requrejsSandbox, patchAbstract) {
 	requrejsSandbox.set('PatchTest1', {
 		requireConfig: {
 			baseUrl: 'app',

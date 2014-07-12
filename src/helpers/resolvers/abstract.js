@@ -1,6 +1,6 @@
 /* jshint -W015 */
 define([
-	'logger/logger',
+	'console',
 	'helpers/utils'
 ], function(console, utils) {
 	var abstractObj = {

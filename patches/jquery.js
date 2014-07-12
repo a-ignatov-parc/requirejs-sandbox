@@ -1,5 +1,5 @@
 define([
-	'logger/logger',
+	'console',
 	'helpers/patch'
 ], function(console, patchAbstract) {
 	return patchAbstract.init({

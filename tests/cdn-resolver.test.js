@@ -1,7 +1,6 @@
 requirejs([
-	'requirejs-sandbox',
-	'requirejs-sandbox/helpers/resolvers/cdnResolver'
-], function(requrejsSandbox, cdnResolver) {
+	'helpers/resolvers/cdnResolver'
+], function(cdnResolver) {
 	QUnit.start();
 
 	test('Options resolver initial state and resolving', function() {
