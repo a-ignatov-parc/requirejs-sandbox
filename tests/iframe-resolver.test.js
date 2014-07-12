@@ -1,7 +1,6 @@
 requirejs([
-	'requirejs-sandbox',
-	'requirejs-sandbox/helpers/resolvers/iframeResolver'
-], function(requrejsSandbox, iframeResolver) {
+	'helpers/resolvers/iframeResolver'
+], function(iframeResolver) {
 	QUnit.start();
 
 	test('Iframe resolver initial state and resolving', function() {

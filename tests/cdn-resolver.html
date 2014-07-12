@@ -3,13 +3,20 @@
 <head>
 	<meta charset="utf-8">
 	<title>requrejs-sandbox grunt test suite</title>
-	<link rel="stylesheet" href="static/qunit.css">
-	<script src="static/qunit.js"></script>
+	<link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" />
+	<script src="../bower_components/qunit/qunit/qunit.js"></script>
 	<script type="text/javascript">
 		QUnit.config.autostart = false;
 	</script>
 	<script src="../bower_components/requirejs/require.js"></script>
-	<script src="../build/requirejs-sandbox.js"></script>
+	<script type="text/javascript">
+		require.config({
+			baseUrl: '../src',
+			paths: {
+				console: 'console/log'
+			}
+		});
+	</script>
 	<script src="cdn-resolver.test.js"></script>
 </head>
 <body>

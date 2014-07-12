@@ -1,8 +1,9 @@
 define([
-	'logger/logger',
+	'console',
 	'helpers/utils',
+	'sandbox-manager',
 	'helpers/resolvers/abstract'
-], function(console, utils, abstract) {
+], function(console, utils, sandboxManager, abstract) {
 	var sandboxContructor;
 
 	function checkScript(scripts, sandbox, createScript, callback) {
@@ -40,7 +41,7 @@ define([
 					this._state = this.STATE_RESOLVING;
 
 					if (!sandboxContructor) {
-						sandboxContructor = window.require('requirejs-sandbox')._getSandboxInternalInterface();
+						sandboxContructor = sandboxManager._getSandboxInternalInterface();
 					}
 
 					// Создаем песочницу для поиска require.js среди скриптов загруженных на 

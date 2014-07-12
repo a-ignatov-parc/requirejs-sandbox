@@ -1,5 +1,5 @@
 define([
-	'logger/logger',
+	'console',
 	'helpers/utils',
 	'helpers/resolvers/abstract'
 ], function(console, utils, abstract) {

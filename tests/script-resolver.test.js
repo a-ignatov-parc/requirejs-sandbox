@@ -1,6 +1,6 @@
 requirejs([
-	'requirejs-sandbox/helpers/utils',
-	'requirejs-sandbox/helpers/resolvers/scriptResolver'
+	'helpers/utils',
+	'helpers/resolvers/scriptResolver'
 ], function(utils, scriptResolver) {
 	QUnit.start();
 
