@@ -36,6 +36,9 @@ var buildOptions = {
 		optimize: 'none',
 		out: '<%= buildDir %>/requirejs-sandbox.js'
 	},
+	additionalBuildList = [
+		'helpers/patch'
+	],
 	gruntConfig = {
 		pkg: pkg,
 
@@ -255,6 +258,51 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 			})
 		};
 	}
+});
+
+additionalBuildList.forEach(function(modulePath) {
+	var modulePathParts = modulePath.split('/'),
+		namespace = modulePathParts.length > 1 ? modulePathParts[0] : null,
+		name = modulePathParts[modulePathParts.length - 1];
+
+	gruntConfig.requirejs[modulePath.replace('/', '-') + '-dev'] = {
+		options: _.extend({}, buildOptions, {
+			include: [modulePath],
+			wrap: {
+				start: wrapStart({
+					moduleName: 'requirejs-sandbox/' + modulePath,
+					globalNamespace: namespace,
+					globalName: name
+				}),
+				end: wrapEnd({
+					exportName: modulePath
+				})
+			},
+			out: '<%= buildDir %>/' + modulePath + '.js'
+		})
+	};
+
+	gruntConfig.requirejs[modulePath.replace('/', '-') + '-prod'] = {
+		options: _.extend({}, buildOptions, {
+			include: [modulePath],
+			paths: _.extend({}, buildOptions.paths, {
+				console: 'console/fake'
+			}),
+			wrap: {
+				start: wrapStart({
+					moduleName: 'requirejs-sandbox/' + modulePath,
+					globalNamespace: namespace,
+					globalName: name
+				}),
+				end: wrapEnd({
+					exportName: modulePath
+				})
+			},
+			optimize: 'uglify2',
+			preserveLicenseComments: false,
+			out: '<%= buildDir %>/' + modulePath + '.min.js'
+		})
+	};
 });
 
 module.exports = function(grunt) {
