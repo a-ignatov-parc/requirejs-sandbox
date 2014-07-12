@@ -1,7 +1,6 @@
 requirejs([
-	'requirejs-sandbox',
-	'requirejs-sandbox/helpers/resolvers/optionsResolver'
-], function(requrejsSandbox, optionsResolver) {
+	'helpers/resolvers/optionsResolver'
+], function(optionsResolver) {
 	QUnit.start();
 
 	test('Options resolver initial state and resolving', function() {

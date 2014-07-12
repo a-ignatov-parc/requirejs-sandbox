@@ -223,6 +223,7 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 					}),
 					end: wrapEnd({
 						exportName: 'plugins/' + fileName,
+						moduleName: fileName,
 						exportPlugin: true
 					})
 				},
@@ -244,6 +245,7 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 					}),
 					end: wrapEnd({
 						exportName: 'plugins/' + fileName,
+						moduleName: fileName,
 						exportPlugin: true
 					})
 				},
