@@ -351,10 +351,9 @@ define([
 							var patchName = patchList[i],
 								patchPath = ['requirejs-sandbox', 'patches', patchName].join('/');
 
-							// Делаем проверку если на странице нет загрузчика amd модулей, 
-							// например require.js, то резолвим патчи через глобальный объект 
-							// `requirejsSandbox`.
-							if (typeof window.define === 'function' && window.define.amd) {
+							// Делаем проверку если на странице нет require.js, то резолвим патчи 
+							// через глобальный объект `requirejsSandbox`.
+							if (window.require && typeof(window.require.defined) === 'function') {
 								if (window.require.defined(patchPath)) {
 									console.debug('Patch "' + patchPath + '" is resolved in parent page. Linking with patch list...');
 									patchList[i] = window.require(patchPath);
