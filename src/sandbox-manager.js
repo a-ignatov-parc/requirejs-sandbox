@@ -348,15 +348,23 @@ define([
 					// разрезолвить все модули до окончательной инициализации песочницы.
 					for (i = 0, length = patchList.length; i < length; i++) {
 						if (typeof(patchList[i]) === 'string') {
-							var patchName = ['requirejs-sandbox', 'patches', patchList[i]].join('/');
+							var patchName = patchList[i],
+								patchPath = ['requirejs-sandbox', 'patches', patchName].join('/');
 
-							if (window.require.defined(patchName)) {
-								console.debug('Patch "' + patchName + '" is resolved in parent page. Linking with patch list...');
-								patchList[i] = window.require(patchName);
-							} else {
-								unresolvedPatchesCount++;
-								console.debug('Patch "' + patchName + '" is unresolved. Resolving...');
-								window.require([patchName], resolvePatch);
+							// Делаем проверку если на странице нет загрузчика amd модулей, 
+							// например require.js, то резолвим патчи через глобальный объект 
+							// `requirejsSandbox`.
+							if (typeof window.define === 'function' && window.define.amd) {
+								if (window.require.defined(patchPath)) {
+									console.debug('Patch "' + patchPath + '" is resolved in parent page. Linking with patch list...');
+									patchList[i] = window.require(patchPath);
+								} else {
+									unresolvedPatchesCount++;
+									console.debug('Patch "' + patchPath + '" is unresolved. Resolving...');
+									window.require([patchPath], resolvePatch);
+								}
+							} else if (window.requirejsSandbox && window.requirejsSandbox.patches && window.requirejsSandbox.patches[patchName]) {
+								patchList[i] = window.requirejsSandbox.patches[patchName];
 							}
 						}
 					}
