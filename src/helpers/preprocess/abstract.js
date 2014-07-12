@@ -1,5 +1,5 @@
 define([
-	'logger/logger'
+	'console'
 ], function(console) {
 	return {
 		Processor: null,

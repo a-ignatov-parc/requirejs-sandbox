@@ -1,70 +1,47 @@
-var fileSystem = require('fs'),
-	pkg = require('./package.json'),
-	bannerTemplate = '/**\n' +
+var fs = require('fs'),
+	_ = require('underscore'),
+	pkg = require('./package.json');
+
+var bannerTemplate = '/**\n' +
 		' * <%= pkg.name %> - v<%= pkg.version %> (build date: <%= grunt.template.today("dd/mm/yyyy") %>)\n' +
 		' * <%= pkg.url %>\n' +
 		' * <%= pkg.description %>\n' +
 		' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
 		' * Licensed MIT\n' +
 		' */\n',
-	dependenciesRegex = /define\(\[([^\]]+)\]/,
-	processedDependenciesRegex = /define\(['"][^'"]+['"],\s?\[([^\]]+)\]/,
-	getModulePreprocessor = function(isBeforeRead, isPatch) {
-		return function(moduleName, path, contents) {
-			var match = contents.match(isBeforeRead || isPatch ? dependenciesRegex : processedDependenciesRegex) || [],
-				matchedDeps = match[1],
-				deps = matchedDeps ? matchedDeps
-					.replace(/\n?\t?/g, '')
-					.replace(/['"]/g, '')
-					.split(',') : false,
-				bodyStartIndex = contents.indexOf('function'),
-				processedContent = 'define(';
+	wrapStart = _.template(fs.readFileSync(pkg.config.srcDir + '/wrappers/start.frag').toString()),
+	wrapEnd = _.template(fs.readFileSync(pkg.config.srcDir + '/wrappers/end.frag').toString());
 
-			if (!isBeforeRead) {
-				processedContent += '\'';
-
-				switch(moduleName) {
-					case 'sandbox-manager':
-						processedContent += 'requirejs-sandbox';
-						break;
-					case 'logger/fake':
-						processedContent += 'requirejs-sandbox/logger/logger';
-						break;
-					default:
-						processedContent += 'requirejs-sandbox/' + (isPatch ? 'patches/' : '') + moduleName;
-				}
-				processedContent += '\'';
-			}
-
-			if (deps) {
-				if (isBeforeRead) {
-					processedContent += '[';
-				} else {
-					processedContent += ',[';
-				}
-
-				for (var i = 0, length = deps.length; i < length; i++) {
-					if (i) {
-						processedContent += ',';
-					}
-
-					if (isBeforeRead) {
-						processedContent += '\'' + (deps[i] == 'logger/logger' ? 'logger/fake' : deps[i]) + '\'';
-					} else {
-						processedContent += '\'requirejs-sandbox/' + (deps[i] == 'logger/fake' ? 'logger/logger' : deps[i]) + '\'';
-					}
-				}
-				processedContent += '],';
-			} else if (!isBeforeRead) {
-				processedContent += ',';
-			}
-
-			processedContent += contents.substr(bodyStartIndex);
-			return processedContent;
-		};
+var buildOptions = {
+		baseUrl: '<%= srcDir %>',
+		name: '../<%= packagesDir %>/almond/almond',
+		paths: {
+			console: 'console/log',
+			patches: '../<%= patchesDir %>',
+			plugins: '../<%= pluginsDir %>'
+		},
+		include: [
+			'sandbox-manager'
+		],
+		almond: true,
+		wrap: {
+			start: wrapStart({
+				moduleName: 'requirejs-sandbox',
+				globalName: 'manager'
+			}),
+			end: wrapEnd({
+				exportName: 'sandbox-manager'
+			})
+		},
+		optimize: 'none',
+		out: '<%= buildDir %>/requirejs-sandbox.js'
 	},
+	additionalBuildList = [
+		'helpers/patch'
+	],
 	gruntConfig = {
 		pkg: pkg,
+
 		srcDir: '<%= pkg.config.srcDir %>',
 		testDir: '<%= pkg.config.testDir %>',
 		buildDir: '<%= pkg.config.buildDir %>',
@@ -72,9 +49,24 @@ var fileSystem = require('fs'),
 		patchesDir: '<%= pkg.config.patchesDir %>',
 		cssDir: '<%= pkg.config.cssDir %>',
 		stylusDir: '<%= pkg.config.stylusDir %>',
-		bumpup: {
-			file: 'package.json'
+		packagesDir: '<%= pkg.config.packagesDir %>',
+
+		requirejs: {
+			dev: {
+				options: buildOptions
+			},
+			prod: {
+				options: _.extend({}, buildOptions, {
+					paths: _.extend({}, buildOptions.paths, {
+						console: 'console/fake'
+					}),
+					optimize: 'uglify2',
+					preserveLicenseComments: false,
+					out: '<%= buildDir %>/requirejs-sandbox.min.js'
+				})
+			}
 		},
+
 		watch: {
 			styles: {
 				files: '<%= stylusDir %>/**/*.styl',
@@ -85,6 +77,7 @@ var fileSystem = require('fs'),
 				tasks: ['requirejs']
 			}
 		},
+
 		stylus: {
 			dev: {
 				src: '<%= stylusDir %>/main.styl',
@@ -110,37 +103,11 @@ var fileSystem = require('fs'),
 				}
 			}
 		},
-		uglify: {
-			plugins: {
-				files : {}
-			}
-		},
+
 		qunit: {
 			all: ['<%= testDir %>/**/*.html']
 		},
-		requirejs: {
-			dev: {
-				options: {
-					baseUrl: '<%= srcDir %>',
-					name: 'sandbox-manager',
-					include: ['helpers/patch', 'helpers/processor/prefix'],
-					optimize: 'none',
-					out: '<%= buildDir %>/requirejs-sandbox.js',
-					onBuildWrite: getModulePreprocessor()
-				}
-			},
-			prod: {
-				options: {
-					baseUrl: '<%= srcDir %>',
-					name: 'sandbox-manager',
-					include: ['helpers/patch', 'helpers/processor/prefix'],
-					optimize: 'uglify2',
-					out: '<%= buildDir %>/requirejs-sandbox.min.js',
-					onBuildRead: getModulePreprocessor(true),
-					onBuildWrite: getModulePreprocessor()
-				}
-			}
-		},
+
 		usebanner: {
 			banners: {
 				options: {
@@ -152,6 +119,11 @@ var fileSystem = require('fs'),
 				}
 			}
 		},
+
+		bumpup: {
+			file: 'package.json'
+		},
+
 		jshint: {
 			grunt: {
 				src: 'Gruntfile.js',
@@ -186,51 +158,152 @@ var fileSystem = require('fs'),
 		}
 	};
 
-// Создаем список плугинов для их минификации.
-fileSystem
-	.readdirSync(pkg.config.pluginsDir)
-	.forEach(function(file) {
-		var path = pkg.config.pluginsDir + '/' + file,
-			rawFileName = file.split('.'),
-			fileExtension = rawFileName.pop(),
-			fileName = rawFileName.join('');
+// Создаем список патчей для процессинга.
+fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
+	var path = pkg.config.patchesDir + '/' + file,
+		rawFileName = file.split('.'),
+		fileExtension = rawFileName.pop(),
+		fileName = rawFileName.join('');
 
-		if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
-			gruntConfig.uglify.plugins.files['<%= buildDir %>/plugins/' + fileName + '.min.' + fileExtension] = path;
-		}
-	});
+	if (file.indexOf('.') !== 0 && !fs.statSync(path).isDirectory()) {
+		gruntConfig.requirejs[fileName + '-patch-dev'] = {
+			options: _.extend({}, buildOptions, {
+				include: ['patches/' + fileName],
+				wrap: {
+					start: wrapStart({
+						moduleName: 'requirejs-sandbox/patches/' + fileName,
+						globalNamespace: 'patches',
+						globalName: fileName
+					}),
+					end: wrapEnd({
+						exportName: 'patches/' + fileName
+					})
+				},
+				out: '<%= buildDir %>/patches/' + fileName + '.' + fileExtension
+			})
+		};
 
-// Создаем список патчей для их процессинга.
-fileSystem
-	.readdirSync(pkg.config.patchesDir)
-	.forEach(function(file) {
-		var path = pkg.config.patchesDir + '/' + file,
-			rawFileName = file.split('.'),
-			fileExtension = rawFileName.pop(),
-			fileName = rawFileName.join('');
+		gruntConfig.requirejs[fileName + '-patch-prod'] = {
+			options: _.extend({}, buildOptions, {
+				include: ['patches/' + fileName],
+				paths: _.extend({}, buildOptions.paths, {
+					console: 'console/fake'
+				}),
+				wrap: {
+					start: wrapStart({
+						moduleName: 'requirejs-sandbox/patches/' + fileName,
+						globalNamespace: 'patches',
+						globalName: fileName
+					}),
+					end: wrapEnd({
+						exportName: 'patches/' + fileName
+					})
+				},
+				optimize: 'uglify2',
+				preserveLicenseComments: false,
+				out: '<%= buildDir %>/patches/' + fileName + '.min.' + fileExtension
+			})
+		};
+	}
+});
 
-		if (file.indexOf('.') !== 0 && !fileSystem.statSync(path).isDirectory()) {
-			gruntConfig.requirejs[fileName + '_patch'] = {
-				options: {
-					baseUrl: '<%= patchesDir %>',
-					name: fileName,
-					optimize: 'none',
-					out: '<%= buildDir %>/patches/' + fileName + '.' + fileExtension,
-					onBuildRead: getModulePreprocessor(false, true)
-				}
-			};
+// Создаем список плагинов для процессинга.
+fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
+	var path = pkg.config.pluginsDir + '/' + file,
+		rawFileName = file.split('.'),
+		fileExtension = rawFileName.pop(),
+		fileName = rawFileName.join('');
 
-			gruntConfig.requirejs[fileName + '_patch_min'] = {
-				options: {
-					baseUrl: '<%= patchesDir %>',
-					name: fileName,
-					optimize: 'uglify2',
-					out: '<%= buildDir %>/patches/' + fileName + '.min.' + fileExtension,
-					onBuildRead: getModulePreprocessor(false, true)
-				}
-			};
-		}
-	});
+	if (file.indexOf('.') !== 0 && !fs.statSync(path).isDirectory()) {
+		gruntConfig.requirejs[fileName + '-plugin-dev'] = {
+			options: _.extend({}, buildOptions, {
+				include: ['plugins/' + fileName],
+				wrap: {
+					start: wrapStart({
+						moduleName: fileName,
+						globalNamespace: 'plugins',
+						globalName: fileName
+					}),
+					end: wrapEnd({
+						exportName: 'plugins/' + fileName,
+						moduleName: fileName,
+						exportPlugin: true
+					})
+				},
+				out: '<%= buildDir %>/plugins/' + fileName + '.' + fileExtension
+			})
+		};
+
+		gruntConfig.requirejs[fileName + '-plugin-prod'] = {
+			options: _.extend({}, buildOptions, {
+				include: ['plugins/' + fileName],
+				paths: _.extend({}, buildOptions.paths, {
+					console: 'console/fake'
+				}),
+				wrap: {
+					start: wrapStart({
+						moduleName: fileName,
+						globalNamespace: 'plugins',
+						globalName: fileName
+					}),
+					end: wrapEnd({
+						exportName: 'plugins/' + fileName,
+						moduleName: fileName,
+						exportPlugin: true
+					})
+				},
+				optimize: 'uglify2',
+				preserveLicenseComments: false,
+				out: '<%= buildDir %>/plugins/' + fileName + '.min.' + fileExtension
+			})
+		};
+	}
+});
+
+additionalBuildList.forEach(function(modulePath) {
+	var modulePathParts = modulePath.split('/'),
+		namespace = modulePathParts.length > 1 ? modulePathParts[0] : null,
+		name = modulePathParts[modulePathParts.length - 1];
+
+	gruntConfig.requirejs[modulePath.replace('/', '-') + '-dev'] = {
+		options: _.extend({}, buildOptions, {
+			include: [modulePath],
+			wrap: {
+				start: wrapStart({
+					moduleName: 'requirejs-sandbox/' + modulePath,
+					globalNamespace: namespace,
+					globalName: name
+				}),
+				end: wrapEnd({
+					exportName: modulePath
+				})
+			},
+			out: '<%= buildDir %>/' + modulePath + '.js'
+		})
+	};
+
+	gruntConfig.requirejs[modulePath.replace('/', '-') + '-prod'] = {
+		options: _.extend({}, buildOptions, {
+			include: [modulePath],
+			paths: _.extend({}, buildOptions.paths, {
+				console: 'console/fake'
+			}),
+			wrap: {
+				start: wrapStart({
+					moduleName: 'requirejs-sandbox/' + modulePath,
+					globalNamespace: namespace,
+					globalName: name
+				}),
+				end: wrapEnd({
+					exportName: modulePath
+				})
+			},
+			optimize: 'uglify2',
+			preserveLicenseComments: false,
+			out: '<%= buildDir %>/' + modulePath + '.min.js'
+		})
+	};
+});
 
 module.exports = function(grunt) {
 	// Инициализируем конфиг
@@ -241,7 +314,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-banner');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -255,8 +327,8 @@ module.exports = function(grunt) {
 	// Регистрируем таски
 	grunt.registerTask('default', 'watch');
 	grunt.registerTask('tests', 'qunit');
-	grunt.registerTask('bower', ['requirejs', 'uglify', 'usebanner']);
-	grunt.registerTask('travis', ['jshint', 'requirejs', 'uglify', 'usebanner', 'qunit']);
-	grunt.registerTask('build', ['stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'uglify', 'usebanner']);
-	grunt.registerTask('compile', ['jshint', 'stylus', 'bumpup:prerelease', 'updatepkg', 'requirejs', 'uglify', 'usebanner', 'qunit']);
+	grunt.registerTask('bower', ['requirejs', 'usebanner']);
+	grunt.registerTask('travis', ['jshint', 'requirejs', 'usebanner', 'qunit']);
+	grunt.registerTask('build', ['stylus', 'bumpup:build', 'updatepkg', 'requirejs', 'usebanner']);
+	grunt.registerTask('compile', ['jshint', 'stylus', 'bumpup:prerelease', 'updatepkg', 'requirejs', 'usebanner', 'qunit']);
 };

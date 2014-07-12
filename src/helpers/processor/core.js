@@ -1,5 +1,5 @@
 define([
-	'logger/logger',
+	'console',
 	'helpers/utils'
 ], function(console, utils) {
 	var sourceCache = [],

@@ -9,6 +9,14 @@
 		QUnit.config.autostart = false;
 	</script>
 	<script src="../bower_components/requirejs/require.js"></script>
+	<script type="text/javascript">
+		require.config({
+			baseUrl: '../src',
+			paths: {
+				console: 'console/log'
+			}
+		});
+	</script>
 	<script src="../build/requirejs-sandbox.js"></script>
 	<script src="iframe-resolver.test.js"></script>
 </head>

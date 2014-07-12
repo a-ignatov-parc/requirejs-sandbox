@@ -1,4 +1,4 @@
-define('requirejs-css', function() {
+define(function() {
 	console.debug('Creating plugin for loading css');
 
 	var extensionRegex = /\.css$/,
@@ -113,9 +113,4 @@ define('requirejs-css', function() {
 		name: 'css',
 		handler: pluginHandler
 	};
-});
-
-// Регистрируем основной плагин.
-require(['requirejs-css'], function(requirejsCss) {
-	define(requirejsCss.name, requirejsCss.handler);
 });
