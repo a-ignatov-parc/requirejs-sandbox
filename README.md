@@ -30,12 +30,18 @@ Sandbox manager for [require.js](http://requirejs.org/) allows user to run multi
 
 # API
 
-Manager is implemented as an AMD module and can be easily used with [require.js](http://requirejs.org/)
+Manager is defined as an UMD module and can be easily used with [require.js](http://requirejs.org/)
 
 ```javascript
-require(['requirejs-sandbox'], function(requrejsSandbox) {
-    // code here
+require(['requirejs-sandbox'], function(requirejsSandbox) {
+    requirejsSandbox.set( ... );
 });
+```
+
+or as global variable if no `define` function is specified:
+
+```javascript
+window.requirejsSandbox.manager.set( ... );
 ```
 
 The module has a public api:
@@ -69,7 +75,7 @@ The module has a public api:
 		> Link to require.js to be used in sandbox. You should use link to require.js the same as in the parent page. If you have correctly configured the cache, than the file won't be loaded twice.
 		
 		```javascript
-		requrejsSandbox.set('TestApp', {
+		requirejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js'
 		});
 		```
@@ -79,7 +85,7 @@ The module has a public api:
 		> If you have require.js start script you should point link to it in this parameter.
 		
 		```javascript
-		requrejsSandbox.set('TestApp', {
+		requirejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js',
 			requireMain: 'app/main'
 		});
@@ -90,7 +96,7 @@ The module has a public api:
 		> If you don't use start script to configure require.js in sandbox you can do this setting config in this parameter.
 		
 		```javascript
-		requrejsSandbox.set('TestApp', {
+		requirejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js',
 			requireConfig: {
 				baseUrl: 'app',
@@ -117,7 +123,7 @@ The module has a public api:
 		> If you need to link variables from the main page to sandbox you can specify them as hash object with links. The defined key will be available in sandbox as `window.key`.
 		
 		```javascript
-		requrejsSandbox.set('TestApp', {
+		requirejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js',
 			requireConfig: {
 				baseUrl: 'app'
@@ -139,7 +145,7 @@ The module has a public api:
 		or
 		
 		```javascript
-		requrejsSandbox.set('TestApp', {
+		requirejsSandbox.set('TestApp', {
 			debug: true, // Enabling extended callback api to be able access sandboxManager object
 			requireUrl: '/static/js/libs/require.min.js',
 			requireConfig: {
@@ -161,7 +167,7 @@ The module has a public api:
 		> The list of patch names to be applied to sandbox's environment. Patches are required to configure libs in sandbox working transparently with main page objects (`window`, `document` objects etc.).
 		
 		```javascript
-		requrejsSandbox.set('TestApp', {
+		requirejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js',
 			requireMain: 'app/main',
 			patch: ['jquery', patchObject]
@@ -217,7 +223,7 @@ The module has a public api:
 			}
 		};
 		
-		requrejsSandbox.set('TestApp', {
+		requirejsSandbox.set('TestApp', {
 			requireUrl: '/static/js/libs/require.min.js',
 			requireMain: 'app/main',
 			plugins: [plugin],

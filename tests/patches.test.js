@@ -1,8 +1,8 @@
 requirejs([
 	'requirejs-sandbox',
 	'helpers/patch'
-], function(requrejsSandbox, patchAbstract) {
-	requrejsSandbox.set('PatchTest1', {
+], function(requirejsSandbox, patchAbstract) {
+	requirejsSandbox.set('PatchTest1', {
 		requireConfig: {
 			baseUrl: 'app',
 			paths: {
@@ -68,7 +68,7 @@ requirejs([
 					stop();
 
 					requirejs(['requirejs-sandbox/patches/jquery'], function(jqueryPatch) {
-						requrejsSandbox.set('PatchTest2', {
+						requirejsSandbox.set('PatchTest2', {
 							requireConfig: {
 								baseUrl: 'app',
 								paths: {
@@ -110,7 +110,7 @@ requirejs([
 
 									stop();
 
-									requrejsSandbox.set('PatchTest3', {
+									requirejsSandbox.set('PatchTest3', {
 										requireConfig: {
 											baseUrl: 'app',
 											paths: {

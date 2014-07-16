@@ -2,8 +2,8 @@ requirejs([
 	'requirejs-sandbox',
 	'requirejs-css',
 	'requirejs-preprocess-css'
-], function(requrejsSandbox, requirejsCss, requirejsPreprocessCss) {
-	requrejsSandbox.set('AppTest', {
+], function(requirejsSandbox, requirejsCss, requirejsPreprocessCss) {
+	requirejsSandbox.set('AppTest', {
 		requireConfig: {
 			baseUrl: 'app'
 		},

@@ -1,22 +1,22 @@
-requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
+requirejs(['requirejs-sandbox'], function(requirejsSandbox) {
 	QUnit.start();
 
 	test('Check requirejs-sandbox api', function() {
-		equal(typeof(requrejsSandbox), 'object', 'requirejs-sandbox api is undefined');
-		equal(Object.keys(requrejsSandbox).length, 4, 'requirejs-sandbox api has wrong methods count');
-		equal(typeof(requrejsSandbox.get), 'function', 'get method is undefined');
-		equal(typeof(requrejsSandbox.set), 'function', 'set method is undefined');
-		equal(typeof(requrejsSandbox.destroy), 'function', 'destroy method is undefined');
-		equal(typeof(requrejsSandbox._getSandboxInternalInterface), 'function', '_getSandboxInternalInterface private method is undefined');
+		equal(typeof(requirejsSandbox), 'object', 'requirejs-sandbox api is undefined');
+		equal(Object.keys(requirejsSandbox).length, 4, 'requirejs-sandbox api has wrong methods count');
+		equal(typeof(requirejsSandbox.get), 'function', 'get method is undefined');
+		equal(typeof(requirejsSandbox.set), 'function', 'set method is undefined');
+		equal(typeof(requirejsSandbox.destroy), 'function', 'destroy method is undefined');
+		equal(typeof(requirejsSandbox._getSandboxInternalInterface), 'function', '_getSandboxInternalInterface private method is undefined');
 	});
 
 	test('Creating sandbox with name: Test', function() {
-		equal(typeof(requrejsSandbox.set()), 'undefined', 'requirejs-sandbox returned value when it should not');
-		equal(typeof(requrejsSandbox.set(123)), 'undefined', 'requirejs-sandbox returned value when it should not');
-		equal(typeof(requrejsSandbox.set(true)), 'undefined', 'requirejs-sandbox returned value when it should not');
-		equal(typeof(requrejsSandbox.set({ name: 'Test' })), 'undefined', 'requirejs-sandbox returned value when it should not');
+		equal(typeof(requirejsSandbox.set()), 'undefined', 'requirejs-sandbox returned value when it should not');
+		equal(typeof(requirejsSandbox.set(123)), 'undefined', 'requirejs-sandbox returned value when it should not');
+		equal(typeof(requirejsSandbox.set(true)), 'undefined', 'requirejs-sandbox returned value when it should not');
+		equal(typeof(requirejsSandbox.set({ name: 'Test' })), 'undefined', 'requirejs-sandbox returned value when it should not');
 
-		var sandbox = requrejsSandbox.set('Test');
+		var sandbox = requirejsSandbox.set('Test');
 
 		equal(typeof(sandbox), 'object', 'sandbox api has not been returned');
 		equal(Object.keys(sandbox).length, 5, 'sandbox api has wrong methods count');
@@ -27,13 +27,13 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 		equal(sandbox.define, null, '"define" function is defined before loaded');
 		equal(typeof(sandbox.destroy), 'function', 'destroy method is undefined');
 
-		var anotherSandbox = requrejsSandbox.set('Test');
+		var anotherSandbox = requirejsSandbox.set('Test');
 
 		equal(typeof(anotherSandbox), 'object', 'anotherSandbox api has not been returned');
 		equal(anotherSandbox, sandbox, 'requirejs-sandbox returned wrong sandbox instance');
 	});
 
-	var callbackTestSandbox = requrejsSandbox.set('CallbackTest', {
+	var callbackTestSandbox = requirejsSandbox.set('CallbackTest', {
 		success: function(require, define) {
 			var sandboxApi = this,
 				args = arguments,
@@ -57,7 +57,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 				equal(typeof(sandboxApi.destroy), 'function', 'destroy method is undefined');
 
 				sandboxApi.destroy();
-				sandbox = requrejsSandbox.get(sandboxApi.name);
+				sandbox = requirejsSandbox.get(sandboxApi.name);
 
 				equal(typeof(sandbox), 'undefined', 'requirejs-sandbox returned deleted sandbox');
 				equal(Object.keys(sandboxApi).length, 0, 'sandbox api has wrong methods count');
@@ -75,7 +75,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 			export4: null
 		};
 
-	requrejsSandbox.set('ExportsTest', {
+	requirejsSandbox.set('ExportsTest', {
 		debug: true,
 		sandboxLinks: exports,
 		success: function(require) {
@@ -115,7 +115,7 @@ requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
 			scripts;
 
 		stop();
-		requrejsSandbox.set('DebugDataAttributeTest', {
+		requirejsSandbox.set('DebugDataAttributeTest', {
 			debug: true,
 			requireMain: 'app/main',
 			sandboxLinks: {

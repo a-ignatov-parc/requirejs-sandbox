@@ -1,5 +1,5 @@
-requirejs(['requirejs-sandbox', 'requirejs-css', 'requirejs-sandbox/patches/jquery'], function(requrejsSandbox, requirejsCss, jqueryPatch) {
-	requrejsSandbox.set('VersionWidget', {
+requirejs(['requirejs-sandbox', 'requirejs-css', 'requirejs-sandbox/patches/jquery'], function(requirejsSandbox, requirejsCss, jqueryPatch) {
+	requirejsSandbox.set('VersionWidget', {
 		requireConfig: {
 			paths: {
 				'css': '../../static/styles/css',

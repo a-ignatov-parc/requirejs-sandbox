@@ -11,8 +11,8 @@ requirejs(['css!style1'], function(style) {
 	});
 });
 
-requirejs(['requirejs-sandbox', 'requirejs-css'], function(requrejsSandbox, requirejsCss) {
-	requrejsSandbox.set('AppTest', {
+requirejs(['requirejs-sandbox', 'requirejs-css'], function(requirejsSandbox, requirejsCss) {
+	requirejsSandbox.set('AppTest', {
 		debug: true,
 		plugins: [requirejsCss, {
 			name: 'defined_plugin',
