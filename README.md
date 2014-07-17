@@ -156,7 +156,7 @@ The module has a public api:
 					a: 1
 				}
 			},
-			callback: function(require) {
+			success: function(require) {
 				alert(this.sandboxManager.sandbox.myObject.a);
 			}
 		});
@@ -227,7 +227,7 @@ The module has a public api:
 			requireUrl: '/static/js/libs/require.min.js',
 			requireMain: 'app/main',
 			plugins: [plugin],
-			callback: function(require) {
+			success: function(require) {
 				require(['plugin_name!module'], function(moduleData) {
 					alert(moduleData.myObject.a);
 				});
