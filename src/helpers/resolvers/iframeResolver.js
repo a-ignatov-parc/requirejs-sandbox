@@ -1,9 +1,8 @@
 define([
 	'console',
 	'helpers/utils',
-	'sandbox-manager',
 	'helpers/resolvers/abstract'
-], function(console, utils, sandboxManager, abstract) {
+], function(console, utils, abstract) {
 	var sandboxContructor;
 
 	function checkScript(scripts, sandbox, createScript, callback) {
@@ -41,7 +40,11 @@ define([
 					this._state = this.STATE_RESOLVING;
 
 					if (!sandboxContructor) {
-						sandboxContructor = sandboxManager._getSandboxInternalInterface();
+						// Так как вся библиотека компилируется с помощью almond.js, мо мы без 
+						// проблем можем получить `sandbox-manager` таким простым и синхронным 
+						// путем. 
+						// Он уже точно будет зарезолвлен.
+						sandboxContructor = require('sandbox-manager')._getSandboxInternalInterface();
 					}
 
 					// Создаем песочницу для поиска require.js среди скриптов загруженных на 

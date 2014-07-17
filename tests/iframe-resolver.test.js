@@ -1,6 +1,7 @@
 requirejs([
+	'sandbox-manager',
 	'helpers/resolvers/iframeResolver'
-], function(iframeResolver) {
+], function(sandboxManager, iframeResolver) {
 	QUnit.start();
 
 	test('Iframe resolver initial state and resolving', function() {
