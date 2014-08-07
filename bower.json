@@ -7,7 +7,7 @@
 		"jquery": "~2.0.0",
 		"almond": "~0.2.9",
 		"angular": "~1.2.8",
-		"backbone": "~1.1.0",
+		"backbone": "~1.0.0",
 		"bootstrap": "~3.1.0",
 		"requirejs": "~2.1.5",
 		"underscore": "~1.5.0",

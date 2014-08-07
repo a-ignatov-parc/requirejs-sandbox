@@ -13,7 +13,7 @@
 		<script src="../../build/requirejs-sandbox.js"></script>
 		<script src="../../static/apps/version.js"></script>
 		<script>
-			requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
+			requirejs(['requirejs-sandbox'], function(requirejsSandbox) {
 				var jQueryCollection = ['1.6.4', '1.7.2', '1.8.3', '1.9.1', '2.0.2'],
 					count = jQueryCollection.length,
 					renderBlock = function(name, $) {
@@ -38,7 +38,7 @@
 				for (var i = 0, length = jQueryCollection.length; i < length; i++) {
 					var version = jQueryCollection[i];
 
-					requrejsSandbox.set('sandbox' + version, {
+					requirejsSandbox.set('sandbox' + version, {
 						requireConfig: {
 							baseUrl: 'app',
 							paths: {

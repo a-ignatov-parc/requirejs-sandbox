@@ -10,16 +10,10 @@ define(function() {
 		debug: function() {},
 		info: function() {},
 		warn: function() {
-			var args = Array.prototype.slice.call(arguments);
-
-			args.unshift(namespace);
-			console.warn.apply(this, arguments);
+			console.warn.apply(console, arguments);
 		},
 		error: function() {
-			var args = Array.prototype.slice.call(arguments);
-
-			args.unshift(namespace);
-			console.error.apply(this, arguments);
+			console.error.apply(console, arguments);
 		},
 		off: function() {}
 	};

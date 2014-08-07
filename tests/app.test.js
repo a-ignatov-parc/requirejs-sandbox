@@ -1,5 +1,5 @@
-requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
-	requrejsSandbox.set('AppTest', {
+requirejs(['requirejs-sandbox'], function(requirejsSandbox) {
+	requirejsSandbox.set('AppTest', {
 		debug: true,
 		patch: ['jquery'],
 		requireConfig: {

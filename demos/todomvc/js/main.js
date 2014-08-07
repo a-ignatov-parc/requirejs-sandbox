@@ -19,7 +19,7 @@ require([
 	'app',
 	'controllers/todo',
 	'directives/todoFocus'
-], function (requrejsSandbox, jqueryPatch, patchAbstract, angular, angularApp) {
+], function (requirejsSandbox, jqueryPatch, patchAbstract, angular, angularApp) {
 	// Конфигурируем приложение чтоб оно работало не через pushState, а через hashchange.
 	angularApp.config(['$provide', function($provide) {
 		$provide.decorator('$sniffer', function($delegate) {
@@ -31,7 +31,7 @@ require([
 	// Запускаем приложение.
 	angular.bootstrap(document, ['todomvc']);
 
-	requrejsSandbox.set('TodoMVC', {
+	requirejsSandbox.set('TodoMVC', {
 		requireConfig: {
 			baseUrl: 'js/apps/backbone',
 			paths: {

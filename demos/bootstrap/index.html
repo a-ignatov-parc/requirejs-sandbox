@@ -30,12 +30,12 @@
 				}
 			});
 
-			requirejs(['requirejs-sandbox'], function(requrejsSandbox) {
-				console.log('requirejs-sandbox api', requrejsSandbox);
+			requirejs(['requirejs-sandbox'], function(requirejsSandbox) {
+				console.log('requirejs-sandbox api', requirejsSandbox);
 
 				// Инициализируем песочницу для первого приложения и пытаемся загрузить в нее 
 				// вью `workspace`.
-				requrejsSandbox.set('CustomDemoApp', {
+				requirejsSandbox.set('CustomDemoApp', {
 					requireConfig: {
 						baseUrl: 'app',
 						paths: {
