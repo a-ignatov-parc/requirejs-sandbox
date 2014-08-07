@@ -253,6 +253,15 @@ define([
 								success();
 							}
 						},
+						applyPatch = function(moduleName, module) {
+							for (var i = 0, length = patchList.length, patch; i < length; i++) {
+								patch = patchList[i];
+
+								if (patch.name == moduleName) {
+									patchModule(module || sandbox[patch.shimName], patch);
+								}
+							}
+						},
 						unresolvedPatchesCount = 0,
 						preprocessPlugin;
 
@@ -314,6 +323,25 @@ define([
 						return sandbox;
 					});
 
+					// Модуль `patch` предназначен для ручного патчинга окружения, когда 
+					// автоматический режим не возможен.
+					this.api.define('patch', function() {
+						return function(name, module) {
+							var list = name;
+
+							if (typeof(list) === 'string') {
+								list = {};
+								list[name] = module;
+							}
+
+							for (var key in list) {
+								if (list.hasOwnProperty(key)) {
+									applyPatch(key, list[key]);
+								}
+							}
+						};
+					});
+
 					console.debug('Creating "preprocess" plugin for sandbox require.js');
 
 					// Создаем инстанс плагина, с переданным контекстом.
@@ -328,18 +356,8 @@ define([
 					// пользователю создаем обработчик который будет отлавливать момент 
 					// загрузки + резолвинга и отслеживать нужные модули.
 					this.api.require.onResourceLoad = function(context, map) {
-						var module = context.defined[map.id],
-							moduleName = map.name,
-							patch;
-
 						// Проверяем имя модуля и делаем его патч если необходимо.
-						for (var i = 0, length = patchList.length; i < length; i++) {
-							patch = patchList[i];
-
-							if (patch.name == moduleName) {
-								patchModule(module || sandbox[patch.shimName], patchList[i]);
-							}
-						}
+						applyPatch(map.name, context.defined[map.id]);
 					};
 
 					console.debug('Checking for unresolved patches');

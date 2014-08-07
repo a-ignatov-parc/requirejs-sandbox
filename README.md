@@ -285,6 +285,21 @@ There are list of built-in modules that you can use in developing widgets. This 
 	});
 	```
 
+1. `patch` – return function for manual patching based on passed patch list. Can be used when you need to manualy patch library by passing link as argument.
+
+	```javascript
+	requirejsSandbox.set('TestApp', {
+		requireUrl: '/static/js/package-with-jquery-and-requirejs.js',
+		requireMain: 'app/main',
+		patch: ['jquery'],
+		success: function(require) {
+			require(['sandbox', 'patch'], function(sandbox, patch) {
+				patch('jquery', sandbox.$);
+			});
+		}
+	});
+	```
+
 # Plugins
 
 There are list of built-in and plugable plugins for [require.js](http://requirejs.org/) that are available in sandbox.
