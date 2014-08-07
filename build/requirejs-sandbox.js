@@ -1,5 +1,5 @@
 /**
- * requirejs-sandbox - v0.6.0-12 (build date: 13/07/2014)
+ * requirejs-sandbox - v0.6.1-4 (build date: 07/08/2014)
  * https://github.com/a-ignatov-parc/requirejs-sandbox
  * Sandbox manager for require.js allows user to run multiple apps without scope intersection issues
  * Copyright (c) 2014 Anton Ignatov
@@ -745,9 +745,8 @@ define('helpers/resolvers/scriptResolver',[
 define('helpers/resolvers/iframeResolver',[
 	'console',
 	'helpers/utils',
-	'sandbox-manager',
 	'helpers/resolvers/abstract'
-], function(console, utils, sandboxManager, abstract) {
+], function(console, utils, abstract) {
 	var sandboxContructor;
 
 	function checkScript(scripts, sandbox, createScript, callback) {
@@ -785,7 +784,11 @@ define('helpers/resolvers/iframeResolver',[
 					this._state = this.STATE_RESOLVING;
 
 					if (!sandboxContructor) {
-						sandboxContructor = sandboxManager._getSandboxInternalInterface();
+						// Так как вся библиотека компилируется с помощью almond.js, мо мы без 
+						// проблем можем получить `sandbox-manager` таким простым и синхронным 
+						// путем. 
+						// Он уже точно будет зарезолвлен.
+						sandboxContructor = require('sandbox-manager')._getSandboxInternalInterface();
 					}
 
 					// Создаем песочницу для поиска require.js среди скриптов загруженных на 
