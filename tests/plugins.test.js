@@ -1,8 +1,8 @@
-requirejs.config({
+require.config({
 	baseUrl: 'app'
 });
 
-requirejs(['css!style1'], function(style) {
+require(['css!style1'], function(style) {
 	test('Css loading without test', function() {
 		equal(typeof(style), 'object', 'Returned module object is not object');
 		notEqual(style.cssNode, null, 'Link to style DOM element was not found');
@@ -11,7 +11,7 @@ requirejs(['css!style1'], function(style) {
 	});
 });
 
-requirejs(['requirejs-sandbox', 'requirejs-css'], function(requirejsSandbox, requirejsCss) {
+require(['requirejs-sandbox', 'requirejs-css'], function(requirejsSandbox, requirejsCss) {
 	requirejsSandbox.set('AppTest', {
 		debug: true,
 		plugins: [requirejsCss, {

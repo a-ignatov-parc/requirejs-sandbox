@@ -177,7 +177,7 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 						exportName: 'patches/' + fileName
 					})
 				},
-				out: '<%= buildDir %>/patches/' + fileName + '.' + fileExtension
+				out: '<%= buildDir %>/requirejs-sandbox/patches/' + fileName + '.' + fileExtension
 			})
 		};
 
@@ -198,7 +198,7 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 				},
 				optimize: 'uglify2',
 				preserveLicenseComments: false,
-				out: '<%= buildDir %>/patches/' + fileName + '.min.' + fileExtension
+				out: '<%= buildDir %>/requirejs-sandbox/patches/' + fileName + '.min.' + fileExtension
 			})
 		};
 	}
@@ -224,7 +224,7 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 						exportName: 'plugins/' + fileName
 					})
 				},
-				out: '<%= buildDir %>/plugins/' + fileName + '.' + fileExtension
+				out: '<%= buildDir %>/requirejs-sandbox/plugins/' + fileName + '.' + fileExtension
 			})
 		};
 
@@ -245,7 +245,7 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 				},
 				optimize: 'uglify2',
 				preserveLicenseComments: false,
-				out: '<%= buildDir %>/plugins/' + fileName + '.min.' + fileExtension
+				out: '<%= buildDir %>/requirejs-sandbox/plugins/' + fileName + '.min.' + fileExtension
 			})
 		};
 	}
@@ -268,7 +268,7 @@ additionalBuildList.forEach(function(modulePath) {
 					exportName: modulePath
 				})
 			},
-			out: '<%= buildDir %>/' + modulePath + '.js'
+			out: '<%= buildDir %>/requirejs-sandbox/' + modulePath + '.js'
 		})
 	};
 
@@ -289,7 +289,7 @@ additionalBuildList.forEach(function(modulePath) {
 			},
 			optimize: 'uglify2',
 			preserveLicenseComments: false,
-			out: '<%= buildDir %>/' + modulePath + '.min.js'
+			out: '<%= buildDir %>/requirejs-sandbox/' + modulePath + '.min.js'
 		})
 	};
 });

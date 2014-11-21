@@ -1,4 +1,4 @@
-requirejs([
+require([
 	'sandbox-manager',
 	'helpers/resolvers/iframeResolver'
 ], function(sandboxManager, iframeResolver) {
