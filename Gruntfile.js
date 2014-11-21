@@ -26,7 +26,6 @@ var buildOptions = {
 		almond: true,
 		wrap: {
 			start: wrapStart({
-				moduleName: 'requirejs-sandbox',
 				globalName: 'manager'
 			}),
 			end: wrapEnd({
@@ -171,7 +170,6 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 				include: ['patches/' + fileName],
 				wrap: {
 					start: wrapStart({
-						moduleName: 'requirejs-sandbox/patches/' + fileName,
 						globalNamespace: 'patches',
 						globalName: fileName
 					}),
@@ -191,7 +189,6 @@ fs.readdirSync(pkg.config.patchesDir).forEach(function(file) {
 				}),
 				wrap: {
 					start: wrapStart({
-						moduleName: 'requirejs-sandbox/patches/' + fileName,
 						globalNamespace: 'patches',
 						globalName: fileName
 					}),
@@ -220,14 +217,11 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 				include: ['plugins/' + fileName],
 				wrap: {
 					start: wrapStart({
-						moduleName: fileName,
 						globalNamespace: 'plugins',
 						globalName: fileName
 					}),
 					end: wrapEnd({
-						exportName: 'plugins/' + fileName,
-						moduleName: fileName,
-						exportPlugin: true
+						exportName: 'plugins/' + fileName
 					})
 				},
 				out: '<%= buildDir %>/plugins/' + fileName + '.' + fileExtension
@@ -242,14 +236,11 @@ fs.readdirSync(pkg.config.pluginsDir).forEach(function(file) {
 				}),
 				wrap: {
 					start: wrapStart({
-						moduleName: fileName,
 						globalNamespace: 'plugins',
 						globalName: fileName
 					}),
 					end: wrapEnd({
-						exportName: 'plugins/' + fileName,
-						moduleName: fileName,
-						exportPlugin: true
+						exportName: 'plugins/' + fileName
 					})
 				},
 				optimize: 'uglify2',
@@ -270,7 +261,6 @@ additionalBuildList.forEach(function(modulePath) {
 			include: [modulePath],
 			wrap: {
 				start: wrapStart({
-					moduleName: 'requirejs-sandbox/' + modulePath,
 					globalNamespace: namespace,
 					globalName: name
 				}),
@@ -290,7 +280,6 @@ additionalBuildList.forEach(function(modulePath) {
 			}),
 			wrap: {
 				start: wrapStart({
-					moduleName: 'requirejs-sandbox/' + modulePath,
 					globalNamespace: namespace,
 					globalName: name
 				}),
